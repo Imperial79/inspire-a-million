@@ -122,9 +122,7 @@ class _MyProfileUiState extends State<MyProfileUi> {
                         StreamBuilder<dynamic>(
                           stream: FirebaseFirestore.instance
                               .collection('blogs')
-                              .where('uid',
-                                  isEqualTo:
-                                      FirebaseAuth.instance.currentUser!.uid)
+                              .where('uid', isEqualTo: Userdetails.uid)
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
@@ -193,34 +191,37 @@ class _MyProfileUiState extends State<MyProfileUi> {
                     flex: 1,
                     child: Align(
                       alignment: Alignment.bottomRight,
-                      child: MaterialButton(
-                        onPressed: () async {
-                          AuthMethods().signOut();
-                          PageRouteTransition.effect =
-                              TransitionEffect.leftToRight;
-                          PageRouteTransition.pushReplacement(
-                              context, LoginUi());
-                        },
-                        elevation: 0,
-                        highlightElevation: 0,
-                        color: isDarkMode! ? Colors.red.shade100 : Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        padding: EdgeInsets.zero,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 14,
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 37),
+                        child: MaterialButton(
+                          onPressed: () async {
+                            AuthMethods().signOut();
+                            PageRouteTransition.effect =
+                                TransitionEffect.leftToRight;
+                            PageRouteTransition.pushReplacement(
+                                context, LoginUi());
+                          },
+                          elevation: 0,
+                          highlightElevation: 0,
+                          color: isDarkMode! ? Colors.red.shade100 : Colors.red,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
                           ),
-                          child: FittedBox(
-                            child: Text(
-                              'Log Out',
-                              style: GoogleFonts.openSans(
-                                fontWeight: FontWeight.w700,
-                                color: isDarkMode!
-                                    ? Colors.red.shade800
-                                    : Colors.white,
+                          padding: EdgeInsets.zero,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 14,
+                            ),
+                            child: FittedBox(
+                              child: Text(
+                                'Log Out',
+                                style: GoogleFonts.openSans(
+                                  fontWeight: FontWeight.w700,
+                                  color: isDarkMode!
+                                      ? Colors.red.shade800
+                                      : Colors.white,
+                                ),
                               ),
                             ),
                           ),

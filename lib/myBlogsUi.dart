@@ -307,6 +307,7 @@ class _MyBlogsUiState extends State<MyBlogsUi> {
                       context,
                       CommentUi(
                         blogId: ds['blogId'],
+                        tokenId: ds['tokenId'],
                       ));
                 },
                 padding: EdgeInsets.zero,

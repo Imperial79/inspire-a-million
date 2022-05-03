@@ -7,6 +7,7 @@ import 'package:blog_app/myBlogsUi.dart';
 import 'package:blog_app/services/auth.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/services/globalVariable.dart';
+import 'package:blog_app/services/notification_function.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -202,12 +203,10 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
     isDarkMode = brightness == Brightness.dark;
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light.copyWith(
-        statusBarBrightness: Brightness.dark,
         statusBarIconBrightness:
             isDarkMode! ? Brightness.light : Brightness.dark,
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor:
-            isDarkMode! ? Colors.grey.shade900 : Colors.white,
+        systemNavigationBarColor: Colors.transparent,
       ),
     );
     return Scaffold(
@@ -278,6 +277,14 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                                 .update({
                               'following': FieldValue.arrayRemove([ds['uid']])
                             });
+
+                            sendNotification(
+                              [ds['tokenId']],
+                              Userdetails.userDisplayName +
+                                  ' has unfollowed you!',
+                              'Inspire',
+                              Userdetails.userProfilePic,
+                            );
                           } else {
                             await FirebaseFirestore.instance
                                 .collection('users')
@@ -293,6 +300,14 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                                 .update({
                               'following': FieldValue.arrayUnion([ds['uid']])
                             });
+
+                            sendNotification(
+                              [ds['tokenId']],
+                              Userdetails.userDisplayName +
+                                  ' has followed you!',
+                              'Inspire',
+                              Userdetails.userProfilePic,
+                            );
                           }
                         },
                         color: ds['followers'].contains(Userdetails.uid)

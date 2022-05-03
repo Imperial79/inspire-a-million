@@ -25,6 +25,7 @@ class _SearchUiState extends State<SearchUi> {
     var brightness = MediaQuery.of(context).platformBrightness;
     isDarkMode = brightness == Brightness.dark;
     return Scaffold(
+      backgroundColor: isDarkMode! ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(left: 15, right: 15, top: 15),

@@ -1,10 +1,12 @@
 import 'dart:ui';
 import 'package:blog_app/colors.dart';
 import 'package:blog_app/commentUi.dart';
+import 'package:blog_app/likesUI.dart';
 import 'package:blog_app/othersProfileUi.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/services/globalVariable.dart';
 import 'package:blog_app/services/like_animation.dart';
+import 'package:blog_app/services/notification_function.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +94,6 @@ class _BlogCardState extends State<BlogCard> {
             sigmaY: 4,
           ),
           child: Container(
-            // margin: EdgeInsets.only(left: 15, right: 15, bottom: 15),
             padding: EdgeInsets.all(20),
             width: double.infinity,
             decoration: BoxDecoration(
@@ -166,19 +167,31 @@ class _BlogCardState extends State<BlogCard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              widget.snap['userDisplayName'] ==
-                                      Userdetails.userDisplayName
-                                  ? 'You'
-                                  : widget.snap['userDisplayName'],
-                              style: GoogleFonts.openSans(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
-                                color:
-                                    isDarkMode! ? Colors.white : Colors.black,
+                            GestureDetector(
+                              onTap: () {
+                                if (widget.snap['uid'] != Userdetails.uid) {
+                                  PageRouteTransition.push(context,
+                                      OthersProfileUi(uid: widget.snap['uid']));
+                                }
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                child: Text(
+                                  widget.snap['userDisplayName'] ==
+                                          Userdetails.userDisplayName
+                                      ? 'You'
+                                      : widget.snap['userDisplayName'],
+                                  style: GoogleFonts.openSans(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16,
+                                    color: isDarkMode!
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(
                               height: 3,
@@ -259,16 +272,17 @@ class _BlogCardState extends State<BlogCard> {
                     : Row(
                         children: [
                           widget.snap['likes'].length == 1
-                              ? FutureBuilder<dynamic>(
-                                  future: FirebaseFirestore.instance
+                              ? StreamBuilder<dynamic>(
+                                  stream: FirebaseFirestore.instance
                                       .collection('users')
                                       .where('uid',
                                           isEqualTo: widget.snap['likes'][0])
-                                      .get(),
+                                      .snapshots(),
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
                                       if (snapshot.data.docs.length == 0) {
-                                        return Container();
+                                        return SingleLikePreview(
+                                            profileImg: '');
                                       } else {
                                         DocumentSnapshot ds =
                                             snapshot.data.docs[0];
@@ -280,12 +294,12 @@ class _BlogCardState extends State<BlogCard> {
                                     return Container();
                                   },
                                 )
-                              : FutureBuilder<dynamic>(
-                                  future: FirebaseFirestore.instance
+                              : StreamBuilder<dynamic>(
+                                  stream: FirebaseFirestore.instance
                                       .collection('users')
                                       .where('uid',
                                           whereIn: widget.snap['likes'])
-                                      .get(),
+                                      .snapshots(),
                                   builder: (context, snapshot) {
                                     try {
                                       return DoubleLikePreview(
@@ -297,22 +311,36 @@ class _BlogCardState extends State<BlogCard> {
                                     }
                                   },
                                 ),
-                          Text(
-                            widget.snap['likes'].length == 1
-                                ? ' liked it'
-                                : widget.snap['likes']
-                                        .contains(Userdetails.userProfilePic)
-                                    ? 'You and ' +
-                                        (widget.snap['likes'].length - 1)
-                                            .toString() +
-                                        ' more have liked'
-                                    : '1 and more has liked it',
-                            style: GoogleFonts.openSans(
-                              fontWeight: FontWeight.w600,
-                              color: isDarkMode!
-                                  ? Colors.grey.shade400
-                                  : Colors.grey,
-                              fontSize: 13,
+                          GestureDetector(
+                            onTap: () {
+                              PageRouteTransition.push(
+                                  context,
+                                  LikesUI(
+                                    snap: widget.snap,
+                                  ));
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              child: Text(
+                                widget.snap['likes'].length == 1
+                                    ? ' liked it'
+                                    : widget.snap['likes']
+                                            .contains(Userdetails.uid)
+                                        ? 'You and ' +
+                                            (widget.snap['likes'].length - 1)
+                                                .toString() +
+                                            ' more have liked'
+                                        : widget.snap['likes'].length
+                                                .toString() +
+                                            ' people liked it',
+                                style: GoogleFonts.openSans(
+                                  fontWeight: FontWeight.w600,
+                                  color: isDarkMode!
+                                      ? Colors.grey.shade400
+                                      : Colors.grey,
+                                  fontSize: 13,
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -321,7 +349,7 @@ class _BlogCardState extends State<BlogCard> {
                   height: 10,
                 ),
                 Divider(
-                  color: Colors.grey.shade400,
+                  color: Colors.grey.withOpacity(0.5),
                 ),
                 SizedBox(
                   height: 10,
@@ -332,6 +360,12 @@ class _BlogCardState extends State<BlogCard> {
                       onPressed: () {
                         DatabaseMethods().likeBlog(
                             widget.snap['blogId'], widget.snap['likes']);
+                        sendNotification(
+                          [widget.snap['tokenId']],
+                          Userdetails.userDisplayName + ' has liked your post',
+                          '!nspire',
+                          Userdetails.userProfilePic,
+                        );
                       },
                       padding: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(
@@ -387,6 +421,7 @@ class _BlogCardState extends State<BlogCard> {
                             context,
                             CommentUi(
                               blogId: widget.snap['blogId'],
+                              tokenId: widget.snap['tokenId'],
                             )).then((value) {
                           setState(() {});
                         });
@@ -488,18 +523,25 @@ class _BlogCardState extends State<BlogCard> {
     return CircleAvatar(
       backgroundColor: isDarkMode! ? Colors.black : Colors.white,
       radius: 17,
-      child: CircleAvatar(
-        radius: 15,
-        backgroundColor: isDarkMode! ? Colors.blue.shade100 : primaryColor,
-        child: CachedNetworkImage(
-          imageUrl: profileImg,
-          imageBuilder: (context, image) => CircleAvatar(
-            radius: 15,
-            backgroundColor: isDarkMode! ? Colors.blue.shade100 : primaryColor,
-            backgroundImage: image,
-          ),
-        ),
-      ),
+      child: profileImg == ''
+          ? CircleAvatar(
+              radius: 15,
+              backgroundColor: Colors.white,
+            )
+          : CircleAvatar(
+              radius: 15,
+              backgroundColor:
+                  isDarkMode! ? Colors.blue.shade100 : primaryColor,
+              child: CachedNetworkImage(
+                imageUrl: profileImg,
+                imageBuilder: (context, image) => CircleAvatar(
+                  radius: 15,
+                  backgroundColor:
+                      isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                  backgroundImage: image,
+                ),
+              ),
+            ),
     );
   }
 }

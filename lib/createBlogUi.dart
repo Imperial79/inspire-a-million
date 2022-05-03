@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:blog_app/colors.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/services/globalVariable.dart';
+import 'package:blog_app/services/notification_function.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,9 +40,17 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
         'profileImage': Userdetails.userProfilePic,
         'likes': [],
         'comments': 0,
+        'tokenId': Userdetails.myTokenId,
       };
 
       DatabaseMethods().uploadBlogs(blogMap, time.toString());
+      print('Folowers: ' + followersTokenId.toString());
+      sendNotification(
+        followersTokenId,
+        '"' + description.text + '"',
+        'A new post from ${Userdetails.userDisplayName}',
+        Userdetails.userProfilePic,
+      );
       FocusScope.of(context).unfocus();
       description.clear();
       setState(() {});
@@ -163,22 +172,25 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
                             fontWeight: FontWeight.w800,
                           ),
                         ),
-                  MaterialButton(
-                    onPressed: () {
-                      uploadBlog();
-                    },
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    color: isDarkMode! ? Colors.blue.shade100 : primaryColor,
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    elevation: 0,
-                    child: Text(
-                      '!nspire',
-                      style: GoogleFonts.openSans(
-                        color:
-                            isDarkMode! ? Colors.blue.shade900 : Colors.white,
-                        fontWeight: FontWeight.w600,
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 37),
+                    child: MaterialButton(
+                      onPressed: () {
+                        uploadBlog();
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      color: isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      elevation: 0,
+                      child: Text(
+                        '!nspire',
+                        style: GoogleFonts.openSans(
+                          color:
+                              isDarkMode! ? Colors.blue.shade900 : Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),

@@ -1,6 +1,7 @@
 import 'package:blog_app/colors.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/services/globalVariable.dart';
+import 'package:blog_app/services/notification_function.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,8 @@ import 'package:page_route_transition/page_route_transition.dart';
 
 class CommentUi extends StatefulWidget {
   final blogId;
-  CommentUi({required this.blogId});
+  final tokenId;
+  CommentUi({required this.blogId, required this.tokenId});
 
   @override
   State<CommentUi> createState() => _CommentUiState();
@@ -40,6 +42,12 @@ class _CommentUiState extends State<CommentUi> {
         'time': time,
       };
       DatabaseMethods().uploadComments(widget.blogId, commentMap);
+      sendNotification(
+        followersTokenId,
+        commentController.text,
+        Userdetails.userDisplayName + ' has commented',
+        Userdetails.userProfilePic,
+      );
 
       commentController.clear();
       FocusScope.of(context).unfocus();
@@ -118,13 +126,17 @@ class _CommentUiState extends State<CommentUi> {
               width: double.infinity,
               child: Row(
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      PageRouteTransition.pop(context);
-                    },
-                    icon: SvgPicture.asset(
-                      'lib/assets/icons/back.svg',
-                      color: isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                  Container(
+                    height: 40,
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.all(10),
+                    child: IconButton(
+                      onPressed: () {
+                        PageRouteTransition.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                      ),
                     ),
                   ),
                   Text(
@@ -149,14 +161,11 @@ class _CommentUiState extends State<CommentUi> {
             ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-                border: Border.all(
-                  color:
-                      isDarkMode! ? Colors.grey.shade700 : Colors.grey.shade300,
-                  width: 1,
-                ),
+                color:
+                    isDarkMode! ? Colors.grey.shade800 : Colors.grey.shade100,
               ),
               child: Row(
                 children: [
@@ -174,13 +183,13 @@ class _CommentUiState extends State<CommentUi> {
                       minLines: 1,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                        hintText: 'comment as ' +
+                        hintText: 'Comment as ' +
                             Userdetails.userDisplayName.split(' ')[0],
                         border: InputBorder.none,
                         hintStyle: GoogleFonts.openSans(
                           color: isDarkMode!
-                              ? Colors.grey.shade700
-                              : Colors.grey.shade300,
+                              ? Colors.grey.shade600
+                              : Colors.grey.shade400,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -188,16 +197,17 @@ class _CommentUiState extends State<CommentUi> {
                   ),
                   Expanded(
                     child: CircleAvatar(
+                      radius: 15,
                       backgroundColor:
-                          isDarkMode! ? Colors.blue.shade400 : primaryColor,
+                          isDarkMode! ? Colors.blue.shade200 : primaryColor,
                       child: IconButton(
                         onPressed: () {
                           uploadComments();
                         },
                         icon: CircleAvatar(
-                          radius: 10,
+                          radius: 8,
                           backgroundColor:
-                              isDarkMode! ? Colors.grey.shade900 : Colors.white,
+                              isDarkMode! ? Colors.grey.shade800 : Colors.white,
                         ),
                       ),
                     ),
@@ -254,7 +264,8 @@ class _CommentUiState extends State<CommentUi> {
                       TextSpan(
                         text: snap['comment'],
                         style: GoogleFonts.openSans(
-                          color: Colors.black,
+                          color:
+                              isDarkMode! ? Colors.grey.shade300 : Colors.black,
                         ),
                       ),
                     ],

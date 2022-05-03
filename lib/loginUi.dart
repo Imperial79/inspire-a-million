@@ -5,6 +5,7 @@ import 'package:blog_app/services/globalVariable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class LoginUi extends StatefulWidget {
   const LoginUi({Key? key}) : super(key: key);
@@ -14,6 +15,14 @@ class LoginUi extends StatefulWidget {
 }
 
 class _LoginUiState extends State<LoginUi> {
+  // String? tokenId;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   getTokenID();
+  // }
+
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
@@ -21,13 +30,10 @@ class _LoginUiState extends State<LoginUi> {
     isDarkMode = brightness == Brightness.dark;
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light.copyWith(
-        statusBarBrightness: Brightness.light,
         statusBarIconBrightness:
             isDarkMode! ? Brightness.light : Brightness.dark,
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor:
-            isDarkMode! ? Colors.grey.shade900 : Colors.white,
-        systemNavigationBarIconBrightness: Brightness.light,
+        systemNavigationBarColor: Colors.transparent,
       ),
     );
     Size size = MediaQuery.of(context).size;

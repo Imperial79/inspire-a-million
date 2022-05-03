@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:page_route_transition/page_route_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,6 +46,7 @@ class AuthMethods {
     prefs.setString('USERDISPLAYNAMEKEY', userDetails.displayName!);
     prefs.setString('USEREMAILKEY', userDetails.email!);
     prefs.setString('USERPROFILEKEY', userDetails.photoURL!);
+    // prefs.setString('TOKENID', tokenId);
 
     print('Display name : ' + Userdetails.userDisplayName);
 
@@ -53,14 +55,15 @@ class AuthMethods {
     Userdetails.userDisplayName = userDetails.displayName!;
     Userdetails.userName = userDetails.email!.split('@')[0];
     Userdetails.userProfilePic = userDetails.photoURL!;
+    // Userdetails.myTokenId = tokenId;
 
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('users')
         .doc(userDetails.uid)
         .get()
         .then((value) {
       if (value.exists) {
-        print('does exist -------------');
+        print('User exist');
         Map<String, dynamic> userInfoMap = {
           'uid': userDetails.uid,
           "email": userDetails.email,
@@ -77,7 +80,7 @@ class AuthMethods {
           PageRouteTransition.pushReplacement(context, HomeUi());
         });
       } else {
-        print('does not exist --------- ');
+        print('User does not exist ');
 
         Map<String, dynamic> userInfoMap = {
           'uid': userDetails.uid,
@@ -85,6 +88,7 @@ class AuthMethods {
           "username": userDetails.email!.split('@')[0],
           "name": userDetails.displayName,
           "imgUrl": userDetails.photoURL,
+          'tokenId': '',
           'followers': [],
           'following': [],
         };
@@ -98,6 +102,10 @@ class AuthMethods {
   }
 
   signOut() async {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(Userdetails.uid)
+        .update({'tokenId': ''});
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
     await auth.signOut();
