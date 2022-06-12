@@ -33,7 +33,7 @@ class _MotivatorUiState extends State<MotivatorUi> {
                     children: [
                       Text(
                         'Your',
-                        style: GoogleFonts.openSans(
+                        style: TextStyle(
                           fontSize: 20,
                           color:
                               isDarkMode! ? Colors.grey.shade200 : Colors.black,
@@ -42,11 +42,11 @@ class _MotivatorUiState extends State<MotivatorUi> {
                       ),
                       Text(
                         'Motivators',
-                        style: GoogleFonts.openSans(
+                        style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
                           color:
-                              isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                              isDarkMode! ? primaryAccentColor : primaryColor,
                         ),
                       ),
                     ],
@@ -69,7 +69,7 @@ class _MotivatorUiState extends State<MotivatorUi> {
                       return Center(
                         child: Text(
                           'No Users',
-                          style: GoogleFonts.openSans(
+                          style: TextStyle(
                             color: Colors.blueGrey.shade200,
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -95,7 +95,7 @@ class _MotivatorUiState extends State<MotivatorUi> {
                             ds['name'] == Userdetails.userDisplayName
                                 ? 'You'
                                 : ds['name'],
-                            style: GoogleFonts.openSans(
+                            style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: isDarkMode!
                                   ? Colors.grey.shade200
@@ -104,9 +104,9 @@ class _MotivatorUiState extends State<MotivatorUi> {
                           ),
                           subtitle: Text(
                             '@' + ds['username'],
-                            style: GoogleFonts.openSans(
+                            style: TextStyle(
                               color: isDarkMode!
-                                  ? Colors.blue.shade100
+                                  ? primaryAccentColor
                                   : primaryColor,
                               fontWeight: FontWeight.w600,
                             ),
@@ -132,7 +132,7 @@ class _MotivatorUiState extends State<MotivatorUi> {
                                     });
                                   },
                                   elevation: 0,
-                                  // color: isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                                  // color: isDarkMode! ? primaryAccentColor : primaryColor,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
                                     side: BorderSide(
@@ -145,7 +145,7 @@ class _MotivatorUiState extends State<MotivatorUi> {
                                     style: GoogleFonts.montserrat(
                                       fontWeight: FontWeight.w500,
                                       color: isDarkMode!
-                                          ? Colors.blue.shade100
+                                          ? primaryAccentColor
                                           : primaryColor,
                                       // fontSize: 16,
                                     ),
@@ -158,7 +158,7 @@ class _MotivatorUiState extends State<MotivatorUi> {
                   return Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 1.5,
-                      color: isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                      color: isDarkMode! ? primaryAccentColor : primaryColor,
                     ),
                   );
                 },

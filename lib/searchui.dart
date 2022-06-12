@@ -5,10 +5,8 @@ import 'package:blog_app/othersProfileUi.dart';
 import 'package:blog_app/services/globalVariable.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:page_route_transition/page_route_transition.dart';
 
 class SearchUi extends StatefulWidget {
   const SearchUi({Key? key}) : super(key: key);
@@ -28,22 +26,23 @@ class _SearchUiState extends State<SearchUi> {
       backgroundColor: isDarkMode! ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(left: 15, right: 15, top: 15),
+          padding: EdgeInsets.only(left: 15, right: 15, top: 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Search!',
                 style: GoogleFonts.openSans(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 25,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 40,
+                  color: isDarkMode! ? Colors.white : Colors.black,
                 ),
               ),
               Text(
                 'Users',
                 style: GoogleFonts.openSans(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20,
                   color: isDarkMode! ? Colors.blue.shade100 : primaryColor,
                 ),
               ),
@@ -62,6 +61,10 @@ class _SearchUiState extends State<SearchUi> {
                         children: [
                           Flexible(
                             child: TextField(
+                              style: TextStyle(
+                                color:
+                                    isDarkMode! ? Colors.white : Colors.black,
+                              ),
                               controller: searchController,
                               cursorColor: isDarkMode!
                                   ? Colors.blue.shade100
@@ -126,6 +129,7 @@ class _SearchUiState extends State<SearchUi> {
                           ? FutureBuilder<dynamic>(
                               future: FirebaseFirestore.instance
                                   .collection('users')
+                                  .where('uid', isNotEqualTo: Userdetails.uid)
                                   .get(),
                               builder: (context, snapshot) {
                                 if (!snapshot.hasData) {
@@ -141,7 +145,6 @@ class _SearchUiState extends State<SearchUi> {
                                 return ListView.builder(
                                   padding: EdgeInsets.symmetric(vertical: 20),
                                   itemCount: snapshot.data.docs.length,
-                                  // scrollDirection: Axis.vertical,
                                   physics: NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
@@ -153,10 +156,7 @@ class _SearchUiState extends State<SearchUi> {
                                         .contains(searchController.text
                                             .trim()
                                             .toLowerCase())) {
-                                      return ds['email'] ==
-                                              Userdetails.userEmail
-                                          ? Container()
-                                          : BuildListTile(ds);
+                                      return BuildListTile(ds);
                                     } else if (ds['username']
                                         .toString()
                                         .contains(
@@ -179,7 +179,9 @@ class _SearchUiState extends State<SearchUi> {
                                   '!nspire',
                                   style: GoogleFonts.josefinSans(
                                     fontSize: 30,
-                                    color: Colors.grey.shade300,
+                                    color: isDarkMode!
+                                        ? Colors.white.withOpacity(0.5)
+                                        : Colors.black.withOpacity(0.5),
                                     fontWeight: FontWeight.w900,
                                   ),
                                 ),
@@ -201,13 +203,17 @@ class _SearchUiState extends State<SearchUi> {
       padding: EdgeInsets.only(bottom: 10),
       child: ListTile(
         onTap: () {
-          FocusScope.of(context).unfocus();
-          PageRouteTransition.push(context, OthersProfileUi(uid: ds['uid']));
+          // FocusScope.of(context).unfocus();
+          // PageRouteTransition.push(context, OthersProfileUi(uid: ds['uid']));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => OthersProfileUi(uid: ds['uid'])));
         },
-        leading: CircleAvatar(
-          backgroundColor: Colors.grey.shade100,
-          child: Hero(
-            tag: ds['imgUrl'],
+        leading: Hero(
+          tag: ds['imgUrl'],
+          child: CircleAvatar(
+            backgroundColor: Colors.grey.shade100,
             child: CachedNetworkImage(
               imageUrl: ds['imgUrl'],
               imageBuilder: (context, image) => CircleAvatar(
@@ -224,6 +230,7 @@ class _SearchUiState extends State<SearchUi> {
               ds['name'],
               style: GoogleFonts.openSans(
                 fontWeight: FontWeight.w600,
+                color: isDarkMode! ? Colors.white : Colors.black,
               ),
             ),
             // SizedBox(

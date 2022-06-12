@@ -6,13 +6,11 @@ import 'package:blog_app/othersProfileUi.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/services/globalVariable.dart';
 import 'package:blog_app/services/like_animation.dart';
-import 'package:blog_app/services/notification_function.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:page_route_transition/page_route_transition.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -28,52 +26,64 @@ class BlogCard extends StatefulWidget {
 
 class _BlogCardState extends State<BlogCard> {
   Widget Alert(final blogId) {
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      elevation: 0,
-      title: Text(
-        'Delete Blog?',
-        style: GoogleFonts.openSans(
-          fontWeight: FontWeight.w600,
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+      child: AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
         ),
-      ),
-      content: Text('Do You want to delete this blog ?'),
-      actions: [
-        MaterialButton(
-          onPressed: () {
-            Navigator.pop(context);
-            setState(() {});
-          },
-          child: Text(
-            'Cancel',
-            style: GoogleFonts.openSans(
-              fontWeight: FontWeight.w800,
-              color: isDarkMode! ? Colors.blue.shade100 : primaryColor,
+        backgroundColor: isDarkMode! ? Colors.grey.shade800 : Colors.white,
+        elevation: 0,
+        title: Text(
+          'Delete Blog',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: isDarkMode! ? Colors.white : Colors.black,
+          ),
+        ),
+        content: Text(
+          'Do You want to delete this blog ?',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: isDarkMode! ? Colors.white : Colors.black,
+          ),
+        ),
+        actionsAlignment: MainAxisAlignment.spaceBetween,
+        actions: [
+          MaterialButton(
+            onPressed: () {
+              Navigator.pop(context);
+              setState(() {});
+            },
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: isDarkMode! ? primaryAccentColor : primaryColor,
+              ),
             ),
           ),
-        ),
-        MaterialButton(
-          onPressed: () {
-            deletePost(blogId);
-            Navigator.pop(context);
-            setState(() {});
-          },
-          color: Colors.red,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
-          child: Text(
-            'Delete',
-            style: GoogleFonts.openSans(
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
+          MaterialButton(
+            onPressed: () {
+              deletePost(blogId);
+              Navigator.pop(context);
+              setState(() {});
+            },
+            color: Colors.red,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: Text(
+              'Delete',
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -143,8 +153,12 @@ class _BlogCardState extends State<BlogCard> {
                                   child: CircleAvatar(
                                     radius: 5,
                                     backgroundColor: ds['active'] == '1'
-                                        ? Colors.green
-                                        : Colors.red,
+                                        ? isDarkMode!
+                                            ? Colors.green.shade800
+                                            : Colors.green
+                                        : isDarkMode!
+                                            ? Colors.red.shade800
+                                            : Colors.red,
                                   ),
                                 );
                               }
@@ -181,7 +195,7 @@ class _BlogCardState extends State<BlogCard> {
                                           Userdetails.userDisplayName
                                       ? 'You'
                                       : widget.snap['userDisplayName'],
-                                  style: GoogleFonts.openSans(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: 16,
                                     color: isDarkMode!
@@ -208,7 +222,7 @@ class _BlogCardState extends State<BlogCard> {
                                   '  •  ' +
                                   DateFormat.yMMMd()
                                       .format(widget.snap['time'].toDate()),
-                              style: GoogleFonts.openSans(
+                              style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: isDarkMode!
                                     ? Colors.grey.shade400
@@ -246,18 +260,27 @@ class _BlogCardState extends State<BlogCard> {
                   height: 13,
                 ),
                 SelectableLinkify(
+                  linkStyle: TextStyle(
+                    color: isDarkMode! ? primaryAccentColor : primaryColor,
+                    fontWeight: isDarkMode! ? FontWeight.w500 : FontWeight.w600,
+                    decoration: TextDecoration.none,
+                  ),
                   onOpen: (link) async {
-                    if (await canLaunch(link.url)) {
-                      await launch(link.url);
+                    if (await canLaunchUrl(Uri.parse(link.url))) {
+                      await launchUrl(
+                        Uri.parse(link.url),
+                        mode: LaunchMode.externalApplication,
+                      );
                     } else {
                       throw 'Could not launch $link';
                     }
                   },
                   text: widget.snap['description'],
-                  style: GoogleFonts.openSans(
-                    fontWeight: FontWeight.w600,
-                    fontSize:
-                        widget.snap['description'].length > 100 ? 14 : 16.8,
+                  style: TextStyle(
+                    fontWeight: isDarkMode! ? FontWeight.w500 : FontWeight.w600,
+                    fontSize: widget.snap['description'].toString().length > 170
+                        ? 14
+                        : 16.8,
                     height: 1.5,
                     color: isDarkMode! ? Colors.grey.shade200 : Colors.black,
                   ),
@@ -333,11 +356,11 @@ class _BlogCardState extends State<BlogCard> {
                                         : widget.snap['likes'].length
                                                 .toString() +
                                             ' people liked it',
-                                style: GoogleFonts.openSans(
-                                  fontWeight: FontWeight.w600,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
                                   color: isDarkMode!
                                       ? Colors.grey.shade400
-                                      : Colors.grey,
+                                      : Colors.grey.shade600,
                                   fontSize: 13,
                                 ),
                               ),
@@ -359,12 +382,9 @@ class _BlogCardState extends State<BlogCard> {
                     MaterialButton(
                       onPressed: () {
                         DatabaseMethods().likeBlog(
-                            widget.snap['blogId'], widget.snap['likes']);
-                        sendNotification(
-                          [widget.snap['tokenId']],
-                          Userdetails.userDisplayName + ' has liked your post',
-                          '!nspire',
-                          Userdetails.userProfilePic,
+                          widget.snap['blogId'],
+                          widget.snap['likes'],
+                          widget.snap,
                         );
                       },
                       padding: EdgeInsets.zero,
@@ -390,7 +410,7 @@ class _BlogCardState extends State<BlogCard> {
                                     ? Icons.favorite
                                     : Icons.favorite_outline,
                                 color: isDarkMode!
-                                    ? Colors.blue.shade100
+                                    ? primaryAccentColor
                                     : primaryColor,
                               ),
                             ),
@@ -399,9 +419,9 @@ class _BlogCardState extends State<BlogCard> {
                             ),
                             Text(
                               widget.snap['likes'].length.toString(),
-                              style: GoogleFonts.openSans(
+                              style: TextStyle(
                                 color: isDarkMode!
-                                    ? Colors.blue.shade100
+                                    ? primaryAccentColor
                                     : primaryColor,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -448,11 +468,11 @@ class _BlogCardState extends State<BlogCard> {
                             ),
                             Text(
                               widget.snap['comments'].toString() + ' Comments',
-                              style: GoogleFonts.openSans(
+                              style: TextStyle(
                                 color: isDarkMode!
                                     ? Colors.grey.shade400
                                     : Colors.grey.shade600,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
@@ -469,6 +489,9 @@ class _BlogCardState extends State<BlogCard> {
     );
   }
 
+  @override
+  bool get wantKeepAlive => true;
+
   Widget DoubleLikePreview({final img1, img2}) {
     return Container(
       width: 55,
@@ -480,14 +503,13 @@ class _BlogCardState extends State<BlogCard> {
             radius: 15,
             child: CircleAvatar(
               radius: 13,
-              backgroundColor:
-                  isDarkMode! ? Colors.blue.shade100 : primaryColor,
+              backgroundColor: isDarkMode! ? primaryAccentColor : primaryColor,
               child: CachedNetworkImage(
                 imageUrl: img1,
                 imageBuilder: (context, image) => CircleAvatar(
                   radius: 13,
                   backgroundColor:
-                      isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                      isDarkMode! ? primaryAccentColor : primaryColor,
                   backgroundImage: image,
                 ),
               ),
@@ -501,13 +523,13 @@ class _BlogCardState extends State<BlogCard> {
               child: CircleAvatar(
                 radius: 13,
                 backgroundColor:
-                    isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                    isDarkMode! ? primaryAccentColor : primaryColor,
                 child: CachedNetworkImage(
                   imageUrl: img2,
                   imageBuilder: (context, image) => CircleAvatar(
                     radius: 13,
                     backgroundColor:
-                        isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                        isDarkMode! ? primaryAccentColor : primaryColor,
                     backgroundImage: image,
                   ),
                 ),
@@ -530,14 +552,13 @@ class _BlogCardState extends State<BlogCard> {
             )
           : CircleAvatar(
               radius: 15,
-              backgroundColor:
-                  isDarkMode! ? Colors.blue.shade100 : primaryColor,
+              backgroundColor: isDarkMode! ? primaryAccentColor : primaryColor,
               child: CachedNetworkImage(
                 imageUrl: profileImg,
                 imageBuilder: (context, image) => CircleAvatar(
                   radius: 15,
                   backgroundColor:
-                      isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                      isDarkMode! ? primaryAccentColor : primaryColor,
                   backgroundImage: image,
                 ),
               ),

@@ -1,14 +1,9 @@
 import 'package:blog_app/colors.dart';
-import 'package:blog_app/commentUi.dart';
-import 'package:blog_app/services/database.dart';
 import 'package:blog_app/services/globalVariable.dart';
-import 'package:blog_app/services/like_animation.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:page_route_transition/page_route_transition.dart';
 
 class InspiredUi extends StatefulWidget {
   final snap;

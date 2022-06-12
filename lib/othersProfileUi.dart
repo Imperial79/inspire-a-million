@@ -1,10 +1,8 @@
-import 'dart:ui';
 
 import 'package:blog_app/colors.dart';
 import 'package:blog_app/inspiredUi.dart';
 import 'package:blog_app/motivatorUi.dart';
 import 'package:blog_app/myBlogsUi.dart';
-import 'package:blog_app/services/auth.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/services/globalVariable.dart';
 import 'package:blog_app/services/notification_function.dart';
@@ -12,7 +10,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_route_transition/page_route_transition.dart';
 
@@ -406,6 +403,7 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                                   context,
                                   MyBlogsUi(
                                     snap: ds,
+                                    my: false,
                                   ));
                             },
                           );
@@ -536,9 +534,9 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                                       : 'Following',
                               style: GoogleFonts.openSans(
                                 color: isDarkMode!
-                                    ? Colors.blue.shade100
+                                    ? Colors.blue.shade100.withOpacity(0.5)
                                     : primaryColor.withOpacity(0.5),
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w600,
                                 fontSize: 20,
                               ),
                             ),

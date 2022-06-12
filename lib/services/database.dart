@@ -1,3 +1,4 @@
+import 'package:blog_app/services/notification_function.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -82,7 +83,7 @@ class DatabaseMethods {
     FirebaseFirestore.instance.collection('blogs').doc(blogId).set(blogMap);
   }
 
-  Future<void> likeBlog(String blogId, List likes) async {
+  Future<void> likeBlog(String blogId, List likes, dynamic snap) async {
     try {
       if (likes.contains(Userdetails.uid)) {
         await FirebaseFirestore.instance
@@ -98,6 +99,15 @@ class DatabaseMethods {
             .update({
           'likes': FieldValue.arrayUnion([Userdetails.uid]),
         });
+
+        if (snap['uid'] != Userdetails.uid) {
+          sendNotification(
+            [snap['tokenId']],
+            '"' + snap['description'] + '"',
+            Userdetails.userDisplayName + ' has liked your post',
+            Userdetails.userProfilePic,
+          );
+        }
       }
     } catch (e) {
       print(e.toString());

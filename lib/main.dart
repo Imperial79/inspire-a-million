@@ -1,5 +1,5 @@
 import 'package:blog_app/colors.dart';
-import 'package:blog_app/homeUi.dart';
+import 'package:blog_app/dashboardUI.dart';
 import 'package:blog_app/loginUi.dart';
 import 'package:blog_app/services/auth.dart';
 import 'package:blog_app/services/globalVariable.dart';
@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void configOneSignel() {
-    OneSignal.shared.setAppId(appId); //Uses the appId from OneSignal
+    OneSignal.shared.setAppId(Global.appId); //Uses the appId from OneSignal
   }
 
   @override
@@ -49,20 +49,25 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      title: 'Inspire',
+      title: '!nspire',
       color: primaryAccentColor,
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        scaffoldBackgroundColor: Colors.grey.shade900,
+        brightness: Brightness.dark,
+      ),
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        useMaterial3: true,
+        colorSchemeSeed: primaryColor,
+        brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.white,
-        // textTheme:
-        //     GoogleFonts.josefinSansTextTheme(Theme.of(context).textTheme),
+        textTheme: GoogleFonts.manropeTextTheme(Theme.of(context).textTheme),
       ),
       home: FutureBuilder(
         future: AuthMethods().getCurrentuser(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return HomeUi();
+            return DashboardUI();
           } else {
             return LoginUi();
           }

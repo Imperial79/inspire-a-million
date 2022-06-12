@@ -5,8 +5,6 @@ import 'package:blog_app/services/notification_function.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:page_route_transition/page_route_transition.dart';
@@ -43,7 +41,7 @@ class _CommentUiState extends State<CommentUi> {
       };
       DatabaseMethods().uploadComments(widget.blogId, commentMap);
       sendNotification(
-        followersTokenId,
+        Global.followersTokenId,
         commentController.text,
         Userdetails.userDisplayName + ' has commented',
         Userdetails.userProfilePic,
@@ -78,7 +76,7 @@ class _CommentUiState extends State<CommentUi> {
                         ),
                         Text(
                           'No Comments',
-                          style: GoogleFonts.openSans(
+                          style: GoogleFonts.manrope(
                             fontSize: 20,
                             color: isDarkMode!
                                 ? Colors.grey.shade700
@@ -136,12 +134,13 @@ class _CommentUiState extends State<CommentUi> {
                       },
                       icon: Icon(
                         Icons.keyboard_arrow_down_rounded,
+                        color: isDarkMode! ? Colors.white : Colors.black,
                       ),
                     ),
                   ),
                   Text(
                     'Comments!',
-                    style: GoogleFonts.openSans(
+                    style: GoogleFonts.manrope(
                       color: isDarkMode! ? Colors.blue.shade100 : primaryColor,
                       fontWeight: FontWeight.w700,
                       fontSize: 20,
@@ -186,7 +185,7 @@ class _CommentUiState extends State<CommentUi> {
                         hintText: 'Comment as ' +
                             Userdetails.userDisplayName.split(' ')[0],
                         border: InputBorder.none,
-                        hintStyle: GoogleFonts.openSans(
+                        hintStyle: GoogleFonts.manrope(
                           color: isDarkMode!
                               ? Colors.grey.shade600
                               : Colors.grey.shade400,

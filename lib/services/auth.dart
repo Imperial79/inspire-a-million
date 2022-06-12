@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:page_route_transition/page_route_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../homeUi.dart';
+import '../dashboardUI.dart';
 import 'database.dart';
 import 'globalVariable.dart';
 
@@ -77,7 +76,7 @@ class AuthMethods {
             .doc(userDetails.uid)
             .update(userInfoMap)
             .then((value) {
-          PageRouteTransition.pushReplacement(context, HomeUi());
+          PageRouteTransition.pushReplacement(context, DashboardUI());
         });
       } else {
         print('User does not exist ');
@@ -95,7 +94,7 @@ class AuthMethods {
         databaseMethods
             .addUserInfoToDB(userDetails.uid, userInfoMap)
             .then((value) {
-          PageRouteTransition.pushReplacement(context, HomeUi());
+          PageRouteTransition.pushReplacement(context, DashboardUI());
         });
       }
     });

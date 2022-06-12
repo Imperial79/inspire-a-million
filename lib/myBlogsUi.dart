@@ -15,7 +15,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class MyBlogsUi extends StatefulWidget {
   final snap;
-  MyBlogsUi({this.snap});
+  final my;
+  MyBlogsUi({this.snap, this.my});
 
   @override
   State<MyBlogsUi> createState() => _MyBlogsUiState();
@@ -93,9 +94,9 @@ class _MyBlogsUiState extends State<MyBlogsUi> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Your',
+                          widget.my ? 'Your' : widget.snap['name'] + '\'s',
                           style: GoogleFonts.openSans(
-                            fontSize: 20,
+                            fontSize: 15,
                             color: isDarkMode!
                                 ? Colors.grey.shade300
                                 : Colors.black,
@@ -223,7 +224,10 @@ class _MyBlogsUiState extends State<MyBlogsUi> {
                           },
                         );
                       },
-                      icon: Icon(Icons.more_horiz),
+                      icon: Icon(
+                        Icons.more_horiz,
+                        color: isDarkMode! ? Colors.white : Colors.black,
+                      ),
                     )
                   : Container(),
             ],
@@ -233,8 +237,8 @@ class _MyBlogsUiState extends State<MyBlogsUi> {
           ),
           SelectableLinkify(
             onOpen: (link) async {
-              if (await canLaunch(link.url)) {
-                await launch(link.url);
+              if (await canLaunchUrl(Uri.parse(link.url))) {
+                await launchUrl(Uri.parse(link.url));
               } else {
                 throw 'Could not launch $link';
               }
@@ -244,6 +248,7 @@ class _MyBlogsUiState extends State<MyBlogsUi> {
               fontWeight: FontWeight.w600,
               fontSize: ds['description'].length > 100 ? 14 : 16.8,
               height: 1.5,
+              color: isDarkMode! ? Colors.white : Colors.black,
             ),
           ),
           SizedBox(
@@ -254,7 +259,11 @@ class _MyBlogsUiState extends State<MyBlogsUi> {
             children: [
               MaterialButton(
                 onPressed: () {
-                  DatabaseMethods().likeBlog(ds['blogId'], ds['likes']);
+                  DatabaseMethods().likeBlog(
+                    ds['blogId'],
+                    ds['likes'],
+                    ds,
+                  );
                 },
                 padding: EdgeInsets.zero,
                 shape: RoundedRectangleBorder(

@@ -33,7 +33,7 @@ class _LikesUIState extends State<LikesUI> {
                     style: GoogleFonts.openSans(
                       fontSize: 30,
                       fontWeight: FontWeight.w700,
-                      color: isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                      color: isDarkMode! ? primaryAccentColor : primaryColor,
                     ),
                   ),
                 ],
@@ -91,7 +91,7 @@ class _LikesUIState extends State<LikesUI> {
                             '@' + ds['username'],
                             style: GoogleFonts.openSans(
                               color: isDarkMode!
-                                  ? Colors.blue.shade100
+                                  ? primaryAccentColor
                                   : primaryColor,
                               fontWeight: FontWeight.w600,
                             ),
@@ -191,7 +191,7 @@ class _LikesUIState extends State<LikesUI> {
                   return Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 1.5,
-                      color: isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                      color: isDarkMode! ? primaryAccentColor : primaryColor,
                     ),
                   );
                 },

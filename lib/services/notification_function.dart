@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:blog_app/services/globalVariable.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 Future<Response> sendNotification(List<dynamic> tokenIdList, String contents,
@@ -12,8 +11,8 @@ Future<Response> sendNotification(List<dynamic> tokenIdList, String contents,
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(<String, dynamic>{
-      "app_id":
-          appId, //appId is the App Id that one get from the OneSignal When the application is registered.
+      "app_id": Global
+          .appId, //appId is the App Id that one get from the OneSignal When the application is registered.
 
       "include_player_ids":
           tokenIdList, //tokenIdList Is the List of All the Token Id to to Whom notification must be sent.
