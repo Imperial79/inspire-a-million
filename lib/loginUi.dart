@@ -114,7 +114,7 @@ class _LoginUiState extends State<LoginUi> {
                         elevation: 0,
                         padding: EdgeInsets.symmetric(
                           horizontal: 20,
-                          vertical: 13,
+                          vertical: 10,
                         ),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -138,7 +138,7 @@ class _LoginUiState extends State<LoginUi> {
                                 color:
                                     isDarkMode! ? Colors.black : Colors.white,
                                 fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w900,
                               ),
                             ),
                           ],

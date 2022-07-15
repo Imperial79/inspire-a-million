@@ -139,7 +139,7 @@ class _ExploreUIState extends State<ExploreUI> {
                         },
                       );
                     }
-                    return CustomLoading();
+                    return Center(child: CustomLoading());
                   },
                 ),
               ),

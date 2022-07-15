@@ -60,7 +60,7 @@ class _StatsCardState extends State<StatsCard> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: isDarkMode!
-                ? primaryAccentColor
+                ? primaryAccentColor.withOpacity(0.2)
                 : primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(10),
           ),
@@ -88,7 +88,9 @@ class _StatsCardState extends State<StatsCard> {
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10),
                   ),
-                  color: isDarkMode! ? primaryAccentColor : primaryColor,
+                  color: isDarkMode!
+                      ? primaryAccentColor.withOpacity(0.7)
+                      : primaryColor,
                 ),
                 child: FittedBox(
                   child: Text(
@@ -181,8 +183,9 @@ StreamBuilder<dynamic> BlogList({final isMe, name, uid}) {
                         fontSize: 20,
                         letterSpacing: 10,
                         fontWeight: FontWeight.w900,
-                        color:
-                            isDarkMode! ? Colors.grey.shade400 : primaryColor,
+                        color: isDarkMode!
+                            ? primaryAccentColor.withOpacity(0.8)
+                            : primaryColor,
                       ),
                     ),
                   ],
@@ -266,6 +269,7 @@ class CustomLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       margin: EdgeInsets.only(top: 20),
       height: 30,
       width: 30,

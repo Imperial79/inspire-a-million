@@ -43,14 +43,15 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
 
       DatabaseMethods().uploadBlogs(blogMap, time.toString());
       print('Folowers: ' + Global.followersTokenId.toString());
+      FocusScope.of(context).unfocus();
+      description.clear();
       sendNotification(
         Global.followersTokenId,
         '"' + description.text + '"',
         'A new post from ${Userdetails.userDisplayName}',
         Userdetails.userProfilePic,
       );
-      FocusScope.of(context).unfocus();
-      description.clear();
+
       setState(() {});
     }
   }
@@ -101,9 +102,11 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
                             isDarkMode! ? Colors.blue.shade100 : primaryColor,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
                           fontSize: 16.8,
-                          color:
-                              isDarkMode! ? Colors.grey.shade300 : Colors.black,
+                          color: isDarkMode!
+                              ? Colors.grey.shade300
+                              : Colors.grey.shade700,
                         ),
                         maxLines: 30,
                         decoration: InputDecoration(
@@ -143,7 +146,7 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
                     description.text.isEmpty
                         ? Container()
                         : Text(
-                            'Characters: ' + textCount.toString(),
+                            'Words: ' + textCount.toString(),
                             style: TextStyle(
                               color: isDarkMode!
                                   ? Colors.grey.shade200
@@ -184,11 +187,12 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Post Blog',
+          '!NSPIRE A MILLION !',
           style: TextStyle(
             fontWeight: FontWeight.w700,
-            fontSize: 20,
-            color: isDarkMode! ? Colors.white : Colors.black,
+            fontSize: 16,
+            color: isDarkMode! ? Colors.white : Colors.grey.shade800,
+            letterSpacing: 4,
           ),
         ),
         SizedBox(
@@ -215,7 +219,7 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
               'as ' + Userdetails.userDisplayName,
               style: TextStyle(
                 color:
-                    isDarkMode! ? Colors.grey.shade300 : Colors.grey.shade600,
+                    isDarkMode! ? Colors.grey.shade300 : Colors.grey.shade700,
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
               ),

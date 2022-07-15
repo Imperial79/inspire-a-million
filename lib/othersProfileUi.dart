@@ -264,7 +264,7 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                                     .snapshots(),
                                 builder: (context, snapshot) {
                                   if (!snapshot.hasData) {
-                                    return BuildStatsCard(
+                                    return StatsCard(
                                       count: '0',
                                       label: 'Inspirations',
                                       press: () {},
@@ -343,116 +343,116 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
     );
   }
 
-  Widget BuildStatsCard({final label, final count, final press}) {
-    return Expanded(
-      child: AnimatedContainer(
-        duration: Duration(seconds: 5),
-        width: double.infinity,
-        padding: count == '0'
-            ? EdgeInsets.symmetric(vertical: 15)
-            : EdgeInsets.all(0),
-        decoration: BoxDecoration(
-          color: isDarkMode!
-              ? Colors.grey.withOpacity(0.2)
-              : isDarkMode!
-                  ? primaryAccentColor
-                  : primaryColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: EdgeInsets.only(left: 20, right: 10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: FittedBox(
-                        child: Text(
-                          count,
-                          style: TextStyle(
-                            color: isDarkMode!
-                                ? Colors.grey.shade300
-                                : Colors.grey.shade700,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 45,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 70,
-                    ),
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            FittedBox(
-                              child: Text(
-                                label,
-                                style: TextStyle(
-                                  color: isDarkMode!
-                                      ? primaryAccentColor
-                                      : primaryColor.withOpacity(0.7),
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 30,
-                                ),
-                              ),
-                            ),
-                            FittedBox(
-                              child: Text(
-                                label == 'Inspirations'
-                                    ? 'Blogs'
-                                    : label == 'Inspired'
-                                        ? 'Followers'
-                                        : 'Following',
-                                style: TextStyle(
-                                  color: isDarkMode!
-                                      ? primaryAccentColor.withOpacity(0.7)
-                                      : primaryColor.withOpacity(0.5),
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            count == '0'
-                ? Container()
-                : InkWell(
-                    onTap: press,
-                    child: Container(
-                      margin: EdgeInsets.only(right: 10),
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: isDarkMode! ? primaryAccentColor : primaryColor,
-                      ),
-                      child: RotatedBox(
-                        quarterTurns: 90,
-                        child: SvgPicture.asset(
-                          'lib/assets/icons/back.svg',
-                          color: isDarkMode! ? Colors.black : Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget BuildStatsCard({final label, final count, final press}) {
+  //   return Expanded(
+  //     child: AnimatedContainer(
+  //       duration: Duration(seconds: 5),
+  //       width: double.infinity,
+  //       padding: count == '0'
+  //           ? EdgeInsets.symmetric(vertical: 15)
+  //           : EdgeInsets.all(0),
+  //       decoration: BoxDecoration(
+  //         color: isDarkMode!
+  //             ? Colors.grey.withOpacity(0.2)
+  //             : isDarkMode!
+  //                 ? primaryAccentColor
+  //                 : primaryColor.withOpacity(0.1),
+  //         borderRadius: BorderRadius.circular(10),
+  //       ),
+  //       child: Row(
+  //         children: [
+  //           Expanded(
+  //             flex: 5,
+  //             child: Padding(
+  //               padding: EdgeInsets.only(left: 20, right: 10),
+  //               child: Row(
+  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Align(
+  //                     alignment: Alignment.centerLeft,
+  //                     child: FittedBox(
+  //                       child: Text(
+  //                         count,
+  //                         style: TextStyle(
+  //                           color: isDarkMode!
+  //                               ? Colors.grey.shade300
+  //                               : Colors.grey.shade700,
+  //                           fontWeight: FontWeight.w900,
+  //                           fontSize: 45,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   SizedBox(
+  //                     width: 70,
+  //                   ),
+  //                   Expanded(
+  //                     child: Align(
+  //                       alignment: Alignment.centerRight,
+  //                       child: Column(
+  //                         crossAxisAlignment: CrossAxisAlignment.end,
+  //                         mainAxisAlignment: MainAxisAlignment.center,
+  //                         children: [
+  //                           FittedBox(
+  //                             child: Text(
+  //                               label,
+  //                               style: TextStyle(
+  //                                 color: isDarkMode!
+  //                                     ? primaryAccentColor
+  //                                     : primaryColor.withOpacity(0.7),
+  //                                 fontWeight: FontWeight.w800,
+  //                                 fontSize: 30,
+  //                               ),
+  //                             ),
+  //                           ),
+  //                           FittedBox(
+  //                             child: Text(
+  //                               label == 'Inspirations'
+  //                                   ? 'Blogs'
+  //                                   : label == 'Inspired'
+  //                                       ? 'Followers'
+  //                                       : 'Following',
+  //                               style: TextStyle(
+  //                                 color: isDarkMode!
+  //                                     ? primaryAccentColor.withOpacity(0.7)
+  //                                     : primaryColor.withOpacity(0.5),
+  //                                 fontWeight: FontWeight.w700,
+  //                                 fontSize: 20,
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //           count == '0'
+  //               ? Container()
+  //               : InkWell(
+  //                   onTap: press,
+  //                   child: Container(
+  //                     margin: EdgeInsets.only(right: 10),
+  //                     padding: EdgeInsets.all(10),
+  //                     decoration: BoxDecoration(
+  //                       shape: BoxShape.circle,
+  //                       color: isDarkMode! ? primaryAccentColor : primaryColor,
+  //                     ),
+  //                     child: RotatedBox(
+  //                       quarterTurns: 90,
+  //                       child: SvgPicture.asset(
+  //                         'lib/assets/icons/back.svg',
+  //                         color: isDarkMode! ? Colors.black : Colors.white,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }

@@ -102,7 +102,9 @@ class _BlogCardState extends State<BlogCard> {
         padding: EdgeInsets.all(20),
         width: double.infinity,
         decoration: BoxDecoration(
-          color: isDarkMode! ? Colors.grey.shade800 : Colors.grey.shade100,
+          color: isDarkMode!
+              ? Colors.grey.shade800.withOpacity(0.5)
+              : Colors.grey.shade100,
           borderRadius: BorderRadius.circular(0),
         ),
         child: Column(
@@ -485,7 +487,8 @@ class _BlogCardState extends State<BlogCard> {
                             color: isDarkMode!
                                 ? Colors.grey.shade400
                                 : Colors.grey.shade600,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1,
                           ),
                         ),
                       ],
@@ -517,7 +520,9 @@ class _BlogCardState extends State<BlogCard> {
                     .then((value) => setState(() {}));
             },
             child: CircleAvatar(
-              backgroundColor: isDarkMode! ? Colors.black : Colors.white,
+              backgroundColor: isDarkMode!
+                  ? Colors.grey.shade800.withOpacity(0.2)
+                  : Colors.grey.shade100,
               radius: 15,
               child: CircleAvatar(
                 radius: 13,
@@ -605,12 +610,16 @@ class _BlogCardState extends State<BlogCard> {
 
   Widget SingleLikePreview({final profileImg}) {
     return CircleAvatar(
-      backgroundColor: isDarkMode! ? Colors.black : Colors.white,
+      backgroundColor: isDarkMode!
+          ? Colors.grey.shade800.withOpacity(0.2)
+          : Colors.grey.shade100,
       radius: 17,
       child: profileImg == ''
           ? CircleAvatar(
               radius: 15,
-              backgroundColor: Colors.white,
+              backgroundColor: isDarkMode!
+                  ? Colors.grey.shade800.withOpacity(0.2)
+                  : Colors.grey.shade100,
             )
           : CircleAvatar(
               radius: 15,

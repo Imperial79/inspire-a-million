@@ -269,8 +269,9 @@ class _SearchUiState extends State<SearchUi> {
             fontWeight: FontWeight.w600,
           ),
         ),
-        tileColor:
-            isDarkMode! ? Colors.grey.withOpacity(0.5) : Colors.grey.shade100,
+        tileColor: isDarkMode!
+            ? Colors.grey.shade800.withOpacity(0.6)
+            : Colors.grey.shade100,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
           // side: BorderSide(
