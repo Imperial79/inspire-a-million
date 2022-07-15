@@ -20,9 +20,9 @@
 <h3 align="center">Screenshots</h3>
 
 <div align="center" style="width:100%;display:flex;justify-content:space-between;">
-<img width="32%" src="https://user-images.githubusercontent.com/79704324/174258849-6ec25e24-f07e-459e-9e8f-1f3184d107ef.jpeg" align="center" alt="screenshot" />
-<img width="32%" src="https://user-images.githubusercontent.com/79704324/174257163-b9f87b6f-b344-40b8-a622-abbf23b2e8e9.jpg" align="center" alt="screenshot" />
-<img width="32%" src="https://user-images.githubusercontent.com/79704324/174257473-0ac61c6d-092f-44b7-927a-873351b112b1.jpg" align="center" alt="screenshot" />
+<img width="32%" src="gs://blogged---blog-app.appspot.com/Screenshot_20220715-210140_!nspire.png" align="center" alt="screenshot" />
+<img width="32%" src="gs://blogged---blog-app.appspot.com/Screenshot_20220715-210618_!nspire.png" align="center" alt="screenshot" />
+<img width="32%" src="gs://blogged---blog-app.appspot.com/Screenshot_20220715-210633_!nspire.png" align="center" alt="screenshot" />
 </div>
 
 ---
