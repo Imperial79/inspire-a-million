@@ -6,11 +6,13 @@ import 'package:blog_app/othersProfileUi.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/services/globalVariable.dart';
 import 'package:blog_app/services/like_animation.dart';
+import 'package:blog_app/utilities/utility.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:page_route_transition/page_route_transition.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -26,71 +28,67 @@ class BlogCard extends StatefulWidget {
 }
 
 class _BlogCardState extends State<BlogCard> {
-  Widget Alert(final blogId) {
-    return BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-      child: AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        backgroundColor: isDarkMode! ? Colors.grey.shade800 : Colors.white,
-        elevation: 0,
-        title: Text(
-          'Delete Blog',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: isDarkMode! ? Colors.white : Colors.black,
-          ),
-        ),
-        content: Text(
-          'Do You want to delete this blog ?',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: isDarkMode! ? Colors.white : Colors.black,
-          ),
-        ),
-        actionsAlignment: MainAxisAlignment.spaceBetween,
-        actions: [
-          MaterialButton(
-            onPressed: () {
-              Navigator.pop(context);
-              setState(() {});
-            },
-            child: Text(
-              'Cancel',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: isDarkMode! ? primaryAccentColor : primaryColor,
-              ),
-            ),
-          ),
-          MaterialButton(
-            onPressed: () {
-              deletePost(blogId);
-              Navigator.pop(context);
-              setState(() {});
-            },
-            color: Colors.red,
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
-            ),
-            child: Text(
-              'Delete',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  deletePost(final blogId) async {
-    await DatabaseMethods().deletePostDetails(widget.snap['blogId']);
-  }
+  // Widget Alert(final blogId) {
+  //   return BackdropFilter(
+  //     filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+  //     child: AlertDialog(
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(20),
+  //       ),
+  //       backgroundColor: isDarkMode! ? Colors.grey.shade800 : Colors.white,
+  //       elevation: 0,
+  //       title: Text(
+  //         'Delete Blog',
+  //         style: TextStyle(
+  //           fontWeight: FontWeight.w600,
+  //           color: isDarkMode! ? Colors.white : Colors.black,
+  //         ),
+  //       ),
+  //       content: Text(
+  //         'Do You want to delete this blog ?',
+  //         style: TextStyle(
+  //           fontWeight: FontWeight.w600,
+  //           color: isDarkMode! ? Colors.white : Colors.black,
+  //         ),
+  //       ),
+  //       actionsAlignment: MainAxisAlignment.spaceBetween,
+  //       actions: [
+  //         MaterialButton(
+  //           onPressed: () {
+  //             Navigator.pop(context);
+  //             setState(() {});
+  //           },
+  //           child: Text(
+  //             'Cancel',
+  //             style: TextStyle(
+  //               fontWeight: FontWeight.w600,
+  //               color: isDarkMode! ? primaryAccentColor : primaryColor,
+  //             ),
+  //           ),
+  //         ),
+  //         MaterialButton(
+  //           onPressed: () {
+  //             deletePost(blogId);
+  //             Navigator.pop(context);
+  //             setState(() {});
+  //           },
+  //           color: Colors.red,
+  //           elevation: 0,
+  //           shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(50),
+  //           ),
+  //           child: Text(
+  //             'Delete',
+  //             style: TextStyle(
+  //               fontWeight: FontWeight.w700,
+  //               color: Colors.white,
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -198,10 +196,10 @@ class _BlogCardState extends State<BlogCard> {
                                       Userdetails.userDisplayName
                                   ? 'You'
                                   : widget.snap['userDisplayName'],
-                              style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                letterSpacing: 1,
-                                fontSize: 16,
+                              style: GoogleFonts.openSans(
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 0.5,
+                                fontSize: 14,
                                 color: isDarkMode!
                                     ? Colors.white
                                     : Colors.grey.shade800,
@@ -221,7 +219,7 @@ class _BlogCardState extends State<BlogCard> {
                                 widget.snap['time'].toDate(),
                                 locale: 'en_short',
                               ) +
-                              ' ago • ' +
+                              ' • ' +
                               DateFormat.yMMMd()
                                   .format(widget.snap['time'].toDate()),
                           style: TextStyle(
@@ -238,14 +236,35 @@ class _BlogCardState extends State<BlogCard> {
                   widget.snap['uid'] == Userdetails.uid
                       ? IconButton(
                           onPressed: () {
-                            showDialog(
+                            // showDialog(
+                            //   context: context,
+                            //   builder: (context) {
+                            //     return StatefulBuilder(
+                            //       builder: (context, setState) {
+                            //         return Alert(widget.snap['blogId']);
+                            //       },
+                            //     );
+                            //   },
+                            // );
+
+                            showModalBottomSheet(
                               context: context,
+                              enableDrag: true,
+                              constraints: BoxConstraints(
+                                maxHeight: 200,
+                                minHeight: 100,
+                              ),
+                              backgroundColor: isDarkMode!
+                                  ? Colors.grey.shade800
+                                  : Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                ),
+                              ),
                               builder: (context) {
-                                return StatefulBuilder(
-                                  builder: (context, setState) {
-                                    return Alert(widget.snap['blogId']);
-                                  },
-                                );
+                                return ShowModal(widget.snap['blogId']);
                               },
                             );
                           },

@@ -1,6 +1,5 @@
 import 'package:blog_app/Home%20Screen/exploreUI.dart';
 import 'package:blog_app/colors.dart';
-import 'package:blog_app/Profile_Screen/allBlogsUI.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/services/globalVariable.dart';
 import 'package:blog_app/services/notification_function.dart';
@@ -274,16 +273,7 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                                   return StatsCard(
                                     count: snapshot.data.docs.length.toString(),
                                     label: 'Inspirations',
-                                    press: () {
-                                      PageRouteTransition.effect =
-                                          TransitionEffect.topToBottom;
-                                      PageRouteTransition.push(
-                                          context,
-                                          MyBlogsUi(
-                                            snap: ds,
-                                            my: false,
-                                          ));
-                                    },
+                                    press: () {},
                                   );
                                 },
                               ),

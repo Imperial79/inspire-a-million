@@ -72,6 +72,7 @@ class _MyAppState extends State<MyApp> {
         colorSchemeSeed: primaryColor,
         brightness: Brightness.light,
         scaffoldBackgroundColor: scaffoldLightColor,
+        // fontFamily: 'Product',
         textTheme: GoogleFonts.manropeTextTheme(Theme.of(context).textTheme),
         // pageTransitionsTheme: const PageTransitionsTheme(
         //   builders: {

@@ -25,197 +25,195 @@ class _SearchUiState extends State<SearchUi> {
     return Scaffold(
       backgroundColor: isDarkMode! ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: isDarkMode!
-                          ? Colors.grey.shade400
-                          : Colors.grey.shade700,
-                    ),
-                  ),
-                  Text(
-                    'SEARCH',
-                    style: GoogleFonts.manrope(
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 20,
-                      fontSize: 23,
-                      color: isDarkMode!
-                          ? Colors.grey.shade400
-                          : Colors.grey.shade700,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 8.0, top: 6),
-                    child: Text(
-                      'other users to motivate \'em and make more friends to !nspire - A Million',
-                      style: GoogleFonts.manrope(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
-                        wordSpacing: 1,
-                        letterSpacing: 1,
-                        color: isDarkMode! ? Colors.grey.shade400 : Colors.grey,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                child: Row(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Flexible(
-                      child: TextField(
-                        autofocus: true,
-                        enableSuggestions: true,
-                        enableIMEPersonalizedLearning: true,
-                        style: TextStyle(
-                          color: isDarkMode! ? Colors.white : Colors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                        ),
-                        controller: searchController,
-                        cursorColor:
-                            isDarkMode! ? Colors.blue.shade100 : primaryColor,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                          border: InputBorder.none,
-                          hintText: '  Search other Motivators ...',
-                          hintStyle: GoogleFonts.manrope(
-                            color: Colors.grey,
-                            fontSize: 15,
-                            letterSpacing: 1,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            isShowUsers = true;
-                          });
-                          if (value.isEmpty) {
-                            setState(() {
-                              isShowUsers = false;
-                            });
-                          }
-                        },
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: isDarkMode!
+                            ? Colors.grey.shade400
+                            : Colors.grey.shade700,
                       ),
                     ),
-                    searchController.text.isEmpty
-                        ? Container()
-                        : GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                searchController.clear();
-                                isShowUsers = false;
-                              });
-                            },
-                            child: CircleAvatar(
-                              backgroundColor: isDarkMode!
-                                  ? Colors.blueGrey.shade600
-                                  : primaryColor,
-                              radius: 13,
-                              child: Icon(
-                                Icons.close,
-                                size: 13,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                    SizedBox(
-                      width: 10,
+                    Text(
+                      'SEARCH',
+                      style: GoogleFonts.manrope(
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 20,
+                        fontSize: 23,
+                        color: isDarkMode!
+                            ? Colors.grey.shade400
+                            : Colors.grey.shade700,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 8.0, top: 6),
+                      child: Text(
+                        'other users to motivate \'em and make more friends to !nspire - A Million',
+                        style: GoogleFonts.manrope(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
+                          wordSpacing: 1,
+                          letterSpacing: 1,
+                          color:
+                              isDarkMode! ? Colors.grey.shade400 : Colors.grey,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    isShowUsers
-                        ? FutureBuilder<dynamic>(
-                            future: FirebaseFirestore.instance
-                                .collection('users')
-                                .where('uid', isNotEqualTo: Userdetails.uid)
-                                .get(),
-                            builder: (context, snapshot) {
-                              if (!snapshot.hasData) {
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    color: isDarkMode!
-                                        ? Colors.blue.shade100
-                                        : primaryColor,
-                                    strokeWidth: 1.6,
-                                  ),
-                                );
-                              }
-                              return ListView.builder(
-                                padding: EdgeInsets.symmetric(vertical: 20),
-                                itemCount: snapshot.data.docs.length,
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  DocumentSnapshot ds =
-                                      snapshot.data.docs[index];
-                                  if (ds['name']
-                                      .toString()
-                                      .toLowerCase()
-                                      .contains(searchController.text
-                                          .trim()
-                                          .toLowerCase())) {
-                                    return BuildListTile(ds);
-                                  } else if (ds['username']
-                                      .toString()
-                                      .contains(searchController.text.trim())) {
-                                    return BuildListTile(ds);
-                                  } else if (ds['email']
-                                      .toString()
-                                      .contains(searchController.text.trim())) {
-                                    return BuildListTile(ds);
-                                  } else {
-                                    return Container();
-                                  }
-                                },
-                              );
-                            },
-                          )
-                        : Padding(
-                            padding: EdgeInsets.only(top: 100),
-                            child: Center(
-                              child: Text(
-                                '!nspire',
-                                style: GoogleFonts.josefinSans(
-                                  fontSize: 40,
-                                  color: isDarkMode!
-                                      ? Colors.white.withOpacity(0.5)
-                                      : Colors.grey.withOpacity(0.5),
-                                  fontWeight: FontWeight.w600,
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: TextField(
+                          autofocus: true,
+                          enableSuggestions: true,
+                          enableIMEPersonalizedLearning: true,
+                          style: TextStyle(
+                            color: isDarkMode! ? Colors.white : Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                          controller: searchController,
+                          cursorColor:
+                              isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                          decoration: InputDecoration(
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 15),
+                            border: InputBorder.none,
+                            hintText: '  Search other Motivators ...',
+                            hintStyle: GoogleFonts.manrope(
+                              color: Colors.grey,
+                              fontSize: 15,
+                              letterSpacing: 1,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              isShowUsers = true;
+                            });
+                            if (value.isEmpty) {
+                              setState(() {
+                                isShowUsers = false;
+                              });
+                            }
+                          },
+                        ),
+                      ),
+                      searchController.text.isEmpty
+                          ? Container()
+                          : GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  searchController.clear();
+                                  isShowUsers = false;
+                                });
+                              },
+                              child: CircleAvatar(
+                                backgroundColor: isDarkMode!
+                                    ? Colors.blueGrey.shade600
+                                    : primaryColor,
+                                radius: 13,
+                                child: Icon(
+                                  Icons.close,
+                                  size: 13,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
-                          ),
-                  ],
+                      SizedBox(
+                        width: 10,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+              Column(
+                children: [
+                  isShowUsers
+                      ? FutureBuilder<dynamic>(
+                          future: FirebaseFirestore.instance
+                              .collection('users')
+                              .where('uid', isNotEqualTo: Userdetails.uid)
+                              .get(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  color: isDarkMode!
+                                      ? Colors.blue.shade100
+                                      : primaryColor,
+                                  strokeWidth: 1.6,
+                                ),
+                              );
+                            }
+                            return ListView.builder(
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                              itemCount: snapshot.data.docs.length,
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                DocumentSnapshot ds = snapshot.data.docs[index];
+                                if (ds['name']
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(searchController.text
+                                        .trim()
+                                        .toLowerCase())) {
+                                  return BuildListTile(ds);
+                                } else if (ds['username']
+                                    .toString()
+                                    .contains(searchController.text.trim())) {
+                                  return BuildListTile(ds);
+                                } else if (ds['email']
+                                    .toString()
+                                    .contains(searchController.text.trim())) {
+                                  return BuildListTile(ds);
+                                } else {
+                                  return Container();
+                                }
+                              },
+                            );
+                          },
+                        )
+                      : Padding(
+                          padding: EdgeInsets.only(top: 100),
+                          child: Center(
+                            child: Text(
+                              '!nspire',
+                              style: GoogleFonts.josefinSans(
+                                fontSize: 40,
+                                color: isDarkMode!
+                                    ? Colors.white.withOpacity(0.5)
+                                    : Colors.grey.withOpacity(0.5),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
