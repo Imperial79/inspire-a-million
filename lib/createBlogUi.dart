@@ -1,10 +1,11 @@
 import 'dart:ui';
 
-import 'package:blog_app/colors.dart';
+import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/services/globalVariable.dart';
-import 'package:blog_app/services/notification_function.dart';
+import 'package:blog_app/utilities/notification_function.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -15,23 +16,43 @@ class CreateBlogUi extends StatefulWidget {
   State<CreateBlogUi> createState() => _CreateBlogUiState();
 }
 
-class _CreateBlogUiState extends State<CreateBlogUi> {
+class _CreateBlogUiState extends State<CreateBlogUi>
+    with AutomaticKeepAliveClientMixin {
   final description = TextEditingController();
   int textCount = 0;
 
   @override
-  void dispose() {
-    description.dispose();
-    super.dispose();
+  bool get wantKeepAlive => true;
+
+  List extractTags(String content) {
+    var contentArr = content.split(' ');
+
+    List tags = [];
+    for (int i = 0; i < contentArr.length; i++) {
+      if (contentArr[i].toString().startsWith('#')) {
+        tags.add(contentArr[i]);
+      }
+    }
+    // print('tags ---> ' + tags.toString());
+
+    FirebaseFirestore.instance.collection('tags').doc('tags').update({
+      'tags': FieldValue.arrayUnion(tags),
+    });
+    return tags;
   }
 
-  uploadBlog() {
-    if (description.text.isNotEmpty) {
-      textCount = 0;
+  uploadBlog({required String content, required BuildContext context}) {
+    if (content.isNotEmpty) {
+      List _extarctedTags = [];
+      _extarctedTags = extractTags(content);
+      // print('Extarcted tags = ' + _extarctedTags.toString());
+
       var time = DateTime.now();
+
+      // Creating a Map to upload in DB
       Map<String, dynamic> blogMap = {
         'userDisplayName': Userdetails.userDisplayName,
-        'description': description.text,
+        'description': content.replaceAll(':', '/:'),
         'time': time,
         'blogId': time.toString(),
         'uid': Userdetails.uid,
@@ -39,21 +60,30 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
         'likes': [],
         'comments': 0,
         'tokenId': Userdetails.myTokenId,
+        'tags': _extarctedTags,
       };
 
       DatabaseMethods().uploadBlogs(blogMap, time.toString());
-      print('Folowers: ' + Global.followersTokenId.toString());
-      FocusScope.of(context).unfocus();
-      description.clear();
-      sendNotification(
-        Global.followersTokenId,
-        '"' + description.text + '"',
-        'A new post from ${Userdetails.userDisplayName}',
-        Userdetails.userProfilePic,
-      );
+      // print('Folowers: ' + Global.followersTokenId.toString());
 
-      setState(() {});
+      FocusScope.of(context)
+          .unfocus(); //unfocussing the keyboard after uploading the blog
+
+      description.clear(); // clearing the text field
+
+      sendNotification(
+        tokenIdList: Global.followersTokenId,
+        contents: '"' + content + '"',
+        heading: 'A new post from ${Userdetails.userDisplayName}',
+        largeIconUrl: Userdetails.userProfilePic,
+      );
     }
+  }
+
+  @override
+  void dispose() {
+    description.dispose();
+    super.dispose();
   }
 
   @override
@@ -64,6 +94,7 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarIconBrightness:
               isDarkMode! ? Brightness.light : Brightness.dark,
@@ -72,7 +103,7 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+          padding: EdgeInsets.only(bottom: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -80,99 +111,123 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
                 height: 20,
               ),
               Expanded(
-                flex: 10,
-                child: ClipRRect(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(
-                      sigmaX: 5,
-                      sigmaY: 5,
+                // flex: 10,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: isDarkMode!
+                        ? Colors.black.withOpacity(0.2)
+                        : Colors.white.withOpacity(0.5),
+                  ),
+                  child: TextField(
+                    controller: description,
+                    cursorColor:
+                        isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 1,
+                      fontSize: 16.8,
+                      color: isDarkMode!
+                          ? Colors.grey.shade300
+                          : Colors.grey.shade700,
                     ),
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: isDarkMode!
-                            ? Colors.black.withOpacity(0.2)
-                            : Colors.white.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(12),
+                    maxLines: 30,
+                    decoration: InputDecoration(
+                      hintText: ' Let\'s Inspire ...',
+                      hintStyle: TextStyle(
+                        letterSpacing: 1,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.8,
+                        color: isDarkMode! ? Colors.grey.shade600 : Colors.grey,
+                        height: 1.5,
                       ),
-                      child: TextField(
-                        controller: description,
-                        cursorColor:
-                            isDarkMode! ? Colors.blue.shade100 : primaryColor,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1,
-                          fontSize: 16.8,
-                          color: isDarkMode!
-                              ? Colors.grey.shade300
-                              : Colors.grey.shade700,
-                        ),
-                        maxLines: 30,
-                        decoration: InputDecoration(
-                          hintText: 'Let\'s Inspire ...',
-                          hintStyle: TextStyle(
-                            letterSpacing: 2,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16.8,
-                            color: isDarkMode!
-                                ? Colors.grey.shade600
-                                : Colors.grey,
-                            height: 1.5,
-                          ),
-                          border: InputBorder.none,
-                        ),
-                        onChanged: (value) {
-                          if (value.length == 0) {
-                            textCount = 0;
-                            setState(() {});
-                          }
-                          textCount = value.split(' ').length;
-                          setState(() {});
-                        },
-                      ),
+                      border: InputBorder.none,
                     ),
+                    onChanged: (value) {
+                      if (value.length == 0) {
+                        textCount = 0;
+                        setState(() {});
+                      }
+                      textCount = value.split(' ').length;
+                      setState(() {});
+                    },
                   ),
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
               Align(
                 alignment: Alignment.bottomRight,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    description.text.isEmpty
-                        ? Container()
-                        : Text(
-                            'Words: ' + textCount.toString(),
-                            style: TextStyle(
-                              color: isDarkMode!
-                                  ? Colors.grey.shade200
-                                  : Colors.grey.shade700,
-                              fontWeight: FontWeight.w800,
-                            ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Visibility(
+                        visible: description.text.isNotEmpty,
+                        child: Text(
+                          'Words: ' + textCount.toString(),
+                          style: TextStyle(
+                            color: isDarkMode!
+                                ? Colors.grey.shade200
+                                : Colors.grey.shade700,
+                            fontWeight: FontWeight.w800,
                           ),
-                    MaterialButton(
-                      onPressed: () {
-                        uploadBlog();
-                      },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      color: isDarkMode! ? primaryAccentColor : primaryColor,
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      elevation: 0,
-                      child: Text(
-                        '!nspire',
-                        style: TextStyle(
-                          color: isDarkMode! ? primaryColor : Colors.white,
-                          fontWeight: FontWeight.w700,
                         ),
                       ),
-                    ),
-                  ],
+                      InkWell(
+                        onTap: () {
+                          if (description.text.isNotEmpty) {
+                            uploadBlog(
+                                context: context, content: description.text);
+                          }
+                        },
+                        borderRadius: BorderRadius.circular(50),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          decoration: BoxDecoration(
+                            color:
+                                isDarkMode! ? primaryAccentColor : primaryColor,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Text(
+                            '!nspire',
+                            style: TextStyle(
+                              letterSpacing: 1,
+                              fontSize: 16,
+                              color: isDarkMode! ? Colors.black : Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      // MaterialButton(
+                      //   onPressed: () {
+                      //     if (description.text.isNotEmpty) {
+                      //       uploadBlog(
+                      //           context: context, content: description.text);
+                      //     }
+                      //   },
+                      //   shape: RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.circular(50),
+                      //   ),
+                      //   color: isDarkMode! ? primaryAccentColor : primaryColor,
+                      //   padding: EdgeInsets.symmetric(vertical: 12),
+                      //   elevation: 0,
+                      //   child: Text(
+                      //     '!nspire',
+                      //     style: TextStyle(
+                      //       letterSpacing: 0.5,
+                      //       fontSize: 20,
+                      //       color: isDarkMode! ? primaryColor : Colors.white,
+                      //       fontWeight: FontWeight.w500,
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -182,12 +237,15 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
     );
   }
 
-  Column ThisHeader() {
+  Widget ThisHeader() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        SizedBox(
+          height: 10,
+        ),
         Text(
-          '!NSPIRE A MILLION !',
+          '!NSPIRE A MILLION!',
           style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 16,
@@ -199,7 +257,8 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
           height: 6,
         ),
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
               backgroundColor: Colors.grey.shade100,
@@ -216,11 +275,11 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
               width: 10,
             ),
             Text(
-              'as ' + Userdetails.userDisplayName,
+              Userdetails.userDisplayName,
               style: TextStyle(
                 color:
                     isDarkMode! ? Colors.grey.shade300 : Colors.grey.shade700,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w400,
                 fontSize: 16,
               ),
             ),

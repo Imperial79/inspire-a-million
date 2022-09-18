@@ -1,16 +1,12 @@
-import 'dart:ui';
-import 'package:blog_app/colors.dart';
-import 'package:blog_app/loginUi.dart';
-import 'package:blog_app/services/auth.dart';
+import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/services/globalVariable.dart';
+import 'package:blog_app/Profile_Screen/settingsUI.dart';
+import 'package:blog_app/utilities/utility.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:page_route_transition/page_route_transition.dart';
-
-import '../blogCard.dart';
 import 'inspiredUi.dart';
 import 'motivatorUi.dart';
 
@@ -21,8 +17,13 @@ class MyProfileUi extends StatefulWidget {
   State<MyProfileUi> createState() => _MyProfileUiState();
 }
 
-class _MyProfileUiState extends State<MyProfileUi> {
+class _MyProfileUiState extends State<MyProfileUi>
+    with AutomaticKeepAliveClientMixin {
   final auth = FirebaseAuth.instance;
+
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
     var brightness = MediaQuery.of(context).platformBrightness;
@@ -30,9 +31,14 @@ class _MyProfileUiState extends State<MyProfileUi> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SafeArea(
+        top: false,
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                height: 30,
+              ),
               StreamBuilder<dynamic>(
                 stream: FirebaseFirestore.instance
                     .collection('users')
@@ -44,38 +50,49 @@ class _MyProfileUiState extends State<MyProfileUi> {
                     return Padding(
                       padding: EdgeInsets.all(20),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CircleAvatar(
-                            radius: 45,
-                            backgroundColor: isDarkMode!
-                                ? Colors.blue.shade400
-                                : isDarkMode!
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircleAvatar(
+                                radius: 45,
+                                backgroundColor: isDarkMode!
                                     ? primaryAccentColor
                                     : primaryColor,
-                            child: CircleAvatar(
-                              radius: 43,
-                              backgroundColor: isDarkMode!
-                                  ? Colors.black
-                                  : Colors.grey.shade200,
-                              child: CircleAvatar(
-                                backgroundColor: isDarkMode!
-                                    ? Colors.transparent
-                                    : Colors.grey.shade100,
-                                radius: 39,
-                                child: Hero(
-                                  tag: ds['imgUrl'],
-                                  child: CachedNetworkImage(
-                                    imageUrl: ds['imgUrl'],
-                                    imageBuilder: (context, image) =>
-                                        CircleAvatar(
-                                      radius: 39,
-                                      backgroundImage: image,
+                                child: CircleAvatar(
+                                  radius: 43,
+                                  backgroundColor: isDarkMode!
+                                      ? Colors.black
+                                      : Colors.grey.shade200,
+                                  child: CircleAvatar(
+                                    backgroundColor: isDarkMode!
+                                        ? Colors.transparent
+                                        : Colors.grey.shade100,
+                                    radius: 39,
+                                    child: CachedNetworkImage(
+                                      imageUrl: ds['imgUrl'],
+                                      imageBuilder: (context, image) =>
+                                          CircleAvatar(
+                                        radius: 39,
+                                        backgroundImage: image,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
+                              IconButton(
+                                onPressed: () {
+                                  NavPush(context, SettingsUI());
+                                },
+                                icon: SvgPicture.asset(
+                                  'lib/assets/icons/settings.svg',
+                                  color:
+                                      isDarkMode! ? Colors.white : Colors.black,
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(
                             height: 20,
@@ -85,32 +102,7 @@ class _MyProfileUiState extends State<MyProfileUi> {
                             style: TextStyle(
                               color: isDarkMode! ? Colors.white : Colors.black,
                               fontSize: 30,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            maxLines: 2,
-                          ),
-                          Text(
-                            '@' + ds['username'],
-                            style: TextStyle(
-                              color: isDarkMode!
-                                  ? primaryAccentColor
-                                  : primaryColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            maxLines: 2,
-                          ),
-                          SizedBox(
-                            height: 7,
-                          ),
-                          Text(
-                            ds['email'],
-                            style: TextStyle(
-                              color: isDarkMode!
-                                  ? Colors.grey.shade300
-                                  : Colors.grey.shade700,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w500,
                             ),
                             maxLines: 2,
                           ),
@@ -118,6 +110,78 @@ class _MyProfileUiState extends State<MyProfileUi> {
                             height: 20,
                           ),
                           Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 14,
+                                backgroundColor: isDarkMode!
+                                    ? primaryAccentColor
+                                    : primaryColor,
+                                child: Text(
+                                  '@',
+                                  style: TextStyle(
+                                    color: !isDarkMode!
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                ds['username'],
+                                style: TextStyle(
+                                  color: isDarkMode!
+                                      ? primaryAccentColor
+                                      : primaryColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                maxLines: 2,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 7,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: isDarkMode!
+                                    ? primaryAccentColor
+                                    : primaryColor,
+                                radius: 14,
+                                child: Icon(
+                                  Icons.mail,
+                                  color:
+                                      isDarkMode! ? Colors.black : Colors.white,
+                                  size: 15,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                ds['email'],
+                                style: TextStyle(
+                                  color: isDarkMode!
+                                      ? Colors.grey.shade300
+                                      : Colors.grey.shade700,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                maxLines: 2,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               StreamBuilder<dynamic>(
                                 stream: FirebaseFirestore.instance
@@ -145,9 +209,7 @@ class _MyProfileUiState extends State<MyProfileUi> {
                               ),
                               StatsCard(
                                 press: () {
-                                  PageRouteTransition.effect =
-                                      TransitionEffect.topToBottom;
-                                  PageRouteTransition.push(
+                                  NavPush(
                                       context,
                                       InspiredUi(
                                         snap: ds,
@@ -162,9 +224,7 @@ class _MyProfileUiState extends State<MyProfileUi> {
                               ),
                               StatsCard(
                                 press: () {
-                                  PageRouteTransition.effect =
-                                      TransitionEffect.topToBottom;
-                                  PageRouteTransition.push(
+                                  NavPush(
                                     context,
                                     MotivatorUi(
                                       snap: ds,
@@ -224,7 +284,7 @@ class _MyProfileUiState extends State<MyProfileUi> {
             child: Text(
               label,
               style: TextStyle(
-                fontWeight: FontWeight.w900,
+                fontWeight: FontWeight.w500,
                 color: textColor,
                 fontSize: 20,
                 fontFamily: 'default',

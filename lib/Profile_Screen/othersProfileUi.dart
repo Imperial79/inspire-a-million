@@ -1,25 +1,22 @@
 import 'package:blog_app/Home%20Screen/exploreUI.dart';
-import 'package:blog_app/colors.dart';
+import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/services/globalVariable.dart';
-import 'package:blog_app/services/notification_function.dart';
+import 'package:blog_app/utilities/notification_function.dart';
+import 'package:blog_app/utilities/utility.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:page_route_transition/page_route_transition.dart';
 
-import 'Profile_Screen/inspiredUi.dart';
-import 'Profile_Screen/motivatorUi.dart';
+import 'inspiredUi.dart';
+import 'motivatorUi.dart';
 
 class OthersProfileUi extends StatefulWidget {
-  final uid, heroTag;
+  final uid;
   OthersProfileUi({
     required this.uid,
-    this.heroTag,
   });
 
   @override
@@ -44,15 +41,13 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
     await DatabaseMethods().getUsersIAmFollowing().then((value) {
       final users = value;
       followingUsers = users!.data()!['following'];
-      print('Following => ' + followingUsers.toString());
       followers = users!.data()!['followers'];
 
       if (!followingUsers.contains(Userdetails.uid)) {
         followingUsers.add(FirebaseAuth.instance.currentUser!.uid);
-        print('My UID => ' + Userdetails.uid);
       }
     });
-    return print('Following Users [' +
+    return print('Updated Following Users [' +
         followingUsers.length.toString() +
         '] ---------> ' +
         followingUsers.toString());
@@ -139,13 +134,13 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                                 'following': FieldValue.arrayRemove([ds['uid']])
                               });
 
-                              sendNotification(
-                                [ds['tokenId']],
-                                Userdetails.userDisplayName +
-                                    ' has unfollowed you!',
-                                'Inspire',
-                                Userdetails.userProfilePic,
-                              );
+                              // sendNotification(
+                              //   tokenIdList: [ds['tokenId']],
+                              //   contents: Userdetails.userDisplayName +
+                              //       ' has unfollowed you!',
+                              //   heading: 'Inspire',
+                              //   largeIconUrl: Userdetails.userProfilePic,
+                              // );
                             } else {
                               await FirebaseFirestore.instance
                                   .collection('users')
@@ -163,11 +158,11 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                               });
 
                               sendNotification(
-                                [ds['tokenId']],
-                                Userdetails.userDisplayName +
+                                tokenIdList: [ds['tokenId']],
+                                contents: Userdetails.userDisplayName +
                                     ' has followed you!',
-                                'Inspire',
-                                Userdetails.userProfilePic,
+                                heading: 'Inspire',
+                                largeIconUrl: Userdetails.userProfilePic,
                               );
                             }
 
@@ -284,9 +279,7 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                                 count: ds['followers'].length.toString(),
                                 label: 'Inspired',
                                 press: () {
-                                  PageRouteTransition.effect =
-                                      TransitionEffect.topToBottom;
-                                  PageRouteTransition.push(
+                                  NavPush(
                                       context,
                                       InspiredUi(
                                         snap: ds,
@@ -301,9 +294,7 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                                 count: ds['following'].length.toString(),
                                 label: 'Motivators',
                                 press: () {
-                                  PageRouteTransition.effect =
-                                      TransitionEffect.topToBottom;
-                                  PageRouteTransition.push(
+                                  NavPush(
                                       context,
                                       MotivatorUi(
                                         snap: ds,

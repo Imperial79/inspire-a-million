@@ -1,4 +1,4 @@
-import 'package:blog_app/services/notification_function.dart';
+import 'package:blog_app/utilities/notification_function.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -53,7 +53,6 @@ class DatabaseMethods {
         .get()
         .then((value) async {
       if (value.docs.isEmpty) {
-        print('no collection');
         deletePost(blogId);
       } else {
         await FirebaseFirestore.instance
@@ -102,10 +101,10 @@ class DatabaseMethods {
 
         if (snap['uid'] != Userdetails.uid) {
           sendNotification(
-            [snap['tokenId']],
-            '"' + snap['description'] + '"',
-            Userdetails.userDisplayName + ' has liked your post',
-            Userdetails.userProfilePic,
+            tokenIdList: [snap['tokenId']],
+            contents: '"' + snap['description'] + '"',
+            heading: Userdetails.userDisplayName + ' has liked your post',
+            largeIconUrl: Userdetails.userProfilePic,
           );
         }
       }

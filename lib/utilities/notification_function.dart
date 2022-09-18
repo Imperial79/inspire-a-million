@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:blog_app/services/globalVariable.dart';
 import 'package:http/http.dart';
 
-Future<Response> sendNotification(List<dynamic> tokenIdList, String contents,
-    String heading, String largeIconUrl) async {
+Future<Response> sendNotification(
+    {final tokenIdList, contents, heading, largeIconUrl}) async {
   return await post(
     Uri.parse('https://onesignal.com/api/v1/notifications'),
     headers: <String, String>{

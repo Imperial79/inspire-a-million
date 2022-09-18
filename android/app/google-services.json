@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "49563021670",
+    "firebase_url": "https://blogged---blog-app-default-rtdb.firebaseio.com",
     "project_id": "blogged---blog-app",
     "storage_bucket": "blogged---blog-app.appspot.com"
   },
@@ -14,19 +15,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "49563021670-68845ludtj5jnebd84ighgbocfqp90df.apps.googleusercontent.com",
+          "client_id": "49563021670-45054sh6thooubsftq1bqb9dj8g7mbsd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.imperial.blogged",
-            "certificate_hash": "065a09ae2bcc764e0a292c0440a58eb24bf02dbd"
+            "certificate_hash": "90a4e74cf3865895a370ab7e918ff3998ee090ec"
           }
         },
         {
-          "client_id": "49563021670-fu88o4edhn5d26hd1bkuvmhnp0k8evf1.apps.googleusercontent.com",
+          "client_id": "49563021670-sfdopu82mjs605a4les48vj67ir4dq85.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.imperial.blogged",
-            "certificate_hash": "45ed376c7aba06330fcda58a8c817889c20ba509"
+            "certificate_hash": "3bf8a6f3ce7f493db83eb1595ea4145936942d54"
           }
         },
         {

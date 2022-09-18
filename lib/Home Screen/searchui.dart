@@ -1,12 +1,9 @@
-import 'dart:ui';
-
-import 'package:blog_app/colors.dart';
-import 'package:blog_app/othersProfileUi.dart';
+import 'package:blog_app/utilities/colors.dart';
+import 'package:blog_app/Profile_Screen/othersProfileUi.dart';
 import 'package:blog_app/services/globalVariable.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SearchUi extends StatefulWidget {
   const SearchUi({Key? key}) : super(key: key);
@@ -47,9 +44,9 @@ class _SearchUiState extends State<SearchUi> {
                     ),
                     Text(
                       'SEARCH',
-                      style: GoogleFonts.manrope(
+                      style: TextStyle(
                         fontWeight: FontWeight.w900,
-                        letterSpacing: 20,
+                        letterSpacing: 15,
                         fontSize: 23,
                         color: isDarkMode!
                             ? Colors.grey.shade400
@@ -60,7 +57,7 @@ class _SearchUiState extends State<SearchUi> {
                       padding: EdgeInsets.only(left: 8.0, top: 6),
                       child: Text(
                         'other users to motivate \'em and make more friends to !nspire - A Million',
-                        style: GoogleFonts.manrope(
+                        style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 13,
                           wordSpacing: 1,
@@ -94,13 +91,13 @@ class _SearchUiState extends State<SearchUi> {
                           ),
                           controller: searchController,
                           cursorColor:
-                              isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                              isDarkMode! ? primaryAccentColor : primaryColor,
                           decoration: InputDecoration(
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 15),
                             border: InputBorder.none,
                             hintText: '  Search other Motivators ...',
-                            hintStyle: GoogleFonts.manrope(
+                            hintStyle: TextStyle(
                               color: Colors.grey,
                               fontSize: 15,
                               letterSpacing: 1,
@@ -157,14 +154,7 @@ class _SearchUiState extends State<SearchUi> {
                               .get(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  color: isDarkMode!
-                                      ? Colors.blue.shade100
-                                      : primaryColor,
-                                  strokeWidth: 1.6,
-                                ),
-                              );
+                              return Center(child: CustomLoading());
                             }
                             return ListView.builder(
                               padding: EdgeInsets.symmetric(vertical: 20),
@@ -200,7 +190,7 @@ class _SearchUiState extends State<SearchUi> {
                           child: Center(
                             child: Text(
                               '!nspire',
-                              style: GoogleFonts.josefinSans(
+                              style: TextStyle(
                                 fontSize: 40,
                                 color: isDarkMode!
                                     ? Colors.white.withOpacity(0.5)
@@ -231,7 +221,6 @@ class _SearchUiState extends State<SearchUi> {
               MaterialPageRoute(
                   builder: (context) => OthersProfileUi(
                         uid: ds['uid'],
-                        heroTag: ds['uid'],
                       )));
         },
         leading: Hero(
@@ -252,7 +241,7 @@ class _SearchUiState extends State<SearchUi> {
           children: [
             Text(
               ds['name'],
-              style: GoogleFonts.openSans(
+              style: TextStyle(
                 fontWeight: FontWeight.w600,
                 color: isDarkMode! ? Colors.white : Colors.black,
               ),
@@ -261,7 +250,7 @@ class _SearchUiState extends State<SearchUi> {
         ),
         subtitle: Text(
           '@' + ds['username'],
-          style: GoogleFonts.openSans(
+          style: TextStyle(
             fontSize: 13,
             color: isDarkMode! ? primaryAccentColor : primaryColor,
             fontWeight: FontWeight.w600,

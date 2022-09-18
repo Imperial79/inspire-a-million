@@ -10,7 +10,7 @@
   <p align="center">
     1. Easy & Secure Google Sign In<br>
     2. Write Blogs<br>
-    3. Search Other Users on !nspire<br>
+    3. Search Other Users and blogs on !nspire<br>
     4. Offline Blog Sync Support<br>
     5. No Subscriptions<br>
     6. No Ads<br> 

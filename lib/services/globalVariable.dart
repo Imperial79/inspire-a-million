@@ -1,16 +1,9 @@
-import 'dart:ui';
-
-import 'package:blog_app/searchui.dart';
+import 'package:blog_app/Home%20Screen/searchui.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import '../blogCard.dart';
-import '../colors.dart';
-import '../settingsUI.dart';
+import '../BlogCard/blogCard.dart';
+import '../utilities/colors.dart';
 
 class Userdetails {
   static String uid = '';
@@ -51,6 +44,7 @@ class _StatsCardState extends State<StatsCard> {
     return Expanded(
       child: InkWell(
         onTap: widget.press,
+        borderRadius: BorderRadius.circular(10),
         child: Container(
           // width: double.infinity,
           // padding: widget.count == '0'
@@ -70,7 +64,7 @@ class _StatsCardState extends State<StatsCard> {
                 padding: EdgeInsets.all(10),
                 child: Text(
                   widget.count,
-                  style: GoogleFonts.robotoMono(
+                  style: TextStyle(
                     color: isDarkMode!
                         ? Colors.grey.shade300
                         : Colors.grey.shade700,
@@ -97,7 +91,7 @@ class _StatsCardState extends State<StatsCard> {
                     widget.label.toString().toUpperCase(),
                     style: TextStyle(
                       color: isDarkMode! ? Colors.black : Colors.white,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.w500,
                       fontSize: 12,
                       letterSpacing: 1,
                     ),
@@ -174,7 +168,7 @@ StreamBuilder<dynamic> BlogList({final isMe, name, uid}) {
                         fontSize: 15,
                         color:
                             isDarkMode! ? Colors.grey.shade300 : Colors.black,
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     Text(
@@ -182,7 +176,7 @@ StreamBuilder<dynamic> BlogList({final isMe, name, uid}) {
                       style: TextStyle(
                         fontSize: 20,
                         letterSpacing: 10,
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.w600,
                         color: isDarkMode!
                             ? primaryAccentColor.withOpacity(0.8)
                             : primaryColor,
@@ -201,7 +195,7 @@ StreamBuilder<dynamic> BlogList({final isMe, name, uid}) {
                 DocumentSnapshot ds = snapshot.data.docs[index];
                 return BlogCard(
                   snap: ds,
-                  index: index,
+                  isHome: true,
                 );
               },
             ),
@@ -220,19 +214,11 @@ Widget Header(BuildContext context) {
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      // Text(
-      //   '!nspire',
-      //   style: GoogleFonts.josefinSans(
-      //     color: isDarkMode! ? primaryAccentColor : primaryColor,
-      //     fontWeight: FontWeight.w600,
-      //     fontSize: 40,
-      //   ),
-      // ),
       Text(
         '!NSPIRE',
         style: TextStyle(
           color: isDarkMode! ? primaryAccentColor : primaryColor,
-          fontWeight: FontWeight.w900,
+          fontWeight: FontWeight.w400,
           letterSpacing: 10,
           fontSize: 20,
         ),

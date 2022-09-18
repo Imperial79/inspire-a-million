@@ -1,11 +1,10 @@
-import 'package:blog_app/colors.dart';
-import 'package:blog_app/othersProfileUi.dart';
+import 'package:blog_app/utilities/colors.dart';
+import 'package:blog_app/Profile_Screen/othersProfileUi.dart';
 import 'package:blog_app/services/globalVariable.dart';
-import 'package:blog_app/services/notification_function.dart';
+import 'package:blog_app/utilities/notification_function.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../Home Screen/exploreUI.dart';
 
@@ -79,7 +78,7 @@ class _InspiredUiState extends State<InspiredUi> {
                       return Center(
                         child: Text(
                           'No Users',
-                          style: GoogleFonts.openSans(
+                          style: TextStyle(
                             color: Colors.grey.shade300,
                           ),
                         ),
@@ -137,7 +136,7 @@ class _InspiredUiState extends State<InspiredUi> {
         ),
         subtitle: Text(
           '@' + ds['username'],
-          style: GoogleFonts.openSans(
+          style: TextStyle(
             color: isDarkMode! ? primaryAccentColor : primaryColor,
             fontWeight: FontWeight.w600,
           ),
@@ -159,12 +158,12 @@ class _InspiredUiState extends State<InspiredUi> {
                 'following': FieldValue.arrayRemove([ds['uid']])
               });
 
-              sendNotification(
-                [ds['tokenId']],
-                Userdetails.userDisplayName + ' has unfollowed you!',
-                'Inspire',
-                Userdetails.userProfilePic,
-              );
+              // sendNotification(
+              //   [ds['tokenId']],
+              //   Userdetails.userDisplayName + ' has unfollowed you!',
+              //   'Inspire',
+              //   Userdetails.userProfilePic,
+              // );
             } else {
               await FirebaseFirestore.instance
                   .collection('users')
@@ -181,10 +180,10 @@ class _InspiredUiState extends State<InspiredUi> {
               });
 
               sendNotification(
-                [ds['tokenId']],
-                Userdetails.userDisplayName + ' has followed you!',
-                'Inspire',
-                Userdetails.userProfilePic,
+                tokenIdList: [ds['tokenId']],
+                contents: Userdetails.userDisplayName + ' has followed you!',
+                heading: 'Inspire',
+                largeIconUrl: Userdetails.userProfilePic,
               );
             }
 

@@ -1,13 +1,12 @@
-import 'package:blog_app/colors.dart';
+import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/services/globalVariable.dart';
-import 'package:blog_app/services/notification_function.dart';
+import 'package:blog_app/utilities/notification_function.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LikesUI extends StatefulWidget {
-  var snap;
+  final snap;
   LikesUI({this.snap});
 
   @override
@@ -30,7 +29,7 @@ class _LikesUIState extends State<LikesUI> {
                 children: [
                   Text(
                     'Likes',
-                    style: GoogleFonts.openSans(
+                    style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w700,
                       color: isDarkMode! ? primaryAccentColor : primaryColor,
@@ -54,7 +53,7 @@ class _LikesUIState extends State<LikesUI> {
                       return Center(
                         child: Text(
                           'No Users',
-                          style: GoogleFonts.openSans(
+                          style: TextStyle(
                             color: Colors.blueGrey.shade200,
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -80,7 +79,7 @@ class _LikesUIState extends State<LikesUI> {
                             ds['name'] == Userdetails.userDisplayName
                                 ? 'You'
                                 : ds['name'],
-                            style: GoogleFonts.openSans(
+                            style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: isDarkMode!
                                   ? Colors.grey.shade200
@@ -89,7 +88,7 @@ class _LikesUIState extends State<LikesUI> {
                           ),
                           subtitle: Text(
                             '@' + ds['username'],
-                            style: GoogleFonts.openSans(
+                            style: TextStyle(
                               color: isDarkMode!
                                   ? primaryAccentColor
                                   : primaryColor,
@@ -118,13 +117,14 @@ class _LikesUIState extends State<LikesUI> {
                                             FieldValue.arrayRemove([ds['uid']])
                                       });
 
-                                      sendNotification(
-                                        [ds['tokenId']],
-                                        Userdetails.userDisplayName +
-                                            ' has unfollowed you!',
-                                        'Inspire',
-                                        Userdetails.userProfilePic,
-                                      );
+                                      // sendNotification(
+                                      //   tokenIdList: [ds['tokenId']],
+                                      //   contents: Userdetails.userDisplayName +
+                                      //       ' has unfollowed you!',
+                                      //   heading: 'Inspire',
+                                      //   largeIconUrl:
+                                      //       Userdetails.userProfilePic,
+                                      // );
                                     } else {
                                       await FirebaseFirestore.instance
                                           .collection('users')
@@ -143,11 +143,12 @@ class _LikesUIState extends State<LikesUI> {
                                       });
 
                                       sendNotification(
-                                        [ds['tokenId']],
-                                        Userdetails.userDisplayName +
+                                        tokenIdList: [ds['tokenId']],
+                                        contents: Userdetails.userDisplayName +
                                             ' has followed you!',
-                                        'Inspire',
-                                        Userdetails.userProfilePic,
+                                        heading: 'Inspire',
+                                        largeIconUrl:
+                                            Userdetails.userProfilePic,
                                       );
                                     }
                                   },
@@ -170,7 +171,7 @@ class _LikesUIState extends State<LikesUI> {
                                     ds['followers'].contains(Userdetails.uid)
                                         ? 'Following'
                                         : 'Follow',
-                                    style: GoogleFonts.openSans(
+                                    style: TextStyle(
                                       color: ds['followers']
                                               .contains(Userdetails.uid)
                                           ? isDarkMode!

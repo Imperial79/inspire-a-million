@@ -1,7 +1,7 @@
+import 'package:blog_app/utilities/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:page_route_transition/page_route_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../dashboardUI.dart';
@@ -47,8 +47,6 @@ class AuthMethods {
     prefs.setString('USERPROFILEKEY', userDetails.photoURL!);
     // prefs.setString('TOKENID', tokenId);
 
-    print('Display name : ' + Userdetails.userDisplayName);
-
     Userdetails.uid = userDetails.uid;
     Userdetails.userEmail = userDetails.email!;
     Userdetails.userDisplayName = userDetails.displayName!;
@@ -62,7 +60,6 @@ class AuthMethods {
         .get()
         .then((value) {
       if (value.exists) {
-        print('User exist');
         Map<String, dynamic> userInfoMap = {
           'uid': userDetails.uid,
           "email": userDetails.email,
@@ -76,11 +73,9 @@ class AuthMethods {
             .doc(userDetails.uid)
             .update(userInfoMap)
             .then((value) {
-          PageRouteTransition.pushReplacement(context, DashboardUI());
+          NavPushReplacement(context, DashboardUI());
         });
       } else {
-        print('User does not exist ');
-
         Map<String, dynamic> userInfoMap = {
           'uid': userDetails.uid,
           "email": userDetails.email,
@@ -94,7 +89,7 @@ class AuthMethods {
         databaseMethods
             .addUserInfoToDB(userDetails.uid, userInfoMap)
             .then((value) {
-          PageRouteTransition.pushReplacement(context, DashboardUI());
+          NavPushReplacement(context, DashboardUI());
         });
       }
     });
@@ -106,9 +101,7 @@ class AuthMethods {
     await FirebaseFirestore.instance
         .collection("users")
         .doc(Userdetails.uid)
-        .update({"active": "1"}).then((value) {
-      print('User Set to Offline from SWITCH ACCOUNT');
-    });
+        .update({"active": "1"}).then((value) {});
 
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -141,8 +134,6 @@ class AuthMethods {
     prefs.setString('USERPROFILEKEY', userDetails.photoURL!);
     // prefs.setString('TOKENID', tokenId);
 
-    print('Display name : ' + Userdetails.userDisplayName);
-
     Userdetails.uid = userDetails.uid;
     Userdetails.userEmail = userDetails.email!;
     Userdetails.userDisplayName = userDetails.displayName!;
@@ -156,7 +147,6 @@ class AuthMethods {
         .get()
         .then((value) {
       if (value.exists) {
-        print('User exist');
         Map<String, dynamic> userInfoMap = {
           'uid': userDetails.uid,
           "email": userDetails.email,
@@ -170,11 +160,9 @@ class AuthMethods {
             .doc(userDetails.uid)
             .update(userInfoMap)
             .then((value) {
-          PageRouteTransition.pushReplacement(context, DashboardUI());
+          NavPushReplacement(context, DashboardUI());
         });
       } else {
-        print('User does not exist ');
-
         Map<String, dynamic> userInfoMap = {
           'uid': userDetails.uid,
           "email": userDetails.email,
@@ -188,7 +176,7 @@ class AuthMethods {
         databaseMethods
             .addUserInfoToDB(userDetails.uid, userInfoMap)
             .then((value) {
-          PageRouteTransition.pushReplacement(context, DashboardUI());
+          NavPushReplacement(context, DashboardUI());
         });
       }
     });
@@ -203,15 +191,11 @@ class AuthMethods {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(Userdetails.uid)
-          .update({'tokenId': ''}).then((value) {
-        print('Token ID Cleared from DB');
-      });
+          .update({'tokenId': ''}).then((value) {});
       await FirebaseFirestore.instance
           .collection("users")
           .doc(Userdetails.uid)
-          .update({"active": "0"}).then((value) {
-        print('User Set to Offline');
-      });
+          .update({"active": "0"}).then((value) {});
     });
   }
 }

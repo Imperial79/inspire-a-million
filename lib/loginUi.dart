@@ -1,10 +1,11 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:blog_app/colors.dart';
+import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/services/auth.dart';
 import 'package:blog_app/services/globalVariable.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_svg/svg.dart';
 
 class LoginUi extends StatefulWidget {
   const LoginUi({Key? key}) : super(key: key);
@@ -28,6 +29,8 @@ class _LoginUiState extends State<LoginUi> {
         systemNavigationBarColor: Colors.transparent,
       ),
     );
+
+    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: isDarkMode! ? Colors.grey.shade900 : Colors.white,
@@ -58,38 +61,80 @@ class _LoginUiState extends State<LoginUi> {
                   ],
                 ),
               )
-            : Stack(
+            : Column(
                 children: [
-                  Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '!nspire',
-                          style: GoogleFonts.josefinSans(
-                            color:
-                                isDarkMode! ? primaryAccentColor : primaryColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 40,
+                  Expanded(
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AnimatedAlign(
+                            duration: Duration(seconds: 1),
+                            alignment: isLoading
+                                ? Alignment.center
+                                : Alignment.topCenter,
+                            child: Column(
+                              children: [
+                                Text(
+                                  '!nspire',
+                                  style: TextStyle(
+                                    color: isDarkMode!
+                                        ? primaryAccentColor
+                                        : primaryColor,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 40,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  'A MILLION',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 13,
+                                    letterSpacing: 9,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'A MILLION',
-                          style: GoogleFonts.josefinSans(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 13,
-                            letterSpacing: 9,
+                          SizedBox(
+                            height: size.height * 0.1,
                           ),
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                      ],
+                          CarouselSlider(
+                            options: CarouselOptions(
+                              height: 400.0,
+                              autoPlay: true,
+                              enlargeCenterPage: true,
+                            ),
+                            items: [1, 2, 3, 4, 5].map((i) {
+                              return Builder(
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 5.0),
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: isDarkMode!
+                                          ? Colors.transparent
+                                          : Colors.grey.shade100
+                                              .withOpacity(0.5),
+                                      borderRadius: BorderRadius.circular(40),
+                                    ),
+                                    child: SvgPicture.asset(
+                                      'lib/assets/image/$i.svg',
+                                    ),
+                                  );
+                                },
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Align(
@@ -129,17 +174,19 @@ class _LoginUiState extends State<LoginUi> {
                                 height: 15,
                               ),
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
+                            Spacer(),
                             Text(
                               'Continue with Google',
-                              style: GoogleFonts.manrope(
+                              style: TextStyle(
                                 color:
                                     isDarkMode! ? Colors.black : Colors.white,
                                 fontSize: 16,
-                                fontWeight: FontWeight.w900,
+                                fontWeight: FontWeight.w500,
                               ),
+                            ),
+                            Spacer(),
+                            SizedBox(
+                              width: 10,
                             ),
                           ],
                         ),

@@ -1,9 +1,8 @@
-import 'package:blog_app/colors.dart';
+import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/services/globalVariable.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class MotivatorUi extends StatefulWidget {
   final from;
@@ -36,7 +35,7 @@ class _MotivatorUiState extends State<MotivatorUi> {
                         widget.from != 'others'
                             ? 'Your'
                             : widget.snap['name'] + '\'s',
-                        style: GoogleFonts.openSans(
+                        style: TextStyle(
                           fontSize: 15,
                           color:
                               isDarkMode! ? Colors.grey.shade300 : Colors.black,
@@ -155,7 +154,7 @@ class _MotivatorUiState extends State<MotivatorUi> {
               padding: EdgeInsets.zero,
               child: Text(
                 'Unfollow',
-                style: GoogleFonts.montserrat(
+                style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: isDarkMode! ? primaryAccentColor : primaryColor,
                   // fontSize: 16,

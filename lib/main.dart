@@ -1,13 +1,12 @@
-import 'package:blog_app/colors.dart';
-import 'package:blog_app/dashboardUI.dart';
+import 'package:blog_app/splashUI.dart';
+import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/loginUi.dart';
 import 'package:blog_app/services/auth.dart';
 import 'package:blog_app/services/globalVariable.dart';
-import 'package:blog_app/settingsUI.dart';
+import 'package:blog_app/utilities/utility.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() async {
@@ -58,33 +57,27 @@ class _MyAppState extends State<MyApp> {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       title: '!nspire',
-      color: primaryAccentColor,
+      color: Colors.grey.shade100,
       darkTheme: ThemeData(
         useMaterial3: true,
         colorSchemeSeed: primaryColor,
         scaffoldBackgroundColor: scaffoldDarkColor,
-        // scaffoldBackgroundColor: Color(0xFF003038),
         brightness: Brightness.dark,
-        textTheme: GoogleFonts.manropeTextTheme(Theme.of(context).textTheme),
+        fontFamily: 'Product',
       ),
       theme: ThemeData(
         useMaterial3: true,
         colorSchemeSeed: primaryColor,
         brightness: Brightness.light,
         scaffoldBackgroundColor: scaffoldLightColor,
-        // fontFamily: 'Product',
-        textTheme: GoogleFonts.manropeTextTheme(Theme.of(context).textTheme),
-        // pageTransitionsTheme: const PageTransitionsTheme(
-        //   builders: {
-        //     TargetPlatform.android: ZoomPageTransitionsBuilder(),
-        //   },
-        // ),
+        fontFamily: 'Product',
+        snackBarTheme: SnackBarTheme(),
       ),
       home: FutureBuilder(
         future: AuthMethods().getCurrentuser(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return DashboardUI();
+            return SplashUI();
           } else {
             return LoginUi();
           }
