@@ -58,13 +58,13 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: '!nspire',
       color: Colors.grey.shade100,
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: primaryColor,
-        scaffoldBackgroundColor: scaffoldDarkColor,
-        brightness: Brightness.dark,
-        fontFamily: 'Product',
-      ),
+      // darkTheme: ThemeData(
+      //   useMaterial3: true,
+      //   colorSchemeSeed: primaryColor,
+      //   scaffoldBackgroundColor: scaffoldDarkColor,
+      //   brightness: Brightness.dark,
+      //   fontFamily: 'Product',
+      // ),
       theme: ThemeData(
         useMaterial3: true,
         colorSchemeSeed: primaryColor,

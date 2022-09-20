@@ -123,7 +123,7 @@ class _DashboardUIState extends State<DashboardUI>
         top: false,
         child: getBody1(),
       ),
-      bottomNavigationBar: getFooter1(),
+      bottomNavigationBar: NewBottomNavbar(),
     );
   }
 
@@ -244,15 +244,15 @@ class _DashboardUIState extends State<DashboardUI>
       },
       items: [
         BottomNavigationBarItem(
-          label: 'Sales',
-          icon: Icon(Icons.bar_chart),
+          label: 'Explore',
+          icon: Icon(Icons.explore_outlined),
         ),
         BottomNavigationBarItem(
-          label: 'Update Rate',
-          icon: Icon(Icons.file_upload_outlined),
+          label: 'Blog!',
+          icon: Icon(Icons.edit_note_rounded),
         ),
         BottomNavigationBarItem(
-          label: 'Stock Entry',
+          label: 'Profile',
           icon: Icon(Icons.edit_note),
         ),
       ],

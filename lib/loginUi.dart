@@ -120,10 +120,10 @@ class _LoginUiState extends State<LoginUi> {
                                     padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
                                       color: isDarkMode!
-                                          ? Colors.transparent
+                                          ? Colors.grey.shade800
                                           : Colors.grey.shade100
                                               .withOpacity(0.5),
-                                      borderRadius: BorderRadius.circular(40),
+                                      borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: SvgPicture.asset(
                                       'lib/assets/image/$i.svg',
@@ -154,7 +154,7 @@ class _LoginUiState extends State<LoginUi> {
                         },
                         color: isDarkMode! ? Colors.white : primaryColor,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         elevation: 0,
                         padding: EdgeInsets.symmetric(
