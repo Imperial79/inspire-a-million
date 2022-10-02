@@ -5,7 +5,6 @@ import 'package:blog_app/Profile_Screen/othersProfileUi.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/services/globalVariable.dart';
 import 'package:blog_app/utilities/like_animation.dart';
-import 'package:blog_app/utilities/custom_url_preview.dart';
 import 'package:blog_app/utilities/utility.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -41,8 +40,7 @@ class _BlogCardState extends State<BlogCard> {
 
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    isDarkMode = brightness == Brightness.dark;
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Padding(
       padding: EdgeInsets.only(left: 0, right: 0, bottom: 10),
       child: AnimatedContainer(
@@ -50,7 +48,7 @@ class _BlogCardState extends State<BlogCard> {
         padding: EdgeInsets.all(20),
         width: double.infinity,
         decoration: BoxDecoration(
-          color: isDarkMode!
+          color: isDarkMode
               ? Colors.grey.shade800.withOpacity(0.5)
               : Colors.grey.shade100,
           borderRadius: BorderRadius.circular(0),
@@ -97,14 +95,14 @@ class _BlogCardState extends State<BlogCard> {
                             return CircleAvatar(
                               radius: 7,
                               backgroundColor:
-                                  isDarkMode! ? Colors.black : Colors.white,
+                                  isDarkMode ? Colors.black : Colors.white,
                               child: CircleAvatar(
                                 radius: 5,
                                 backgroundColor: activeStatus == '1'
-                                    ? isDarkMode!
+                                    ? isDarkMode
                                         ? Colors.green.shade800
                                         : Colors.green
-                                    : isDarkMode!
+                                    : isDarkMode
                                         ? Colors.red.shade800
                                         : Colors.red,
                               ),
@@ -147,7 +145,7 @@ class _BlogCardState extends State<BlogCard> {
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 0.5,
                                 fontSize: 14,
-                                color: isDarkMode!
+                                color: isDarkMode
                                     ? Colors.white
                                     : Colors.grey.shade800,
                               ),
@@ -160,15 +158,16 @@ class _BlogCardState extends State<BlogCard> {
                           height: 3,
                         ),
                         Text(
-                          DateFormat.Hm().format(widget.snap['time'].toDate()) +
+                          DateFormat('h:m a')
+                                  .format(widget.snap['time'].toDate()) +
                               ' • ' +
                               _timeAgo +
                               ' • ' +
-                              DateFormat.yMMMd()
+                              DateFormat('d-MMM, y')
                                   .format(widget.snap['time'].toDate()),
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            color: isDarkMode!
+                            color: isDarkMode
                                 ? Colors.grey.shade400
                                 : Colors.grey.shade500,
                             fontSize: 13,
@@ -185,7 +184,7 @@ class _BlogCardState extends State<BlogCard> {
                           context: context,
                           isScrollControlled: true,
                           backgroundColor:
-                              isDarkMode! ? Colors.grey.shade800 : Colors.white,
+                              isDarkMode ? Colors.grey.shade800 : Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10),
@@ -210,41 +209,6 @@ class _BlogCardState extends State<BlogCard> {
               height: 13,
             ),
 
-            ///////////////////// URL PREVIEW ///////////////////////
-            CustomUrlPreview(
-              bgColor: isDarkMode! ? Colors.grey.shade700 : Colors.white,
-              previewContainerPadding: EdgeInsets.zero,
-              url: widget.snap['description'],
-              titleStyle: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: isDarkMode! ? Colors.grey.shade200 : Colors.black,
-              ),
-              titleLines: 2,
-              descriptionLines: 2,
-              descriptionStyle: TextStyle(
-                fontSize: 12,
-                color: isDarkMode! ? Colors.grey.shade200 : Colors.black,
-              ),
-              siteNameStyle: TextStyle(
-                fontSize: 14,
-                color:
-                    isDarkMode! ? Colors.grey.shade400 : Colors.grey.shade700,
-                fontWeight: FontWeight.w500,
-                fontFamily: 'default',
-              ),
-              onTap: () async {
-                if (await canLaunchUrl(Uri.parse(widget.snap['description']))) {
-                  await launchUrl(
-                    Uri.parse(widget.snap['description']),
-                    mode: LaunchMode.externalApplication,
-                  );
-                } else {
-                  throw 'Could not launch ' + widget.snap['description'];
-                }
-              },
-            ),
-
             ///////////////////// DESCRIPTION AREA ///////////////////////
             Visibility(
               visible: !Uri.parse(widget.snap['description']).isAbsolute,
@@ -252,7 +216,7 @@ class _BlogCardState extends State<BlogCard> {
                 padding: EdgeInsets.only(top: 10),
                 child: SelectableLinkify(
                   linkStyle: TextStyle(
-                    color: isDarkMode! ? primaryAccentColor : primaryColor,
+                    color: isDarkMode ? primaryAccentColor : primaryColor,
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
                     letterSpacing: 0.4,
@@ -275,7 +239,7 @@ class _BlogCardState extends State<BlogCard> {
                     letterSpacing: 0.5,
                     fontWeight: FontWeight.w500,
                     fontSize: widget.snap['description'].length > 100 ? 14 : 20,
-                    color: isDarkMode!
+                    color: isDarkMode
                         ? Colors.grey.shade300
                         : Colors.grey.shade800,
                   ),
@@ -357,7 +321,7 @@ class _BlogCardState extends State<BlogCard> {
 
                                   return CircleAvatar(
                                     radius: 15,
-                                    backgroundColor: isDarkMode!
+                                    backgroundColor: isDarkMode
                                         ? Colors.black
                                         : Colors.white,
                                   );
@@ -410,7 +374,7 @@ class _BlogCardState extends State<BlogCard> {
                               style: TextStyle(
                                 letterSpacing: 0.5,
                                 fontWeight: FontWeight.w500,
-                                color: isDarkMode!
+                                color: isDarkMode
                                     ? Colors.grey.shade400
                                     : Colors.grey.shade600,
                                 fontSize: 13,
@@ -453,7 +417,7 @@ class _BlogCardState extends State<BlogCard> {
                                 ? 'lib/assets/icons/heart-fill.svg'
                                 : 'lib/assets/icons/heart.svg',
                             color:
-                                isDarkMode! ? primaryAccentColor : primaryColor,
+                                isDarkMode ? primaryAccentColor : primaryColor,
                           ),
                         ),
                         Visibility(
@@ -463,7 +427,7 @@ class _BlogCardState extends State<BlogCard> {
                             child: Text(
                               widget.snap['likes'].length.toString(),
                               style: TextStyle(
-                                color: isDarkMode!
+                                color: isDarkMode
                                     ? primaryAccentColor
                                     : primaryColor,
                                 fontWeight: FontWeight.w900,
@@ -485,9 +449,7 @@ class _BlogCardState extends State<BlogCard> {
                         CommentUi(
                           blogId: widget.snap['blogId'],
                           tokenId: widget.snap['tokenId'],
-                        )).then((value) {
-                      setState(() {});
-                    });
+                        ));
                   },
                   padding: EdgeInsets.zero,
                   shape: RoundedRectangleBorder(
@@ -500,7 +462,7 @@ class _BlogCardState extends State<BlogCard> {
                       children: [
                         SvgPicture.asset(
                           'lib/assets/icons/comment.svg',
-                          color: isDarkMode!
+                          color: isDarkMode
                               ? Colors.grey.shade400
                               : Colors.grey.shade600,
                           height: 20,
@@ -511,7 +473,7 @@ class _BlogCardState extends State<BlogCard> {
                         Text(
                           widget.snap['comments'].toString() + ' ',
                           style: TextStyle(
-                            color: isDarkMode!
+                            color: isDarkMode
                                 ? Colors.grey.shade400
                                 : Colors.grey.shade600,
                             fontWeight: FontWeight.w600,
@@ -549,20 +511,20 @@ class _BlogCardState extends State<BlogCard> {
                               ))).then((value) => setState(() {}));
               },
               child: CircleAvatar(
-                backgroundColor: isDarkMode!
+                backgroundColor: isDarkMode
                     ? Colors.grey.shade800.withOpacity(0.2)
                     : Colors.grey.shade100,
                 radius: 15,
                 child: CircleAvatar(
                   radius: 13,
                   backgroundColor:
-                      isDarkMode! ? primaryAccentColor : primaryColor,
+                      isDarkMode ? primaryAccentColor : primaryColor,
                   child: CachedNetworkImage(
                     imageUrl: img1,
                     imageBuilder: (context, image) => CircleAvatar(
                       radius: 13,
                       backgroundColor:
-                          isDarkMode! ? primaryAccentColor : primaryColor,
+                          isDarkMode ? primaryAccentColor : primaryColor,
                       backgroundImage: image,
                     ),
                   ),
@@ -582,20 +544,20 @@ class _BlogCardState extends State<BlogCard> {
                                 ))).then((value) => setState(() {}));
                 },
                 child: CircleAvatar(
-                  backgroundColor: isDarkMode!
+                  backgroundColor: isDarkMode
                       ? Colors.grey.shade800.withOpacity(0.2)
                       : Colors.grey.shade100,
                   radius: 15,
                   child: CircleAvatar(
                     radius: 13,
                     backgroundColor:
-                        isDarkMode! ? primaryAccentColor : primaryColor,
+                        isDarkMode ? primaryAccentColor : primaryColor,
                     child: CachedNetworkImage(
                       imageUrl: img2,
                       imageBuilder: (context, image) => CircleAvatar(
                         radius: 13,
                         backgroundColor:
-                            isDarkMode! ? primaryAccentColor : primaryColor,
+                            isDarkMode ? primaryAccentColor : primaryColor,
                         backgroundImage: image,
                       ),
                     ),
@@ -618,23 +580,22 @@ class _BlogCardState extends State<BlogCard> {
           alignment: Alignment.topLeft,
           children: [
             CircleAvatar(
-              backgroundColor: isDarkMode! ? Colors.black : Colors.white,
+              backgroundColor: isDarkMode ? Colors.black : Colors.white,
               radius: 15,
               child: CircleAvatar(
                 radius: 13,
-                backgroundColor:
-                    isDarkMode! ? primaryAccentColor : primaryColor,
+                backgroundColor: isDarkMode ? primaryAccentColor : primaryColor,
               ),
             ),
             Positioned(
               left: 20,
               child: CircleAvatar(
-                backgroundColor: isDarkMode! ? Colors.black : Colors.white,
+                backgroundColor: isDarkMode ? Colors.black : Colors.white,
                 radius: 15,
                 child: CircleAvatar(
                   radius: 13,
                   backgroundColor:
-                      isDarkMode! ? primaryAccentColor : primaryColor,
+                      isDarkMode ? primaryAccentColor : primaryColor,
                 ),
               ),
             ),
@@ -648,27 +609,26 @@ class _BlogCardState extends State<BlogCard> {
     return Transform.scale(
       scale: 0.8,
       child: CircleAvatar(
-        backgroundColor: isDarkMode!
+        backgroundColor: isDarkMode
             ? Colors.grey.shade800.withOpacity(0.5)
             : Colors.grey.shade100,
         radius: 17,
         child: profileImg == ''
             ? CircleAvatar(
                 radius: 15,
-                backgroundColor: isDarkMode!
+                backgroundColor: isDarkMode
                     ? Colors.grey.shade800.withOpacity(0.5)
                     : Colors.grey.shade100,
               )
             : CircleAvatar(
                 radius: 15,
-                backgroundColor:
-                    isDarkMode! ? primaryAccentColor : primaryColor,
+                backgroundColor: isDarkMode ? primaryAccentColor : primaryColor,
                 child: CachedNetworkImage(
                   imageUrl: profileImg,
                   imageBuilder: (context, image) => CircleAvatar(
                     radius: 15,
                     backgroundColor:
-                        isDarkMode! ? primaryAccentColor : primaryColor,
+                        isDarkMode ? primaryAccentColor : primaryColor,
                     backgroundImage: image,
                   ),
                 ),

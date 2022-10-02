@@ -22,7 +22,7 @@ Widget ShowModal(String blogId) {
             Text(
               'Actions',
               style: TextStyle(
-                color: isDarkMode! ? Colors.white : Colors.grey.shade700,
+                color: isDarkMode ? Colors.white : Colors.grey.shade700,
                 fontSize: 50,
                 // fontWeight: FontWeight.w100,
               ),
@@ -35,7 +35,7 @@ Widget ShowModal(String blogId) {
                 deletePost(blogId);
                 Navigator.pop(context);
               },
-              color: isDarkMode! ? Colors.grey.shade700 : Colors.grey.shade200,
+              color: isDarkMode ? Colors.grey.shade700 : Colors.grey.shade200,
               elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -49,7 +49,7 @@ Widget ShowModal(String blogId) {
                   children: [
                     Icon(
                       Icons.delete,
-                      color: isDarkMode! ? Colors.white : Colors.grey.shade800,
+                      color: isDarkMode ? Colors.white : Colors.grey.shade800,
                     ),
                     Text(
                       'Delete Blog',
@@ -57,7 +57,7 @@ Widget ShowModal(String blogId) {
                         fontWeight: FontWeight.w700,
                         fontSize: 18,
                         letterSpacing: 0.7,
-                        color: isDarkMode!
+                        color: isDarkMode
                             ? Colors.grey.shade100
                             : Colors.grey.shade800,
                       ),
@@ -105,7 +105,7 @@ Widget CommentList(String blogId) {
                       Icon(
                         Icons.comment_rounded,
                         size: 70,
-                        color: isDarkMode!
+                        color: isDarkMode
                             ? Colors.grey.shade700
                             : Colors.grey.shade300,
                       ),
@@ -113,7 +113,7 @@ Widget CommentList(String blogId) {
                         'No Comments',
                         style: TextStyle(
                           fontSize: 20,
-                          color: isDarkMode!
+                          color: isDarkMode
                               ? Colors.grey.shade700
                               : Colors.grey.shade300,
                           fontWeight: FontWeight.w800,
@@ -137,7 +137,7 @@ Widget CommentList(String blogId) {
               child: Padding(
                 padding: EdgeInsets.only(top: 50),
                 child: CircularProgressIndicator(
-                  color: isDarkMode! ? primaryAccentColor : primaryColor,
+                  color: isDarkMode ? primaryAccentColor : primaryColor,
                   strokeWidth: 1.6,
                 ),
               ),
@@ -178,7 +178,7 @@ Widget BuildCommentCard({
                     ? 'You '
                     : snap['displayName'],
                 style: TextStyle(
-                  color: isDarkMode! ? Colors.grey.shade300 : Colors.black,
+                  color: isDarkMode ? Colors.grey.shade300 : Colors.black,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -186,7 +186,7 @@ Widget BuildCommentCard({
                 snap['comment'].toString().replaceAll('/:', ':'),
                 style: TextStyle(
                   fontSize: snap['comment'].split(' ').length > 10 ? 15 : 17,
-                  color: isDarkMode! ? Colors.grey.shade300 : Colors.black,
+                  color: isDarkMode ? Colors.grey.shade300 : Colors.black,
                 ),
               ),
               SizedBox(
@@ -233,7 +233,7 @@ Widget TagsCard(String tag, BuildContext context, bool isHome) {
           style: TextStyle(
             fontWeight: FontWeight.w500,
             letterSpacing: 0.4,
-            color: isDarkMode! ? Colors.white : Colors.black,
+            color: isDarkMode ? Colors.white : Colors.black,
           ),
         ),
       ),
@@ -321,12 +321,11 @@ Widget DummyBlogCard() {
 ShowSnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      backgroundColor:
-          isDarkMode! ? Colors.grey.shade800 : Colors.grey.shade300,
+      backgroundColor: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade300,
       content: Text(
         text,
         style: TextStyle(
-          color: isDarkMode! ? Colors.white : Colors.black,
+          color: isDarkMode ? Colors.white : Colors.black,
           fontFamily: 'Product',
         ),
       ),

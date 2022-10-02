@@ -1,16 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shimmer/shimmer.dart';
-
 import '../BlogCard/blogCard.dart';
 import '../utilities/colors.dart';
 import '../dashboardUI.dart';
 import '../services/database.dart';
 import '../services/globalVariable.dart';
-
 import '../utilities/utility.dart';
 
 Stream? blogStream;
@@ -38,17 +35,13 @@ class ExploreUI extends StatefulWidget {
   State<ExploreUI> createState() => _ExploreUIState();
 }
 
-class _ExploreUIState extends State<ExploreUI>
-    with AutomaticKeepAliveClientMixin {
+class _ExploreUIState extends State<ExploreUI> {
   @override
   void initState() {
     super.initState();
 
     getFollowingUsersPosts();
   }
-
-  @override
-  bool get wantKeepAlive => true;
 
   getFollowersToken() async {
     ///////////////  GETTING FOLLOWER'S TOKEN ID LIST //////////////////////////////
@@ -86,17 +79,15 @@ class _ExploreUIState extends State<ExploreUI>
   }
 
   @override
-  // ignore: must_call_super
   Widget build(BuildContext context) {
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(
         elevation: 0,
         surfaceTintColor: primaryAccentColor,
-        backgroundColor: Colors.transparent,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarIconBrightness:
-              isDarkMode! ? Brightness.light : Brightness.dark,
+              isDarkMode ? Brightness.light : Brightness.dark,
         ),
         title: Header(context),
       ),

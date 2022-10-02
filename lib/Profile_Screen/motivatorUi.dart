@@ -17,10 +17,9 @@ class MotivatorUi extends StatefulWidget {
 class _MotivatorUiState extends State<MotivatorUi> {
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    isDarkMode = brightness == Brightness.dark;
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
-      backgroundColor: isDarkMode! ? Colors.grey.shade900 : Colors.white,
+      backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(
         child: Column(
           children: [
@@ -38,7 +37,7 @@ class _MotivatorUiState extends State<MotivatorUi> {
                         style: TextStyle(
                           fontSize: 15,
                           color:
-                              isDarkMode! ? Colors.grey.shade300 : Colors.black,
+                              isDarkMode ? Colors.grey.shade300 : Colors.black,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -48,8 +47,7 @@ class _MotivatorUiState extends State<MotivatorUi> {
                           fontSize: 20,
                           letterSpacing: 10,
                           fontWeight: FontWeight.w700,
-                          color:
-                              isDarkMode! ? primaryAccentColor : primaryColor,
+                          color: isDarkMode ? primaryAccentColor : primaryColor,
                         ),
                       ),
                     ],
@@ -115,13 +113,13 @@ class _MotivatorUiState extends State<MotivatorUi> {
         ds['name'] == Userdetails.userDisplayName ? 'You' : ds['name'],
         style: TextStyle(
           fontWeight: FontWeight.w600,
-          color: isDarkMode! ? Colors.grey.shade200 : Colors.black,
+          color: isDarkMode ? Colors.grey.shade200 : Colors.black,
         ),
       ),
       subtitle: Text(
         '@' + ds['username'],
         style: TextStyle(
-          color: isDarkMode! ? primaryAccentColor : primaryColor,
+          color: isDarkMode ? primaryAccentColor : primaryColor,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -144,7 +142,7 @@ class _MotivatorUiState extends State<MotivatorUi> {
                 });
               },
               elevation: 0,
-              // color: isDarkMode! ? primaryAccentColor : primaryColor,
+              // color: isDarkMode ? primaryAccentColor : primaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
                 side: BorderSide(
@@ -156,7 +154,7 @@ class _MotivatorUiState extends State<MotivatorUi> {
                 'Unfollow',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: isDarkMode! ? primaryAccentColor : primaryColor,
+                  color: isDarkMode ? primaryAccentColor : primaryColor,
                   // fontSize: 16,
                 ),
               ),

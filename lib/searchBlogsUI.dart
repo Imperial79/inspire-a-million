@@ -66,6 +66,7 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
   @override
   // ignore: must_call_super
   Widget build(BuildContext context) {
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -88,7 +89,7 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
                     SvgPicture.asset(
                       'lib/assets/icons/search.svg',
                       height: 15,
-                      color: isDarkMode! ? Colors.grey : Colors.grey.shade600,
+                      color: isDarkMode ? Colors.grey : Colors.grey.shade600,
                     ),
                     SizedBox(
                       width: 10,
@@ -135,7 +136,7 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
-                          color: isDarkMode! ? Colors.white : Colors.black,
+                          color: isDarkMode ? Colors.white : Colors.black,
                         ),
                       ),
                       SizedBox(
@@ -189,7 +190,7 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
-                          color: isDarkMode! ? Colors.white : Colors.black,
+                          color: isDarkMode ? Colors.white : Colors.black,
                         ),
                       ),
                       SizedBox(
@@ -200,7 +201,7 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
                           CircleAvatar(
                             radius: 30,
                             backgroundColor:
-                                isDarkMode! ? Colors.black : Colors.white,
+                                isDarkMode ? Colors.black : Colors.white,
                             child: IconButton(
                               onPressed: () {
                                 showModalBottomSheet(
@@ -213,8 +214,7 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
                               },
                               icon: Icon(
                                 Icons.add,
-                                color:
-                                    isDarkMode! ? Colors.white : Colors.black,
+                                color: isDarkMode ? Colors.white : Colors.black,
                               ),
                             ),
                           ),
@@ -295,7 +295,7 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
                           fontFamily: 'Product',
-                          color: isDarkMode! ? Colors.white : Colors.black,
+                          color: isDarkMode ? Colors.white : Colors.black,
                         ),
                       ),
                       TextSpan(
@@ -304,7 +304,7 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
                           fontSize: 15,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Product',
-                          color: isDarkMode! ? Colors.white : Colors.black,
+                          color: isDarkMode ? Colors.white : Colors.black,
                         ),
                       ),
                     ],
@@ -321,7 +321,7 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
                     padding: EdgeInsets.only(left: 10, top: 7, bottom: 7),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: isDarkMode!
+                      color: isDarkMode
                           ? isPrivate
                               ? primaryColor
                               : Colors.grey.shade800
@@ -341,13 +341,13 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
                         Icon(
                           isPrivate ? Icons.lock : Icons.lock_open,
                           size: 17,
-                          color: isDarkMode! ? Colors.white : Colors.black,
+                          color: isDarkMode ? Colors.white : Colors.black,
                         ),
                         Spacer(),
                         Switch.adaptive(
                           value: isPrivate,
                           activeColor:
-                              isDarkMode! ? primaryAccentColor : primaryColor,
+                              isDarkMode ? primaryAccentColor : primaryColor,
                           onChanged: (newValue) {
                             print(newValue);
                             isPrivate = newValue;
@@ -366,7 +366,7 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color: isDarkMode!
+                        color: isDarkMode
                             ? Colors.grey.shade800
                             : Colors.grey.shade200,
                       ),
@@ -396,12 +396,12 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
                         keyboardType: TextInputType.text,
                         textCapitalization: TextCapitalization.sentences,
                         style: TextStyle(
-                          color: isDarkMode! ? Colors.white : Colors.black,
+                          color: isDarkMode ? Colors.white : Colors.black,
                         ),
                         decoration: InputDecoration(
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                              color: isDarkMode! ? Colors.white : Colors.black,
+                              color: isDarkMode ? Colors.white : Colors.black,
                             ),
                           ),
                         ),
@@ -417,7 +417,7 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
                   child: Text(
                     'Name already exists',
                     style: TextStyle(
-                      color: isDarkMode!
+                      color: isDarkMode
                           ? Colors.red.shade300
                           : Colors.red.shade700,
                     ),
@@ -432,13 +432,13 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
                   ),
                   elevation: 0,
                   highlightElevation: 0,
-                  color: isDarkMode!
+                  color: isDarkMode
                       ? primaryAccentColor.withOpacity(0.5)
                       : primaryAccentColor,
                   child: Text(
                     'Create',
                     style: TextStyle(
-                      color: isDarkMode! ? Colors.white : Colors.black,
+                      color: isDarkMode ? Colors.white : Colors.black,
                     ),
                   ),
                 ),

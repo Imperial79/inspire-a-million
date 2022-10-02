@@ -20,10 +20,9 @@ class InspiredUi extends StatefulWidget {
 class _InspiredUiState extends State<InspiredUi> {
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    isDarkMode = brightness == Brightness.dark;
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
-      backgroundColor: isDarkMode! ? Colors.grey.shade900 : Colors.white,
+      backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(
         child: Column(
           children: [
@@ -41,7 +40,7 @@ class _InspiredUiState extends State<InspiredUi> {
                           style: TextStyle(
                             fontSize: 17,
                             letterSpacing: 1,
-                            color: isDarkMode!
+                            color: isDarkMode
                                 ? Colors.grey.shade300
                                 : Colors.black,
                             fontWeight: FontWeight.w700,
@@ -54,8 +53,7 @@ class _InspiredUiState extends State<InspiredUi> {
                           fontSize: 20,
                           letterSpacing: 17,
                           fontWeight: FontWeight.w900,
-                          color:
-                              isDarkMode! ? primaryAccentColor : primaryColor,
+                          color: isDarkMode ? primaryAccentColor : primaryColor,
                         ),
                       ),
                     ],
@@ -96,7 +94,7 @@ class _InspiredUiState extends State<InspiredUi> {
                   return Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 1.5,
-                      color: isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                      color: isDarkMode ? Colors.blue.shade100 : primaryColor,
                     ),
                   );
                 },
@@ -130,14 +128,14 @@ class _InspiredUiState extends State<InspiredUi> {
           ds['name'] == Userdetails.userDisplayName ? 'You' : ds['name'],
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            color: isDarkMode! ? Colors.grey.shade200 : Colors.black,
-            wordSpacing: isDarkMode! ? -4 : 0,
+            color: isDarkMode ? Colors.grey.shade200 : Colors.black,
+            wordSpacing: isDarkMode ? -4 : 0,
           ),
         ),
         subtitle: Text(
           '@' + ds['username'],
           style: TextStyle(
-            color: isDarkMode! ? primaryAccentColor : primaryColor,
+            color: isDarkMode ? primaryAccentColor : primaryColor,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -190,7 +188,7 @@ class _InspiredUiState extends State<InspiredUi> {
             updateFollowingUsersList().then((value) => setState(() {}));
           },
           elevation: 0,
-          // color: isDarkMode! ? primaryAccentColor : primaryColor,
+          // color: isDarkMode ? primaryAccentColor : primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
             side: ds['followers'].contains(Userdetails.uid)
@@ -201,7 +199,7 @@ class _InspiredUiState extends State<InspiredUi> {
           ),
           color: ds['followers'].contains(Userdetails.uid)
               ? Colors.transparent
-              : isDarkMode!
+              : isDarkMode
                   ? primaryAccentColor
                   : primaryColor,
 
@@ -212,12 +210,12 @@ class _InspiredUiState extends State<InspiredUi> {
                     ? 'Follow Back'
                     : 'Follow',
             style: TextStyle(
-              wordSpacing: isDarkMode! ? -2 : 0,
+              wordSpacing: isDarkMode ? -2 : 0,
               color: ds['followers'].contains(Userdetails.uid)
-                  ? isDarkMode!
+                  ? isDarkMode
                       ? Colors.grey.shade400
                       : Colors.grey.shade600
-                  : isDarkMode!
+                  : isDarkMode
                       ? primaryColor
                       : Colors.white,
               fontWeight: FontWeight.w700,

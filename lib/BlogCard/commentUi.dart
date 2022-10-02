@@ -60,10 +60,9 @@ class _CommentUiState extends State<CommentUi> {
 
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    isDarkMode = brightness == Brightness.dark;
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
-      backgroundColor: isDarkMode! ? Colors.grey.shade900 : Colors.white,
+      backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -72,14 +71,14 @@ class _CommentUiState extends State<CommentUi> {
           },
           icon: Icon(
             Icons.keyboard_arrow_down_rounded,
-            color: isDarkMode! ? Colors.white : Colors.black,
+            color: isDarkMode ? Colors.white : Colors.black,
           ),
         ),
         title: Text(
           'COMMENTS',
           style: TextStyle(
             letterSpacing: 6,
-            color: isDarkMode! ? Colors.blue.shade100 : primaryColor,
+            color: isDarkMode ? Colors.blue.shade100 : primaryColor,
             fontWeight: FontWeight.w700,
             fontSize: 16,
           ),
@@ -102,8 +101,7 @@ class _CommentUiState extends State<CommentUi> {
               padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color:
-                    isDarkMode! ? Colors.grey.shade800 : Colors.grey.shade100,
+                color: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade100,
               ),
               child: Row(
                 children: [
@@ -113,8 +111,7 @@ class _CommentUiState extends State<CommentUi> {
                       textCapitalization: TextCapitalization.sentences,
                       keyboardType: TextInputType.text,
                       style: TextStyle(
-                        color:
-                            isDarkMode! ? Colors.grey.shade200 : Colors.black,
+                        color: isDarkMode ? Colors.grey.shade200 : Colors.black,
                       ),
                       maxLines: 5,
                       minLines: 1,
@@ -124,7 +121,7 @@ class _CommentUiState extends State<CommentUi> {
                             Userdetails.userDisplayName.split(' ')[0],
                         border: InputBorder.none,
                         hintStyle: TextStyle(
-                          color: isDarkMode!
+                          color: isDarkMode
                               ? Colors.grey.shade600
                               : Colors.grey.shade400,
                           fontWeight: FontWeight.w600,
@@ -151,11 +148,11 @@ class _CommentUiState extends State<CommentUi> {
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: isDarkMode! ? primaryAccentColor : primaryColor,
+                        color: isDarkMode ? primaryAccentColor : primaryColor,
                       ),
                       child: SvgPicture.asset(
                         'lib/assets/icons/share.svg',
-                        color: isDarkMode! ? Colors.black : Colors.white,
+                        color: isDarkMode ? Colors.black : Colors.white,
                       ),
                     ),
                   ),
@@ -204,7 +201,7 @@ class _CommentUiState extends State<CommentUi> {
                             : snap['displayName'] + ' ',
                         style: TextStyle(
                           color:
-                              isDarkMode! ? Colors.grey.shade300 : Colors.black,
+                              isDarkMode ? Colors.grey.shade300 : Colors.black,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -212,7 +209,7 @@ class _CommentUiState extends State<CommentUi> {
                         text: snap['comment'],
                         style: TextStyle(
                           color:
-                              isDarkMode! ? Colors.grey.shade300 : Colors.black,
+                              isDarkMode ? Colors.grey.shade300 : Colors.black,
                         ),
                       ),
                     ],

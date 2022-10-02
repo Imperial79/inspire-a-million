@@ -4,6 +4,7 @@ import 'package:blog_app/services/globalVariable.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SearchUi extends StatefulWidget {
   const SearchUi({Key? key}) : super(key: key);
@@ -17,10 +18,9 @@ class _SearchUiState extends State<SearchUi> {
   bool isShowUsers = false;
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    isDarkMode = brightness == Brightness.dark;
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
-      backgroundColor: isDarkMode! ? Colors.grey.shade900 : Colors.white,
+      backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -37,7 +37,7 @@ class _SearchUiState extends State<SearchUi> {
                       },
                       icon: Icon(
                         Icons.arrow_back,
-                        color: isDarkMode!
+                        color: isDarkMode
                             ? Colors.grey.shade400
                             : Colors.grey.shade700,
                       ),
@@ -48,8 +48,8 @@ class _SearchUiState extends State<SearchUi> {
                         fontWeight: FontWeight.w900,
                         letterSpacing: 15,
                         fontSize: 23,
-                        color: isDarkMode!
-                            ? Colors.grey.shade400
+                        color: isDarkMode
+                            ? Colors.grey.shade300
                             : Colors.grey.shade700,
                       ),
                     ),
@@ -58,90 +58,90 @@ class _SearchUiState extends State<SearchUi> {
                       child: Text(
                         'other users to motivate \'em and make more friends to !nspire - A Million',
                         style: TextStyle(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                           fontSize: 13,
                           wordSpacing: 1,
                           letterSpacing: 1,
                           color:
-                              isDarkMode! ? Colors.grey.shade400 : Colors.grey,
+                              isDarkMode ? Colors.grey.shade400 : Colors.grey,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(0),
-                  ),
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: TextField(
-                          autofocus: true,
-                          enableSuggestions: true,
-                          enableIMEPersonalizedLearning: true,
-                          style: TextStyle(
-                            color: isDarkMode! ? Colors.white : Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(0),
+                ),
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: TextField(
+                        autofocus: true,
+                        enableSuggestions: true,
+                        enableIMEPersonalizedLearning: true,
+                        style: TextStyle(
+                          color: isDarkMode ? Colors.white : Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                        ),
+                        controller: searchController,
+                        cursorColor:
+                            isDarkMode ? primaryAccentColor : primaryColor,
+                        decoration: InputDecoration(
+                          // contentPadding:
+                          //     EdgeInsets.symmetric(horizontal: 15),
+                          border: InputBorder.none,
+                          hintText: '  Search other Motivators ...',
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 15,
+                            letterSpacing: 1,
+                            fontWeight: FontWeight.w500,
                           ),
-                          controller: searchController,
-                          cursorColor:
-                              isDarkMode! ? primaryAccentColor : primaryColor,
-                          decoration: InputDecoration(
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 15),
-                            border: InputBorder.none,
-                            hintText: '  Search other Motivators ...',
-                            hintStyle: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 15,
-                              letterSpacing: 1,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          onChanged: (value) {
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            isShowUsers = true;
+                          });
+                          if (value.isEmpty) {
                             setState(() {
-                              isShowUsers = true;
+                              isShowUsers = false;
                             });
-                            if (value.isEmpty) {
-                              setState(() {
-                                isShowUsers = false;
-                              });
-                            }
-                          },
+                          }
+                        },
+                      ),
+                    ),
+                    Visibility(
+                      visible: searchController.text.isNotEmpty,
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            searchController.clear();
+                            isShowUsers = false;
+                          });
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: isDarkMode
+                              ? Colors.blueGrey.shade600
+                              : primaryColor,
+                          radius: 13,
+                          child: Icon(
+                            Icons.close,
+                            size: 13,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                      searchController.text.isEmpty
-                          ? Container()
-                          : GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  searchController.clear();
-                                  isShowUsers = false;
-                                });
-                              },
-                              child: CircleAvatar(
-                                backgroundColor: isDarkMode!
-                                    ? Colors.blueGrey.shade600
-                                    : primaryColor,
-                                radius: 13,
-                                child: Icon(
-                                  Icons.close,
-                                  size: 13,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                  ],
                 ),
               ),
               Column(
@@ -192,10 +192,10 @@ class _SearchUiState extends State<SearchUi> {
                               '!nspire',
                               style: TextStyle(
                                 fontSize: 40,
-                                color: isDarkMode!
+                                color: isDarkMode
                                     ? Colors.white.withOpacity(0.5)
                                     : Colors.grey.withOpacity(0.5),
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
@@ -242,8 +242,8 @@ class _SearchUiState extends State<SearchUi> {
             Text(
               ds['name'],
               style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: isDarkMode! ? Colors.white : Colors.black,
+                fontWeight: FontWeight.w500,
+                color: isDarkMode ? Colors.white : Colors.black,
               ),
             ),
           ],
@@ -252,17 +252,17 @@ class _SearchUiState extends State<SearchUi> {
           '@' + ds['username'],
           style: TextStyle(
             fontSize: 13,
-            color: isDarkMode! ? primaryAccentColor : primaryColor,
-            fontWeight: FontWeight.w600,
+            color: isDarkMode ? primaryAccentColor : primaryColor,
+            fontWeight: FontWeight.w500,
           ),
         ),
-        tileColor: isDarkMode!
+        tileColor: isDarkMode
             ? Colors.grey.shade800.withOpacity(0.6)
             : Colors.grey.shade100,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
           // side: BorderSide(
-          //   color: isDarkMode! ? primaryAccentColor : primaryColor,
+          //   color: isDarkMode ? primaryAccentColor : primaryColor,
           //   width: 1,
           // ),
         ),

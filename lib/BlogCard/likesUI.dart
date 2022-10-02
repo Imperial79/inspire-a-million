@@ -16,10 +16,9 @@ class LikesUI extends StatefulWidget {
 class _LikesUIState extends State<LikesUI> {
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    isDarkMode = brightness == Brightness.dark;
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
-      backgroundColor: isDarkMode! ? Colors.grey.shade900 : Colors.white,
+      backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(
         child: Column(
           children: [
@@ -32,7 +31,7 @@ class _LikesUIState extends State<LikesUI> {
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w700,
-                      color: isDarkMode! ? primaryAccentColor : primaryColor,
+                      color: isDarkMode ? primaryAccentColor : primaryColor,
                     ),
                   ),
                 ],
@@ -81,7 +80,7 @@ class _LikesUIState extends State<LikesUI> {
                                 : ds['name'],
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              color: isDarkMode!
+                              color: isDarkMode
                                   ? Colors.grey.shade200
                                   : Colors.black,
                             ),
@@ -89,7 +88,7 @@ class _LikesUIState extends State<LikesUI> {
                           subtitle: Text(
                             '@' + ds['username'],
                             style: TextStyle(
-                              color: isDarkMode!
+                              color: isDarkMode
                                   ? primaryAccentColor
                                   : primaryColor,
                               fontWeight: FontWeight.w600,
@@ -174,10 +173,10 @@ class _LikesUIState extends State<LikesUI> {
                                     style: TextStyle(
                                       color: ds['followers']
                                               .contains(Userdetails.uid)
-                                          ? isDarkMode!
+                                          ? isDarkMode
                                               ? primaryAccentColor
                                               : primaryColor
-                                          : isDarkMode!
+                                          : isDarkMode
                                               ? Colors.grey.shade100
                                               : Colors.white,
                                       fontWeight: FontWeight.w600,
@@ -192,7 +191,7 @@ class _LikesUIState extends State<LikesUI> {
                   return Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 1.5,
-                      color: isDarkMode! ? primaryAccentColor : primaryColor,
+                      color: isDarkMode ? primaryAccentColor : primaryColor,
                     ),
                   );
                 },

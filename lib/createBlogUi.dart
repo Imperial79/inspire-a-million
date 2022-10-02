@@ -16,13 +16,9 @@ class CreateBlogUi extends StatefulWidget {
   State<CreateBlogUi> createState() => _CreateBlogUiState();
 }
 
-class _CreateBlogUiState extends State<CreateBlogUi>
-    with AutomaticKeepAliveClientMixin {
+class _CreateBlogUiState extends State<CreateBlogUi> {
   final description = TextEditingController();
   int textCount = 0;
-
-  @override
-  bool get wantKeepAlive => true;
 
   List extractTags(String content) {
     var contentArr = content.split(' ');
@@ -33,7 +29,6 @@ class _CreateBlogUiState extends State<CreateBlogUi>
         tags.add(contentArr[i]);
       }
     }
-    // print('tags ---> ' + tags.toString());
 
     FirebaseFirestore.instance.collection('tags').doc('tags').update({
       'tags': FieldValue.arrayUnion(tags),
@@ -88,8 +83,7 @@ class _CreateBlogUiState extends State<CreateBlogUi>
 
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    isDarkMode = brightness == Brightness.dark;
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
@@ -97,7 +91,7 @@ class _CreateBlogUiState extends State<CreateBlogUi>
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarIconBrightness:
-              isDarkMode! ? Brightness.light : Brightness.dark,
+              isDarkMode ? Brightness.light : Brightness.dark,
         ),
         title: ThisHeader(),
       ),
@@ -115,19 +109,19 @@ class _CreateBlogUiState extends State<CreateBlogUi>
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
-                    color: isDarkMode!
+                    color: isDarkMode
                         ? Colors.black.withOpacity(0.2)
                         : Colors.white.withOpacity(0.5),
                   ),
                   child: TextField(
                     controller: description,
                     cursorColor:
-                        isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                        isDarkMode ? Colors.blue.shade100 : primaryColor,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       letterSpacing: 1,
                       fontSize: 16.8,
-                      color: isDarkMode!
+                      color: isDarkMode
                           ? Colors.grey.shade300
                           : Colors.grey.shade700,
                     ),
@@ -138,7 +132,7 @@ class _CreateBlogUiState extends State<CreateBlogUi>
                         letterSpacing: 1,
                         fontWeight: FontWeight.w500,
                         fontSize: 16.8,
-                        color: isDarkMode! ? Colors.grey.shade600 : Colors.grey,
+                        color: isDarkMode ? Colors.grey.shade600 : Colors.grey,
                         height: 1.5,
                       ),
                       border: InputBorder.none,
@@ -169,7 +163,7 @@ class _CreateBlogUiState extends State<CreateBlogUi>
                         child: Text(
                           'Words: ' + textCount.toString(),
                           style: TextStyle(
-                            color: isDarkMode!
+                            color: isDarkMode
                                 ? Colors.grey.shade200
                                 : Colors.grey.shade700,
                             fontWeight: FontWeight.w800,
@@ -189,7 +183,7 @@ class _CreateBlogUiState extends State<CreateBlogUi>
                               horizontal: 15, vertical: 10),
                           decoration: BoxDecoration(
                             color:
-                                isDarkMode! ? primaryAccentColor : primaryColor,
+                                isDarkMode ? primaryAccentColor : primaryColor,
                             borderRadius: BorderRadius.circular(50),
                           ),
                           child: Text(
@@ -197,7 +191,7 @@ class _CreateBlogUiState extends State<CreateBlogUi>
                             style: TextStyle(
                               letterSpacing: 1,
                               fontSize: 16,
-                              color: isDarkMode! ? Colors.black : Colors.white,
+                              color: isDarkMode ? Colors.black : Colors.white,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -213,7 +207,7 @@ class _CreateBlogUiState extends State<CreateBlogUi>
                       //   shape: RoundedRectangleBorder(
                       //     borderRadius: BorderRadius.circular(50),
                       //   ),
-                      //   color: isDarkMode! ? primaryAccentColor : primaryColor,
+                      //   color: isDarkMode ? primaryAccentColor : primaryColor,
                       //   padding: EdgeInsets.symmetric(vertical: 12),
                       //   elevation: 0,
                       //   child: Text(
@@ -221,7 +215,7 @@ class _CreateBlogUiState extends State<CreateBlogUi>
                       //     style: TextStyle(
                       //       letterSpacing: 0.5,
                       //       fontSize: 20,
-                      //       color: isDarkMode! ? primaryColor : Colors.white,
+                      //       color: isDarkMode ? primaryColor : Colors.white,
                       //       fontWeight: FontWeight.w500,
                       //     ),
                       //   ),
@@ -249,7 +243,7 @@ class _CreateBlogUiState extends State<CreateBlogUi>
           style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 16,
-            color: isDarkMode! ? Colors.white : Colors.grey.shade800,
+            color: isDarkMode ? Colors.white : Colors.grey.shade800,
             letterSpacing: 4,
           ),
         ),
@@ -277,8 +271,7 @@ class _CreateBlogUiState extends State<CreateBlogUi>
             Text(
               Userdetails.userDisplayName,
               style: TextStyle(
-                color:
-                    isDarkMode! ? Colors.grey.shade300 : Colors.grey.shade700,
+                color: isDarkMode ? Colors.grey.shade300 : Colors.grey.shade700,
                 fontWeight: FontWeight.w400,
                 fontSize: 16,
               ),

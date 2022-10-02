@@ -105,7 +105,6 @@ class _SplashUIState extends State<SplashUI> with WidgetsBindingObserver {
   getMyTokenID() async {
     var status = await OneSignal.shared.getDeviceState();
     tokenId = status!.userId!;
-    // print('My Token ID ---> ' + tokenId);
 
     FirebaseFirestore.instance
         .collection('users')
@@ -118,6 +117,7 @@ class _SplashUIState extends State<SplashUI> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
       body: Center(
         child: AnimatedTextKit(
@@ -128,7 +128,7 @@ class _SplashUIState extends State<SplashUI> with WidgetsBindingObserver {
               textStyle: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w600,
-                color: isDarkMode! ? primaryAccentColor : primaryColor,
+                color: isDarkMode ? primaryAccentColor : primaryColor,
               ),
             ),
           ],

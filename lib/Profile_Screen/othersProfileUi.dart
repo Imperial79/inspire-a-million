@@ -55,16 +55,7 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
 
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    isDarkMode = brightness == Brightness.dark;
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle.light.copyWith(
-        statusBarIconBrightness:
-            isDarkMode! ? Brightness.light : Brightness.dark,
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.transparent,
-      ),
-    );
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -90,14 +81,14 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                         ),
                         CircleAvatar(
                           radius: 44.5,
-                          backgroundColor: isDarkMode!
+                          backgroundColor: isDarkMode
                               ? Colors.blue.shade300
-                              : isDarkMode!
+                              : isDarkMode
                                   ? Colors.blue.shade100
                                   : primaryColor,
                           child: CircleAvatar(
                             radius: 43,
-                            backgroundColor: isDarkMode!
+                            backgroundColor: isDarkMode
                                 ? Colors.grey.shade900
                                 : Colors.white,
                             child: CircleAvatar(
@@ -171,7 +162,7 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                           },
                           color: ds['followers'].contains(Userdetails.uid)
                               ? Colors.transparent
-                              : isDarkMode!
+                              : isDarkMode
                                   ? Colors.blue.shade100
                                   : primaryColor,
                           elevation: 0,
@@ -181,7 +172,7 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                             borderRadius: BorderRadius.circular(7),
                             side: ds['followers'].contains(Userdetails.uid)
                                 ? BorderSide(
-                                    color: isDarkMode!
+                                    color: isDarkMode
                                         ? Colors.blue.shade100
                                         : primaryColor,
                                   )
@@ -195,10 +186,10 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                                     : 'Follow',
                             style: TextStyle(
                               color: ds['followers'].contains(Userdetails.uid)
-                                  ? isDarkMode!
+                                  ? isDarkMode
                                       ? Colors.grey.shade400
                                       : Colors.grey.shade600
-                                  : isDarkMode!
+                                  : isDarkMode
                                       ? Colors.blue.shade800
                                       : Colors.white,
                               fontWeight: FontWeight.w700,
@@ -212,7 +203,7 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                         Text(
                           ds['name'],
                           style: TextStyle(
-                            color: isDarkMode!
+                            color: isDarkMode
                                 ? Colors.white
                                 : Colors.grey.shade800,
                             fontSize: 30,
@@ -224,7 +215,7 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                         Text(
                           '@' + ds['username'],
                           style: TextStyle(
-                            color: isDarkMode!
+                            color: isDarkMode
                                 ? Colors.blue.shade100
                                 : primaryColor,
                             fontSize: 16,
@@ -311,7 +302,7 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                   }
                   return Center(
                     child: CircularProgressIndicator(
-                      color: isDarkMode! ? Colors.blue.shade100 : primaryColor,
+                      color: isDarkMode ? Colors.blue.shade100 : primaryColor,
                       strokeWidth: 1.6,
                     ),
                   );
@@ -333,9 +324,9 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
   //           ? EdgeInsets.symmetric(vertical: 15)
   //           : EdgeInsets.all(0),
   //       decoration: BoxDecoration(
-  //         color: isDarkMode!
+  //         color: isDarkMode
   //             ? Colors.grey.withOpacity(0.2)
-  //             : isDarkMode!
+  //             : isDarkMode
   //                 ? primaryAccentColor
   //                 : primaryColor.withOpacity(0.1),
   //         borderRadius: BorderRadius.circular(10),
@@ -356,7 +347,7 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
   //                       child: Text(
   //                         count,
   //                         style: TextStyle(
-  //                           color: isDarkMode!
+  //                           color: isDarkMode
   //                               ? Colors.grey.shade300
   //                               : Colors.grey.shade700,
   //                           fontWeight: FontWeight.w900,
@@ -379,7 +370,7 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
   //                             child: Text(
   //                               label,
   //                               style: TextStyle(
-  //                                 color: isDarkMode!
+  //                                 color: isDarkMode
   //                                     ? primaryAccentColor
   //                                     : primaryColor.withOpacity(0.7),
   //                                 fontWeight: FontWeight.w800,
@@ -395,7 +386,7 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
   //                                       ? 'Followers'
   //                                       : 'Following',
   //                               style: TextStyle(
-  //                                 color: isDarkMode!
+  //                                 color: isDarkMode
   //                                     ? primaryAccentColor.withOpacity(0.7)
   //                                     : primaryColor.withOpacity(0.5),
   //                                 fontWeight: FontWeight.w700,
@@ -420,13 +411,13 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
   //                     padding: EdgeInsets.all(10),
   //                     decoration: BoxDecoration(
   //                       shape: BoxShape.circle,
-  //                       color: isDarkMode! ? primaryAccentColor : primaryColor,
+  //                       color: isDarkMode ? primaryAccentColor : primaryColor,
   //                     ),
   //                     child: RotatedBox(
   //                       quarterTurns: 90,
   //                       child: SvgPicture.asset(
   //                         'lib/assets/icons/back.svg',
-  //                         color: isDarkMode! ? Colors.black : Colors.white,
+  //                         color: isDarkMode ? Colors.black : Colors.white,
   //                       ),
   //                     ),
   //                   ),

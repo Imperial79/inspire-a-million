@@ -2,7 +2,6 @@ import 'package:blog_app/BlogCard/blogCard.dart';
 import 'package:blog_app/services/globalVariable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class TagsUI extends StatefulWidget {
   final tag;
@@ -15,6 +14,7 @@ class TagsUI extends StatefulWidget {
 class _TagsUIState extends State<TagsUI> {
   @override
   Widget build(BuildContext context) {
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
       body: SafeArea(
         child: Column(

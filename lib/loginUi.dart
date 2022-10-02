@@ -18,13 +18,12 @@ class _LoginUiState extends State<LoginUi> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    isDarkMode = brightness == Brightness.dark;
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
 
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light.copyWith(
         statusBarIconBrightness:
-            isDarkMode! ? Brightness.light : Brightness.dark,
+            isDarkMode ? Brightness.light : Brightness.dark,
         statusBarColor: Colors.transparent,
         systemNavigationBarColor: Colors.transparent,
       ),
@@ -33,7 +32,7 @@ class _LoginUiState extends State<LoginUi> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: isDarkMode! ? Colors.grey.shade900 : Colors.white,
+      backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(
         child: isLoading == true
             ? Center(
@@ -49,7 +48,7 @@ class _LoginUiState extends State<LoginUi> {
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
                             color:
-                                isDarkMode! ? primaryAccentColor : primaryColor,
+                                isDarkMode ? primaryAccentColor : primaryColor,
                           ),
                         ),
                       ],
@@ -79,7 +78,7 @@ class _LoginUiState extends State<LoginUi> {
                                 Text(
                                   '!nspire',
                                   style: TextStyle(
-                                    color: isDarkMode!
+                                    color: isDarkMode
                                         ? primaryAccentColor
                                         : primaryColor,
                                     fontWeight: FontWeight.w600,
@@ -119,7 +118,7 @@ class _LoginUiState extends State<LoginUi> {
                                         EdgeInsets.symmetric(horizontal: 5.0),
                                     padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                      color: isDarkMode!
+                                      color: isDarkMode
                                           ? Colors.grey.shade800
                                           : Colors.grey.shade100
                                               .withOpacity(0.5),
@@ -152,7 +151,7 @@ class _LoginUiState extends State<LoginUi> {
                           });
                           AuthMethods().signInWithgoogle(context);
                         },
-                        color: isDarkMode! ? Colors.white : primaryColor,
+                        color: isDarkMode ? Colors.white : primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -168,7 +167,7 @@ class _LoginUiState extends State<LoginUi> {
                             CircleAvatar(
                               radius: 15,
                               backgroundColor:
-                                  isDarkMode! ? Colors.black : Colors.white,
+                                  isDarkMode ? Colors.black : Colors.white,
                               child: Image.asset(
                                 'lib/assets/image/googleLogo.png',
                                 height: 15,
@@ -178,8 +177,7 @@ class _LoginUiState extends State<LoginUi> {
                             Text(
                               'Continue with Google',
                               style: TextStyle(
-                                color:
-                                    isDarkMode! ? Colors.black : Colors.white,
+                                color: isDarkMode ? Colors.black : Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),

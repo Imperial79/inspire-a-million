@@ -52,19 +52,19 @@ class _MyAppState extends State<MyApp> {
         systemNavigationBarColor: Colors.transparent,
       ),
     );
-
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return MaterialApp(
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       title: '!nspire',
       color: Colors.grey.shade100,
-      // darkTheme: ThemeData(
-      //   useMaterial3: true,
-      //   colorSchemeSeed: primaryColor,
-      //   scaffoldBackgroundColor: scaffoldDarkColor,
-      //   brightness: Brightness.dark,
-      //   fontFamily: 'Product',
-      // ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: primaryColor,
+        scaffoldBackgroundColor: scaffoldDarkColor,
+        brightness: Brightness.dark,
+        fontFamily: 'Product',
+      ),
       theme: ThemeData(
         useMaterial3: true,
         colorSchemeSeed: primaryColor,

@@ -17,7 +17,7 @@ class Userdetails {
 List followingUsers = [];
 List followers = [];
 
-bool? isDarkMode;
+bool isDarkMode = false;
 var savedScrollOffset = 0.0;
 
 class Global {
@@ -46,14 +46,9 @@ class _StatsCardState extends State<StatsCard> {
         onTap: widget.press,
         borderRadius: BorderRadius.circular(10),
         child: Container(
-          // width: double.infinity,
-          // padding: widget.count == '0'
-          //     ? EdgeInsets.symmetric(vertical: 15)
-          //     : EdgeInsets.all(0),
-
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: isDarkMode!
+            color: isDarkMode
                 ? primaryAccentColor.withOpacity(0.2)
                 : primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(10),
@@ -65,7 +60,7 @@ class _StatsCardState extends State<StatsCard> {
                 child: Text(
                   widget.count,
                   style: TextStyle(
-                    color: isDarkMode!
+                    color: isDarkMode
                         ? Colors.grey.shade300
                         : Colors.grey.shade700,
                     fontWeight: FontWeight.w900,
@@ -82,7 +77,7 @@ class _StatsCardState extends State<StatsCard> {
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10),
                   ),
-                  color: isDarkMode!
+                  color: isDarkMode
                       ? primaryAccentColor.withOpacity(0.7)
                       : primaryColor,
                 ),
@@ -90,7 +85,7 @@ class _StatsCardState extends State<StatsCard> {
                   child: Text(
                     widget.label.toString().toUpperCase(),
                     style: TextStyle(
-                      color: isDarkMode! ? Colors.black : Colors.white,
+                      color: isDarkMode ? Colors.black : Colors.white,
                       fontWeight: FontWeight.w500,
                       fontSize: 12,
                       letterSpacing: 1,
@@ -124,7 +119,7 @@ StreamBuilder<dynamic> BlogList({final isMe, name, uid}) {
                         'Write Blogs',
                         style: TextStyle(
                           color:
-                              isDarkMode! ? Colors.grey.shade300 : Colors.grey,
+                              isDarkMode ? Colors.grey.shade300 : Colors.grey,
                           fontSize: 30,
                           fontWeight: FontWeight.w600,
                         ),
@@ -133,7 +128,7 @@ StreamBuilder<dynamic> BlogList({final isMe, name, uid}) {
                         '&\n!nspire a Million',
                         style: TextStyle(
                           color:
-                              isDarkMode! ? Colors.grey.shade300 : Colors.grey,
+                              isDarkMode ? Colors.grey.shade300 : Colors.grey,
                           fontSize: 20,
                         ),
                         textAlign: TextAlign.center,
@@ -143,7 +138,7 @@ StreamBuilder<dynamic> BlogList({final isMe, name, uid}) {
                 : Text(
                     'No Blogs',
                     style: TextStyle(
-                      color: isDarkMode! ? Colors.grey.shade300 : Colors.grey,
+                      color: isDarkMode ? Colors.grey.shade300 : Colors.grey,
                       fontSize: 20,
                       letterSpacing: 10,
                       fontWeight: FontWeight.w600,
@@ -154,38 +149,37 @@ StreamBuilder<dynamic> BlogList({final isMe, name, uid}) {
 
         return Column(
           children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      isMe ? 'Your' : name + '\'s',
-                      style: TextStyle(
-                        letterSpacing: 1,
-                        fontSize: 15,
-                        color:
-                            isDarkMode! ? Colors.grey.shade300 : Colors.black,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      'INSPIRATIONS',
-                      style: TextStyle(
-                        fontSize: 20,
-                        letterSpacing: 10,
-                        fontWeight: FontWeight.w600,
-                        color: isDarkMode!
-                            ? primaryAccentColor.withOpacity(0.8)
-                            : primaryColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // Align(
+            //   alignment: Alignment.topLeft,
+            //   child: Padding(
+            //     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Text(
+            //           isMe ? 'Your' : name + '\'s',
+            //           style: TextStyle(
+            //             letterSpacing: 1,
+            //             fontSize: 15,
+            //             color: isDarkMode ? Colors.grey.shade300 : Colors.black,
+            //             fontWeight: FontWeight.w600,
+            //           ),
+            //         ),
+            //         Text(
+            //           'INSPIRATIONS',
+            //           style: TextStyle(
+            //             fontSize: 20,
+            //             letterSpacing: 10,
+            //             fontWeight: FontWeight.w600,
+            //             color: isDarkMode
+            //                 ? primaryAccentColor.withOpacity(0.8)
+            //                 : primaryColor,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             ListView.builder(
               itemCount: snapshot.data.docs.length,
               physics: BouncingScrollPhysics(),
@@ -217,7 +211,7 @@ Widget Header(BuildContext context) {
       Text(
         '!NSPIRE',
         style: TextStyle(
-          color: isDarkMode! ? primaryAccentColor : primaryColor,
+          color: isDarkMode ? primaryAccentColor : primaryColor,
           fontWeight: FontWeight.w400,
           letterSpacing: 10,
           fontSize: 20,
@@ -260,10 +254,10 @@ class CustomLoading extends StatelessWidget {
       height: 30,
       width: 30,
       child: CircularProgressIndicator(
-        backgroundColor: isDarkMode!
+        backgroundColor: isDarkMode
             ? primaryAccentColor.withOpacity(0.3)
             : primaryAccentColor,
-        color: isDarkMode! ? primaryAccentColor : primaryColor,
+        color: isDarkMode ? primaryAccentColor : primaryColor,
         strokeWidth: 3,
       ),
     );
