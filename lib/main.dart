@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
         systemNavigationBarColor: Colors.transparent,
       ),
     );
-    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
+    // isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return MaterialApp(
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,

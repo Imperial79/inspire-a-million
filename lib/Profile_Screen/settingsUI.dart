@@ -2,10 +2,6 @@ import 'package:blog_app/services/globalVariable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-String selectedDarkWall = '1';
-String selectedLightWall = '1';
-String selectedColor = 'green';
-
 class SettingsUI extends StatefulWidget {
   SettingsUI({Key? key}) : super(key: key);
 
@@ -14,28 +10,36 @@ class SettingsUI extends StatefulWidget {
 }
 
 class _SettingsUIState extends State<SettingsUI> {
-  int selectedRadioTile = 1;
+  String selectedTheme = 'system';
 
-  setSelectedRadioTile(int val) {
-    setState(() {
-      selectedRadioTile = val;
-    });
-  }
+  // setSelectTheme(final value) {
+  //   if (value == 'on') {
+  //     isDarkMode = true;
+  //   } else if (value == 'off') {
+  //     isDarkMode = false;
+  //   } else {
+  //     if (Theme.of(context).brightness == Brightness.dark) {
+  //       isDarkMode = true;
+  //     } else {
+  //       isDarkMode = false;
+  //     }
+  //   }
+
+  //   setState(() {});
+  // }
 
   @override
   void initState() {
     super.initState();
-    selectedRadioTile = 1;
   }
 
   @override
   Widget build(BuildContext context) {
-    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
-
     return Scaffold(
+      backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       appBar: AppBar(
-        elevation: 0,
         backgroundColor: Colors.transparent,
+        elevation: 0,
         title: Text(
           'SETTINGS',
           style: TextStyle(
@@ -62,38 +66,49 @@ class _SettingsUIState extends State<SettingsUI> {
           SizedBox(
             height: 10,
           ),
-          RadioListTile(
-            value: 1,
-            groupValue: selectedRadioTile,
-            title: Text("On"),
-            subtitle: Text("Radio 1 Subtitle"),
-            onChanged: (val) {
-              print("Radio Tile pressed $val");
-              setSelectedRadioTile(int.parse(val.toString()));
-            },
+          SelectModeBtn(
+            value: 'on',
+            groupValue: selectedTheme,
+            title: 'On',
+            subtitle: 'When set to ON the app theme will be set to DARK MODE.',
           ),
-          RadioListTile(
-            value: 2,
-            groupValue: selectedRadioTile,
-            title: Text("Off"),
-            subtitle: Text("Radio 2 Subtitle"),
-            onChanged: (val) {
-              print("Radio Tile pressed $val");
-              setSelectedRadioTile(int.parse(val.toString()));
-            },
+          SelectModeBtn(
+            value: 'off',
+            groupValue: selectedTheme,
+            title: 'Off',
+            subtitle:
+                'When set to OFF the app theme will be set to LIGHT MODE.',
           ),
-          RadioListTile(
-            value: 3,
-            groupValue: selectedRadioTile,
-            title: Text("System Default"),
-            subtitle: Text("Radio 2 Subtitle"),
-            onChanged: (val) {
-              print("Radio Tile pressed $val");
-              setSelectedRadioTile(int.parse(val.toString()));
-            },
+          SelectModeBtn(
+            value: 'system',
+            groupValue: selectedTheme,
+            title: 'System Default',
+            subtitle:
+                'When set to "System Default" the app theme will be depended on System Theme.',
           ),
         ],
       ),
+    );
+  }
+
+  Widget SelectModeBtn({
+    required String value,
+    required Object groupValue,
+    required String title,
+    required String subtitle,
+  }) {
+    return RadioListTile(
+      value: value,
+      groupValue: groupValue,
+      title: Text(title),
+      subtitle: Text(subtitle),
+      contentPadding: EdgeInsets.zero,
+      onChanged: (value) {
+        print(value);
+        setState(() {
+          selectedTheme = value.toString();
+        });
+      },
     );
   }
 }

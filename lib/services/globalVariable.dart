@@ -18,7 +18,6 @@ List followingUsers = [];
 List followers = [];
 
 bool isDarkMode = false;
-var savedScrollOffset = 0.0;
 
 class Global {
   static const String appId = 'd89e62af-8f8d-4aab-96eb-1defe312dda6';

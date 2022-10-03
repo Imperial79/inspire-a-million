@@ -80,7 +80,8 @@ class _ExploreUIState extends State<ExploreUI> {
 
   @override
   Widget build(BuildContext context) {
-    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
+    print('explore UI' + isDarkMode.toString());
+    // isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

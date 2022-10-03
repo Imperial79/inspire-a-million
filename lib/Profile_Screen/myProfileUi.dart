@@ -44,9 +44,13 @@ class _MyProfileUiState extends State<MyProfileUi> {
 
   @override
   Widget build(BuildContext context) {
-    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
+    // isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
+    // print(isDarkMode);
+
+    print('my ' + isDarkMode.toString());
+
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(
         child: Column(
           children: [
@@ -146,7 +150,9 @@ class _MyProfileUiState extends State<MyProfileUi> {
               ),
               IconButton(
                 onPressed: () {
-                  NavPush(context, SettingsUI());
+                  NavPush(context, SettingsUI()).then((value) {
+                    setState(() {});
+                  });
                 },
                 icon: SvgPicture.asset(
                   'lib/assets/icons/settings.svg',

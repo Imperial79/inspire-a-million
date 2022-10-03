@@ -77,12 +77,13 @@ deletePost(final blogId) async {
   await DatabaseMethods().deletePostDetails(blogId);
 }
 
-NavPush(context, screen) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
+Future NavPush(context, screen) async {
+  await Navigator.push(
+      context, MaterialPageRoute(builder: (context) => screen));
 }
 
-NavPushReplacement(BuildContext context, screen) {
-  Navigator.pushReplacement(
+Future NavPushReplacement(BuildContext context, screen) async {
+  await Navigator.pushReplacement(
       context, MaterialPageRoute(builder: (context) => screen));
 }
 
