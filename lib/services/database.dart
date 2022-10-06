@@ -13,12 +13,13 @@ class DatabaseMethods {
         .set(userInfoMap);
   }
 
-  uploadComments(String blogId, commentMap) async {
+  uploadComments(String blogId, commentMap, commentId) async {
     await FirebaseFirestore.instance
         .collection('blogs')
         .doc(blogId)
         .collection('comments')
-        .add(commentMap)
+        .doc(commentId)
+        .set(commentMap)
         .then((value) => updateCommentCount(blogId));
   }
 

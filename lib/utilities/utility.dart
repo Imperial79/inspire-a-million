@@ -1,3 +1,4 @@
+import 'package:blog_app/BlogCard/commentReplyUI.dart';
 import 'package:blog_app/BlogCard/tagsUI.dart';
 import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/services/globalVariable.dart';
@@ -88,13 +89,13 @@ Future NavPushReplacement(BuildContext context, screen) async {
 }
 
 Widget CommentList(String blogId) {
-  return StreamBuilder<dynamic>(
-    stream: FirebaseFirestore.instance
+  return FutureBuilder<dynamic>(
+    future: FirebaseFirestore.instance
         .collection('blogs')
         .doc(blogId)
         .collection('comments')
         .orderBy('time', descending: true)
-        .snapshots(),
+        .get(),
     builder: (context, snapshot) {
       var primaryColor;
       return (snapshot.hasData)
@@ -131,7 +132,11 @@ Widget CommentList(String blogId) {
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data.docs[index];
 
-                    return BuildCommentCard(snap: ds);
+                    return BuildCommentCard(
+                      blogId: blogId,
+                      snap: ds,
+                      context: context,
+                    );
                   },
                 )
           : Center(
@@ -149,6 +154,8 @@ Widget CommentList(String blogId) {
 
 Widget BuildCommentCard({
   final snap,
+  blogId,
+  required BuildContext context,
 }) {
   return Container(
     padding: EdgeInsets.only(left: 15, top: 20, right: 15),
@@ -157,6 +164,7 @@ Widget BuildCommentCard({
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CircleAvatar(
+          radius: 17,
           backgroundColor: Colors.grey.shade100,
           child: CachedNetworkImage(
             imageUrl: snap['userImage'],
@@ -196,12 +204,30 @@ Widget BuildCommentCard({
               Text(
                 DateFormat.yMMMd().format(snap['time'].toDate()),
                 style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey.shade500,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey.shade600,
                 ),
               ),
             ],
+          ),
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        IconButton(
+          onPressed: () {
+            NavPush(
+                context,
+                ReplyUI(
+                  blogId: blogId,
+                  commentId: snap['time'],
+                  comment: snap['comment'].toString().replaceAll('/:', ':'),
+                ));
+          },
+          icon: Icon(
+            Icons.reply,
+            size: 15,
           ),
         ),
       ],

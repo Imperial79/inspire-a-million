@@ -11,7 +11,7 @@ import '../services/globalVariable.dart';
 import '../utilities/utility.dart';
 
 Stream? blogStream;
-Future updateFollowingUsersList() async {
+Future<void> updateFollowingUsersList() async {
   await DatabaseMethods().getUsersIAmFollowing().then((value) {
     users = value;
     followingUsers = users!.data()!['following'];
@@ -22,10 +22,6 @@ Future updateFollowingUsersList() async {
       followingUsers.add(FirebaseAuth.instance.currentUser!.uid);
     }
   });
-  return print('Following Users [' +
-      followingUsers.length.toString() +
-      '] ---------> ' +
-      followingUsers.toString());
 }
 
 class ExploreUI extends StatefulWidget {
@@ -62,8 +58,6 @@ class _ExploreUIState extends State<ExploreUI> {
 
         setState(() {});
       });
-    } else {
-      print('Followers empty');
     }
   }
 
@@ -80,7 +74,6 @@ class _ExploreUIState extends State<ExploreUI> {
 
   @override
   Widget build(BuildContext context) {
-    print('explore UI' + isDarkMode.toString());
     // isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
       appBar: AppBar(

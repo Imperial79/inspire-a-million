@@ -83,9 +83,6 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
 
   @override
   Widget build(BuildContext context) {
-    // print('create UI' + isDarkMode.toString());
-
-    // isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(

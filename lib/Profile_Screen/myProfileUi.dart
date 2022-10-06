@@ -36,19 +36,11 @@ class _MyProfileUiState extends State<MyProfileUi> {
           !_scrollController.position.outOfRange) {
         _showFullProfile.value = true;
       }
-      // else {
-      //   _showFullProfile.value = true;
-      // }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
-    // print(isDarkMode);
-
-    print('my ' + isDarkMode.toString());
-
     return Scaffold(
       backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(

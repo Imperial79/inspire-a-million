@@ -48,7 +48,7 @@ class _CommentUiState extends State<CommentUi> {
       };
       FocusScope.of(context).unfocus();
       commentController.clear();
-      DatabaseMethods().uploadComments(blogId, commentMap);
+      DatabaseMethods().uploadComments(blogId, commentMap, time);
       sendNotification(
         tokenIdList: Global.followersTokenId,
         contents: commentText,
@@ -83,17 +83,16 @@ class _CommentUiState extends State<CommentUi> {
             fontSize: 16,
           ),
         ),
+        centerTitle: true,
       ),
       body: SafeArea(
         child: Column(
           children: [
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    CommentList(widget.blogId),
-                  ],
-                ),
+              child: ListView(
+                children: [
+                  CommentList(widget.blogId),
+                ],
               ),
             ),
             Container(
