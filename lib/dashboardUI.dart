@@ -20,8 +20,7 @@ class DashboardUI extends StatefulWidget {
   State<DashboardUI> createState() => _DashboardUIState();
 }
 
-class _DashboardUIState extends State<DashboardUI>
-    with SingleTickerProviderStateMixin {
+class _DashboardUIState extends State<DashboardUI> {
   int activeTab = 0;
   String tokenId = '';
 
@@ -59,7 +58,7 @@ class _DashboardUIState extends State<DashboardUI>
     tokenId = status!.userId!;
     // print('My Token ID ---> ' + tokenId);
 
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('users')
         .doc(Userdetails.uid)
         .update({'tokenId': tokenId});

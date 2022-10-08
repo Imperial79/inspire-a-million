@@ -48,7 +48,7 @@ class _CommentUiState extends State<CommentUi> {
       };
       FocusScope.of(context).unfocus();
       commentController.clear();
-      DatabaseMethods().uploadComments(blogId, commentMap, time);
+      DatabaseMethods().uploadComments(blogId, commentMap, time.toString());
       sendNotification(
         tokenIdList: Global.followersTokenId,
         contents: commentText,

@@ -221,7 +221,7 @@ Widget BuildCommentCard({
                 context,
                 ReplyUI(
                   blogId: blogId,
-                  commentId: snap['time'],
+                  commentId: snap['time'].toString(),
                   comment: snap['comment'].toString().replaceAll('/:', ':'),
                 ));
           },
@@ -242,11 +242,7 @@ Widget TagsCard(String tag, BuildContext context, bool isHome) {
       borderRadius: BorderRadius.circular(6),
       onTap: () {
         if (isHome) {
-          NavPush(
-              context,
-              TagsUI(
-                tag: tag,
-              ));
+          NavPush(context, TagsUI(tag: tag));
         }
       },
       child: Container(

@@ -74,172 +74,181 @@ class _OthersProfileUiState extends State<OthersProfileUi> {
                     }
                     DocumentSnapshot ds = snapshot.data.docs[0];
                     return Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        CircleAvatar(
-                          radius: 44.5,
-                          backgroundColor: isDarkMode
-                              ? Colors.blue.shade300
-                              : isDarkMode
-                                  ? Colors.blue.shade100
-                                  : primaryColor,
-                          child: CircleAvatar(
-                            radius: 43,
-                            backgroundColor: isDarkMode
-                                ? Colors.grey.shade900
-                                : Colors.white,
-                            child: CircleAvatar(
-                              backgroundColor: Colors.grey.shade100,
-                              radius: 39,
-                              child: CachedNetworkImage(
-                                imageUrl: ds['imgUrl'],
-                                imageBuilder: (context, image) => CircleAvatar(
-                                  radius: 39,
-                                  backgroundImage: image,
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircleAvatar(
+                                radius: 44.5,
+                                backgroundColor: isDarkMode
+                                    ? primaryAccentColor
+                                    : primaryColor,
+                                child: CircleAvatar(
+                                  radius: 43,
+                                  backgroundColor: isDarkMode
+                                      ? Colors.grey.shade900
+                                      : Colors.white,
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.grey.shade100,
+                                    radius: 39,
+                                    child: CachedNetworkImage(
+                                      imageUrl: ds['imgUrl'],
+                                      imageBuilder: (context, image) =>
+                                          CircleAvatar(
+                                        radius: 39,
+                                        backgroundImage: image,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        MaterialButton(
-                          onPressed: () async {
-                            if (ds['followers'].contains(Userdetails.uid)) {
-                              await FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(ds['uid'])
-                                  .update({
-                                'followers':
-                                    FieldValue.arrayRemove([Userdetails.uid]),
-                              });
+                              MaterialButton(
+                                onPressed: () async {
+                                  if (ds['followers']
+                                      .contains(Userdetails.uid)) {
+                                    await FirebaseFirestore.instance
+                                        .collection('users')
+                                        .doc(ds['uid'])
+                                        .update({
+                                      'followers': FieldValue.arrayRemove(
+                                          [Userdetails.uid]),
+                                    });
 
-                              await FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(Userdetails.uid)
-                                  .update({
-                                'following': FieldValue.arrayRemove([ds['uid']])
-                              });
+                                    await FirebaseFirestore.instance
+                                        .collection('users')
+                                        .doc(Userdetails.uid)
+                                        .update({
+                                      'following':
+                                          FieldValue.arrayRemove([ds['uid']])
+                                    });
+                                  } else {
+                                    await FirebaseFirestore.instance
+                                        .collection('users')
+                                        .doc(ds['uid'])
+                                        .update({
+                                      'followers': FieldValue.arrayUnion(
+                                          [Userdetails.uid]),
+                                    });
 
-                              // sendNotification(
-                              //   tokenIdList: [ds['tokenId']],
-                              //   contents: Userdetails.userDisplayName +
-                              //       ' has unfollowed you!',
-                              //   heading: 'Inspire',
-                              //   largeIconUrl: Userdetails.userProfilePic,
-                              // );
-                            } else {
-                              await FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(ds['uid'])
-                                  .update({
-                                'followers':
-                                    FieldValue.arrayUnion([Userdetails.uid]),
-                              });
+                                    await FirebaseFirestore.instance
+                                        .collection('users')
+                                        .doc(Userdetails.uid)
+                                        .update({
+                                      'following':
+                                          FieldValue.arrayUnion([ds['uid']])
+                                    });
 
-                              await FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(Userdetails.uid)
-                                  .update({
-                                'following': FieldValue.arrayUnion([ds['uid']])
-                              });
+                                    sendNotification(
+                                      tokenIdList: [ds['tokenId']],
+                                      contents: Userdetails.userDisplayName +
+                                          ' has followed you!',
+                                      heading: 'Inspire',
+                                      largeIconUrl: Userdetails.userProfilePic,
+                                    );
+                                  }
 
-                              sendNotification(
-                                tokenIdList: [ds['tokenId']],
-                                contents: Userdetails.userDisplayName +
-                                    ' has followed you!',
-                                heading: 'Inspire',
-                                largeIconUrl: Userdetails.userProfilePic,
-                              );
-                            }
-
-                            updateFollowingUsersList()
-                                .then((value) => setState(() {}));
-                          },
-                          color: ds['followers'].contains(Userdetails.uid)
-                              ? Colors.transparent
-                              : isDarkMode
-                                  ? Colors.blue.shade100
-                                  : primaryColor,
-                          elevation: 0,
-                          highlightElevation: 0,
-                          highlightColor: primaryAccentColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(7),
-                            side: ds['followers'].contains(Userdetails.uid)
-                                ? BorderSide(
-                                    color: isDarkMode
+                                  updateFollowingUsersList()
+                                      .then((value) => setState(() {}));
+                                },
+                                color: ds['followers'].contains(Userdetails.uid)
+                                    ? Colors.transparent
+                                    : isDarkMode
                                         ? Colors.blue.shade100
                                         : primaryColor,
-                                  )
-                                : BorderSide.none,
-                          ),
-                          child: Text(
-                            ds['followers'].contains(Userdetails.uid)
-                                ? 'Following'
-                                : ds['following'].contains(Userdetails.uid)
-                                    ? 'Follow Back'
-                                    : 'Follow',
-                            style: TextStyle(
-                              color: ds['followers'].contains(Userdetails.uid)
-                                  ? isDarkMode
-                                      ? Colors.grey.shade400
-                                      : Colors.grey.shade600
-                                  : isDarkMode
-                                      ? Colors.blue.shade800
-                                      : Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15,
-                            ),
+                                elevation: 0,
+                                highlightElevation: 0,
+                                highlightColor: primaryAccentColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(7),
+                                  side:
+                                      ds['followers'].contains(Userdetails.uid)
+                                          ? BorderSide(
+                                              color: isDarkMode
+                                                  ? Colors.blue.shade100
+                                                  : primaryColor,
+                                            )
+                                          : BorderSide.none,
+                                ),
+                                child: Text(
+                                  ds['followers'].contains(Userdetails.uid)
+                                      ? 'Following'
+                                      : ds['following']
+                                              .contains(Userdetails.uid)
+                                          ? 'Follow Back'
+                                          : 'Follow',
+                                  style: TextStyle(
+                                    color: ds['followers']
+                                            .contains(Userdetails.uid)
+                                        ? isDarkMode
+                                            ? Colors.grey.shade400
+                                            : Colors.grey.shade600
+                                        : isDarkMode
+                                            ? Colors.blue.shade800
+                                            : Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          ds['name'],
-                          style: TextStyle(
-                            color: isDarkMode
-                                ? Colors.white
-                                : Colors.grey.shade800,
-                            fontSize: 30,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 1,
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                ds['name'],
+                                style: TextStyle(
+                                  color: isDarkMode
+                                      ? Colors.white
+                                      : Colors.grey.shade800,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 1,
+                                ),
+                                maxLines: 2,
+                              ),
+                              Text(
+                                '@' + ds['username'],
+                                style: TextStyle(
+                                  color: isDarkMode
+                                      ? Colors.blue.shade100
+                                      : primaryColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                maxLines: 2,
+                              ),
+                              SizedBox(
+                                height: 7,
+                              ),
+                              Text(
+                                ds['email'],
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                maxLines: 2,
+                              ),
+                            ],
                           ),
-                          maxLines: 2,
-                        ),
-                        Text(
-                          '@' + ds['username'],
-                          style: TextStyle(
-                            color: isDarkMode
-                                ? Colors.blue.shade100
-                                : primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          maxLines: 2,
                         ),
                         SizedBox(
-                          height: 7,
-                        ),
-                        Text(
-                          ds['email'],
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          maxLines: 2,
-                        ),
-                        SizedBox(
-                          height: 30,
+                          height: 10,
                         ),
                         Padding(
-                          padding: EdgeInsets.all(15),
+                          padding:
+                              EdgeInsets.only(left: 15, right: 15, bottom: 15),
                           child: Row(
                             children: [
                               StreamBuilder<dynamic>(

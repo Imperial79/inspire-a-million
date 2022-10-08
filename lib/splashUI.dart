@@ -95,7 +95,7 @@ class _SplashUIState extends State<SplashUI> with WidgetsBindingObserver {
           Global.followersTokenId = [];
         }
 
-        setState(() {});
+        // setState(() {});
       });
     } else {
       print('Followers Empty');
@@ -106,7 +106,7 @@ class _SplashUIState extends State<SplashUI> with WidgetsBindingObserver {
     var status = await OneSignal.shared.getDeviceState();
     tokenId = status!.userId!;
 
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('users')
         .doc(Userdetails.uid)
         .update({'tokenId': tokenId});
