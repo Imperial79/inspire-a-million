@@ -5,16 +5,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'globalVariable.dart';
 
 class DatabaseMethods {
+  final _firestore = FirebaseFirestore.instance;
+
   //Adding user to database QUERY
   addUserInfoToDB(String uid, Map<String, dynamic> userInfoMap) async {
-    return await FirebaseFirestore.instance
-        .collection("users")
-        .doc(uid)
-        .set(userInfoMap);
+    return await _firestore.collection("users").doc(uid).set(userInfoMap);
   }
 
   uploadComments(String blogId, commentMap, commentId) async {
-    await FirebaseFirestore.instance
+    await _firestore
         .collection('blogs')
         .doc(blogId)
         .collection('comments')
@@ -24,29 +23,33 @@ class DatabaseMethods {
   }
 
   updateCommentCount(String blogId) async {
-    await FirebaseFirestore.instance
+    await _firestore
         .collection('blogs')
         .doc(blogId)
         .update({'comments': FieldValue.increment(1)});
   }
 
   getFollowersAndFollowing(String uid) async {
-    return await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .snapshots();
+    return await _firestore.collection('users').doc(uid).snapshots();
   }
 
   getBlogs(List uidList) async {
-    return await FirebaseFirestore.instance
+    return await _firestore
         .collection('blogs')
         .where('uid', whereIn: uidList)
         .orderBy('time', descending: true)
         .snapshots();
   }
 
+  Future<void> setUserOnline() async {
+    return await _firestore
+        .collection("users")
+        .doc(Userdetails.uid)
+        .update({"active": "1"});
+  }
+
   deletePostDetails(String blogId) async {
-    FirebaseFirestore.instance
+    _firestore
         .collection('blogs')
         .doc(blogId)
         .collection('comments')
@@ -56,7 +59,7 @@ class DatabaseMethods {
       if (value.docs.isEmpty) {
         deletePost(blogId);
       } else {
-        await FirebaseFirestore.instance
+        await _firestore
             .collection('blogs')
             .doc(blogId)
             .collection('comments')
@@ -73,30 +76,24 @@ class DatabaseMethods {
 
   Future<void> deletePost(String blogId) async {
     try {
-      await FirebaseFirestore.instance.collection('blogs').doc(blogId).delete();
+      await _firestore.collection('blogs').doc(blogId).delete();
     } catch (e) {
       print(e.toString());
     }
   }
 
   uploadBlogs(blogMap, String blogId) {
-    FirebaseFirestore.instance.collection('blogs').doc(blogId).set(blogMap);
+    _firestore.collection('blogs').doc(blogId).set(blogMap);
   }
 
   Future<void> likeBlog(String blogId, List likes, dynamic snap) async {
     try {
       if (likes.contains(Userdetails.uid)) {
-        await FirebaseFirestore.instance
-            .collection('blogs')
-            .doc(blogId)
-            .update({
+        await _firestore.collection('blogs').doc(blogId).update({
           'likes': FieldValue.arrayRemove([Userdetails.uid]),
         });
       } else {
-        await FirebaseFirestore.instance
-            .collection('blogs')
-            .doc(blogId)
-            .update({
+        await _firestore.collection('blogs').doc(blogId).update({
           'likes': FieldValue.arrayUnion([Userdetails.uid]),
         });
 
@@ -115,14 +112,14 @@ class DatabaseMethods {
   }
 
   getUsersIAmFollowing() async {
-    return await FirebaseFirestore.instance
+    return await _firestore
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
   }
 
   getlabel() async {
-    return await FirebaseFirestore.instance
+    return await _firestore
         .collection('users')
         .doc(Userdetails.userName)
         .collection('labelList')
@@ -130,7 +127,7 @@ class DatabaseMethods {
   }
 
   updatelabel(List labelList) async {
-    return await FirebaseFirestore.instance
+    return await _firestore
         .collection('users')
         .doc(Userdetails.userName)
         .collection('labelList')
@@ -139,7 +136,7 @@ class DatabaseMethods {
   }
 
   fetchLabel() async {
-    return await FirebaseFirestore.instance
+    return await _firestore
         .collection('users')
         .doc(Userdetails.userName)
         .collection('labelList')
@@ -147,7 +144,7 @@ class DatabaseMethods {
   }
 
   updateNote(String time, Map<String, dynamic> updatedNoteMap) async {
-    return await FirebaseFirestore.instance
+    return await _firestore
         .collection('users')
         .doc(Userdetails.userName)
         .collection('notes')
@@ -157,7 +154,7 @@ class DatabaseMethods {
 
   //Delete all transacts
   // deleteAllTransacts(String username) async {
-  //   return await FirebaseFirestore.instance
+  //   return await _firestore
   //       .collection('users')
   //       .doc(username)
   //       .collection('transacts')
@@ -171,7 +168,7 @@ class DatabaseMethods {
 
   //Delete all transacts
   deleteNote(String username, String time, String labelName) async {
-    return await FirebaseFirestore.instance
+    return await _firestore
         .collection('users')
         .doc(username)
         .collection('notes')

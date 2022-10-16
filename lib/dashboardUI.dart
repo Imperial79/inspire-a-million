@@ -1,5 +1,6 @@
 import 'package:blog_app/Home%20Screen/exploreUI.dart';
 import 'package:blog_app/createBlogUi.dart';
+import 'package:blog_app/searchBlogsUI.dart';
 import 'package:blog_app/services/globalVariable.dart';
 import 'package:blog_app/utilities/colors.dart';
 
@@ -76,7 +77,8 @@ class _DashboardUIState extends State<DashboardUI> {
         statusBarIconBrightness:
             isDarkMode ? Brightness.light : Brightness.dark,
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
 
@@ -95,6 +97,7 @@ class _DashboardUIState extends State<DashboardUI> {
       children: [
         ExploreUI(),
         CreateBlogUi(),
+        SearchBlogsUI(),
         MyProfileUi(),
       ],
     );
@@ -102,9 +105,10 @@ class _DashboardUIState extends State<DashboardUI> {
 
   Widget getBottomNavBar() {
     return BottomNavigationBar(
+      elevation: 0,
       backgroundColor: Theme.of(context).brightness == Brightness.dark
           ? Colors.grey.shade800
-          : Colors.grey.shade200,
+          : Colors.white,
       type: BottomNavigationBarType.shifting,
       currentIndex: activeTab,
       selectedItemColor: isDarkMode ? primaryAccentColor : Colors.black,
@@ -129,6 +133,10 @@ class _DashboardUIState extends State<DashboardUI> {
         BottomNavigationBarItem(
           label: 'Blog!',
           icon: Icon(Icons.edit_note_rounded),
+        ),
+        BottomNavigationBarItem(
+          label: 'Community',
+          icon: Icon(Icons.group),
         ),
         BottomNavigationBarItem(
           label: 'Profile',

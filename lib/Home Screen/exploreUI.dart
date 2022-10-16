@@ -82,6 +82,7 @@ class _ExploreUIState extends State<ExploreUI> {
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarIconBrightness:
               isDarkMode ? Brightness.light : Brightness.dark,
+          systemNavigationBarColor: Colors.white,
         ),
         title: Header(context),
       ),

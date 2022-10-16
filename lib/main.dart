@@ -49,7 +49,8 @@ class _MyAppState extends State<MyApp> {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
     // isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
@@ -67,6 +68,8 @@ class _MyAppState extends State<MyApp> {
       ),
       theme: ThemeData(
         useMaterial3: true,
+        bottomNavigationBarTheme:
+            BottomNavigationBarThemeData(backgroundColor: Colors.white),
         colorSchemeSeed: primaryColor,
         brightness: Brightness.light,
         scaffoldBackgroundColor: scaffoldLightColor,

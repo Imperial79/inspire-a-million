@@ -13,6 +13,7 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:unicons/unicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BlogCard extends StatefulWidget {
@@ -186,9 +187,8 @@ class _BlogCardState extends State<BlogCard> {
                           backgroundColor:
                               isDarkMode ? Colors.grey.shade800 : Colors.white,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
                             ),
                           ),
                           builder: (context) {
@@ -215,12 +215,12 @@ class _BlogCardState extends State<BlogCard> {
               child: Padding(
                 padding: EdgeInsets.only(top: 10),
                 child: SelectableLinkify(
+                  toolbarOptions: ToolbarOptions(copy: true, selectAll: true),
                   linkStyle: TextStyle(
                     color: isDarkMode ? primaryAccentColor : primaryColor,
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
                     letterSpacing: 0.4,
-                    decoration: TextDecoration.none,
                   ),
                   onOpen: (link) async {
                     if (await canLaunchUrl(Uri.parse(link.url))) {

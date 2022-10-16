@@ -1,9 +1,11 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:blog_app/dashboardUI.dart';
+import 'package:blog_app/services/database.dart';
 import 'package:blog_app/utilities/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,23 +36,17 @@ class _SplashUIState extends State<SplashUI> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (Userdetails.userEmail.isNotEmpty) {
       if (state == AppLifecycleState.resumed) {
-        print(
-            'Observing ' + Userdetails.userName + ' and setting it to ONLINE');
         await FirebaseFirestore.instance
             .collection("users")
             .doc(Userdetails.uid)
             .update({"active": "1"});
       } else {
-        print(
-            'Observing ' + Userdetails.userName + ' and setting it to OFFLINE');
         await FirebaseFirestore.instance
             .collection("users")
             .doc(Userdetails.uid)
             .update({"active": "0"});
       }
       super.didChangeAppLifecycleState(state);
-    } else {
-      print('Not Observing ' + Userdetails.userName);
     }
   }
 
@@ -68,10 +64,7 @@ class _SplashUIState extends State<SplashUI> with WidgetsBindingObserver {
       setState(() {});
     }
 
-    await _firestore
-        .collection("users")
-        .doc(Userdetails.uid)
-        .update({"active": "1"});
+    await DatabaseMethods().setUserOnline();
     await updateFollowingUsersList();
     getFollowersToken();
     NavPushReplacement(context, DashboardUI());
@@ -97,8 +90,6 @@ class _SplashUIState extends State<SplashUI> with WidgetsBindingObserver {
 
         // setState(() {});
       });
-    } else {
-      print('Followers Empty');
     }
   }
 
@@ -117,6 +108,15 @@ class _SplashUIState extends State<SplashUI> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle.light.copyWith(
+        statusBarIconBrightness:
+            isDarkMode ? Brightness.light : Brightness.dark,
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: scaffoldLightColor,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
     isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
       body: Center(

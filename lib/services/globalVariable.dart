@@ -208,10 +208,10 @@ Widget Header(BuildContext context) {
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
       Text(
-        '!NSPIRE',
+        '!NSPiRE',
         style: TextStyle(
           color: isDarkMode ? primaryAccentColor : primaryColor,
-          fontWeight: FontWeight.w400,
+          fontWeight: FontWeight.w500,
           letterSpacing: 10,
           fontSize: 20,
         ),

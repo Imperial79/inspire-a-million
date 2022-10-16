@@ -6,6 +6,7 @@ import 'package:blog_app/services/globalVariable.dart';
 import 'package:blog_app/utilities/notification_function.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -104,7 +105,6 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
                 height: 20,
               ),
               Expanded(
-                // flex: 10,
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
@@ -114,6 +114,16 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
                   ),
                   child: TextField(
                     controller: description,
+                    toolbarOptions: ToolbarOptions(
+                      copy: true,
+                      cut: true,
+                      paste: true,
+                      selectAll: true,
+                    ),
+                    dragStartBehavior: DragStartBehavior.down,
+                    autocorrect: false,
+                    textInputAction: TextInputAction.newline,
+                    keyboardType: TextInputType.multiline,
                     cursorColor:
                         isDarkMode ? Colors.blue.shade100 : primaryColor,
                     style: TextStyle(
