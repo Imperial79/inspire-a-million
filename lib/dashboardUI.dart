@@ -1,7 +1,9 @@
+import 'package:animations/animations.dart';
 import 'package:blog_app/Home%20Screen/exploreUI.dart';
 import 'package:blog_app/createBlogUi.dart';
 import 'package:blog_app/searchBlogsUI.dart';
 import 'package:blog_app/services/globalVariable.dart';
+import 'package:blog_app/utilities/animated_indexed_stack.dart';
 import 'package:blog_app/utilities/colors.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,9 +23,14 @@ class DashboardUI extends StatefulWidget {
   State<DashboardUI> createState() => _DashboardUIState();
 }
 
-class _DashboardUIState extends State<DashboardUI> {
+class _DashboardUIState extends State<DashboardUI>
+    with AutomaticKeepAliveClientMixin {
   int activeTab = 0;
   String tokenId = '';
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -70,6 +77,7 @@ class _DashboardUIState extends State<DashboardUI> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
 
     SystemChrome.setSystemUIOverlayStyle(
@@ -91,16 +99,44 @@ class _DashboardUIState extends State<DashboardUI> {
     );
   }
 
+  List<Widget> view = [
+    ExploreUI(),
+    CreateBlogUi(),
+    SearchBlogsUI(),
+    MyProfileUi(),
+  ];
+
   Widget getBody() {
-    return IndexedStack(
+    return AnimatedIndexedStack(
       index: activeTab,
-      children: [
-        ExploreUI(),
-        CreateBlogUi(),
-        SearchBlogsUI(),
-        MyProfileUi(),
-      ],
+      children: view,
     );
+
+    // return PageTransitionSwitcher(
+    //   duration: Duration(milliseconds: 400),
+    //   transitionBuilder: (
+    //     Widget child,
+    //     Animation<double> animation,
+    //     Animation<double> secondaryAnimation,
+    //   ) {
+    //     return FadeThroughTransition(
+    //       animation: animation,
+    //       secondaryAnimation: secondaryAnimation,
+    //       child: child,
+    //     );
+    //   },
+    //   child: view[activeTab],
+    // );
+
+    // return IndexedStack(
+    //   index: activeTab,
+    //   children: [
+    //     ExploreUI(),
+    //     CreateBlogUi(),
+    //     SearchBlogsUI(),
+    //     MyProfileUi(),
+    //   ],
+    // );
   }
 
   Widget getBottomNavBar() {
