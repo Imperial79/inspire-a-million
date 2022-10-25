@@ -2,10 +2,12 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/services/auth.dart';
 import 'package:blog_app/services/globalVariable.dart';
+import 'package:blog_app/utilities/sdp.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginUi extends StatefulWidget {
   const LoginUi({Key? key}) : super(key: key);
@@ -35,105 +37,54 @@ class _LoginUiState extends State<LoginUi> {
       backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(
         child: isLoading == true
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AnimatedTextKit(
-                      animatedTexts: [
-                        TypewriterAnimatedText(
-                          'Loading Your Inspirations',
-                          cursor: ' |',
-                          textStyle: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w600,
-                            color:
-                                isDarkMode ? primaryAccentColor : primaryColor,
+            ? Loading()
+            : Column(
+                children: [
+                  SizedBox(
+                    height: sdp(context, 10),
+                  ),
+                  Text(
+                    'Welcome to Inpsire',
+                    style: TextStyle(
+                      fontSize: sdp(context, 15),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Expanded(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Text(
+                          '!',
+                          style: TextStyle(
+                            fontSize: sdp(context, 400),
+                            color: primaryAccentColor.withOpacity(0.5),
+                          ),
+                        ),
+                        Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Inspire A\nMillion',
+                                style: GoogleFonts.playfairDisplay(
+                                  fontSize: sdp(context, 30),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                'Let\'s inspire people based on your intrests',
+                                style: TextStyle(
+                                  fontSize: sdp(context, 12),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
                           ),
                         ),
                       ],
-                      totalRepeatCount: 100,
-                      displayFullTextOnTap: true,
-                      stopPauseOnTap: true,
-                    ),
-                    CustomLoading(),
-                  ],
-                ),
-              )
-            : Column(
-                children: [
-                  Expanded(
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          AnimatedAlign(
-                            duration: Duration(seconds: 1),
-                            alignment: isLoading
-                                ? Alignment.center
-                                : Alignment.topCenter,
-                            child: Column(
-                              children: [
-                                Text(
-                                  '!nspire',
-                                  style: TextStyle(
-                                    color: isDarkMode
-                                        ? primaryAccentColor
-                                        : primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 40,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  'A MILLION',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 13,
-                                    letterSpacing: 9,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: size.height * 0.1,
-                          ),
-                          CarouselSlider(
-                            options: CarouselOptions(
-                              height: 400.0,
-                              autoPlay: true,
-                              enlargeCenterPage: true,
-                            ),
-                            items: [1, 2, 3, 4, 5].map((i) {
-                              return Builder(
-                                builder: (BuildContext context) {
-                                  return Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 5.0),
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: isDarkMode
-                                          ? Colors.grey.shade800
-                                          : Colors.grey.shade100
-                                              .withOpacity(0.5),
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: SvgPicture.asset(
-                                      'lib/assets/image/$i.svg',
-                                    ),
-                                  );
-                                },
-                              );
-                            }).toList(),
-                          ),
-                        ],
-                      ),
                     ),
                   ),
                   Align(
@@ -153,7 +104,7 @@ class _LoginUiState extends State<LoginUi> {
                         },
                         color: isDarkMode ? Colors.white : primaryColor,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(100),
                         ),
                         elevation: 0,
                         padding: EdgeInsets.symmetric(
@@ -193,6 +144,33 @@ class _LoginUiState extends State<LoginUi> {
                   ),
                 ],
               ),
+      ),
+    );
+  }
+
+  Center Loading() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AnimatedTextKit(
+            animatedTexts: [
+              TypewriterAnimatedText(
+                'Loading Your Inspirations',
+                cursor: ' |',
+                textStyle: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                  color: isDarkMode ? primaryAccentColor : primaryColor,
+                ),
+              ),
+            ],
+            totalRepeatCount: 100,
+            displayFullTextOnTap: true,
+            stopPauseOnTap: true,
+          ),
+          CustomLoading(),
+        ],
       ),
     );
   }

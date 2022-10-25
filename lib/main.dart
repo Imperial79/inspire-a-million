@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
-    // isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
+
     return MaterialApp(
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,

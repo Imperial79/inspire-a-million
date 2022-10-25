@@ -1,4 +1,5 @@
 import 'package:blog_app/services/globalVariable.dart';
+import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,6 +18,22 @@ class _SettingsUIState extends State<SettingsUI> {
   @override
   void initState() {
     super.initState();
+  }
+
+  void setUseDarkTheme(BuildContext context, bool value) async {
+    // await _managerAPI.setUseDarkTheme(value);
+    int currentTheme = DynamicTheme.of(context)!.themeId;
+    if (currentTheme < 2) {
+      await DynamicTheme.of(context)!.setTheme(value ? 1 : 0);
+    } else {
+      await DynamicTheme.of(context)!.setTheme(value ? 3 : 2);
+    }
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarIconBrightness:
+            value ? Brightness.light : Brightness.dark,
+      ),
+    );
   }
 
   @override

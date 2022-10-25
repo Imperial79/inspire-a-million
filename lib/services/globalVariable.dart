@@ -1,7 +1,9 @@
 import 'package:blog_app/Home%20Screen/searchui.dart';
+import 'package:blog_app/utilities/sdp.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../BlogCard/blogCard.dart';
 import '../utilities/colors.dart';
 
@@ -186,10 +188,7 @@ StreamBuilder<dynamic> BlogList({final isMe, name, uid}) {
               reverse: true,
               itemBuilder: (context, index) {
                 DocumentSnapshot ds = snapshot.data.docs[index];
-                return BlogCard(
-                  snap: ds,
-                  isHome: true,
-                );
+                return BlogCard(snap: ds, isHome: true);
               },
             ),
           ],
@@ -208,12 +207,13 @@ Widget Header(BuildContext context) {
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
       Text(
-        '!NSPiRE',
-        style: TextStyle(
-          color: isDarkMode ? primaryAccentColor : primaryColor,
-          fontWeight: FontWeight.w500,
-          letterSpacing: 10,
-          fontSize: 20,
+        '!nspire',
+        style: GoogleFonts.playfairDisplay(
+          // color: isDarkMode ? primaryAccentColor : primaryColor,
+          color: Theme.of(context).colorScheme.primary,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1,
+          fontSize: sdp(context, 20),
         ),
       ),
       InkWell(
@@ -247,18 +247,11 @@ class CustomLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      margin: EdgeInsets.only(top: 20),
-      height: 30,
-      width: 30,
-      child: CircularProgressIndicator(
-        backgroundColor: isDarkMode
-            ? primaryAccentColor.withOpacity(0.3)
-            : primaryAccentColor,
-        color: isDarkMode ? primaryAccentColor : primaryColor,
-        strokeWidth: 3,
-      ),
+    return CircularProgressIndicator(
+      backgroundColor:
+          isDarkMode ? primaryAccentColor.withOpacity(0.3) : primaryAccentColor,
+      color: isDarkMode ? primaryAccentColor : primaryColor,
+      strokeWidth: 3,
     );
   }
 }
