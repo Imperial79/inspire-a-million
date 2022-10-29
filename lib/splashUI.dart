@@ -113,7 +113,8 @@ class _SplashUIState extends State<SplashUI> with WidgetsBindingObserver {
         statusBarIconBrightness:
             isDarkMode ? Brightness.light : Brightness.dark,
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: scaffoldLightColor,
+        systemNavigationBarColor:
+            isDarkMode ? Colors.grey.shade900 : Colors.white,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );

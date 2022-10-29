@@ -1,12 +1,10 @@
 import 'package:blog_app/BlogCard/commentCard.dart';
-import 'package:blog_app/BlogCard/commentReplyUI.dart';
 import 'package:blog_app/BlogCard/tagsUI.dart';
 import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/services/globalVariable.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import 'package:unicons/unicons.dart';
 import '../services/database.dart';
 
@@ -36,7 +34,9 @@ Widget ShowModal(String blogId) {
                   deletePost(blogId);
                   Navigator.pop(context);
                 },
-                color: isDarkMode ? Colors.grey.shade700 : Colors.grey.shade200,
+                color: isDarkMode
+                    ? Colors.blueGrey.shade600
+                    : Colors.grey.shade200,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),

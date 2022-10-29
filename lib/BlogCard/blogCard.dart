@@ -192,7 +192,7 @@ class _BlogCardState extends State<BlogCard> {
                             context: context,
                             isScrollControlled: true,
                             backgroundColor: isDarkMode
-                                ? Colors.grey.shade800
+                                ? Colors.blueGrey.shade900
                                 : Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.vertical(

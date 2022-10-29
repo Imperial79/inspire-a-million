@@ -79,7 +79,7 @@ class _ExploreUIState extends State<ExploreUI> {
 
   @override
   Widget build(BuildContext context) {
-    // isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () {
@@ -93,7 +93,6 @@ class _ExploreUIState extends State<ExploreUI> {
                 '!nspire',
                 style: GoogleFonts.playfairDisplay(
                   color: isDarkMode ? primaryAccentColor : primaryColor,
-                  // color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1,
                   fontSize: sdp(context, 20),
@@ -111,160 +110,49 @@ class _ExploreUIState extends State<ExploreUI> {
             SliverList(
               delegate: SliverChildListDelegate.fixed(
                 [
-                  StreamBuilder<dynamic>(
-                    stream: FirebaseFirestore.instance
-                        .collection('blogs')
-                        .where('uid', whereIn: followingUsers)
-                        .orderBy('time', descending: true)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      return AnimatedSwitcher(
-                        duration: Duration(seconds: 1),
-                        child: snapshot.hasData
-                            ? ListView.builder(
-                                padding: EdgeInsets.zero,
-                                itemCount: snapshot.data.docs.length,
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  DocumentSnapshot ds =
-                                      snapshot.data.docs[index];
-                                  return BlogCard(
-                                    snap: ds,
-                                    isHome: true,
-                                  );
-                                },
-                              )
-                            : Shimmer(
-                                child: DummyBlogCard(),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Colors.grey.shade100,
-                                    Colors.grey.shade400
-                                  ],
-                                ),
-                              ),
-                      );
-                    },
-                  ),
-
-                  // followingUsers.isEmpty
-                  //     ? Container()
-                  //     : AnimatedSwitcher(
-                  //         duration: Duration(seconds: 1),
-                  //         child: followingUsers.isNotEmpty
-                  //             ? StreamBuilder<dynamic>(
-                  //                 stream: FirebaseFirestore.instance
-                  //                     .collection('blogs')
-                  //                     .where('uid', whereIn: followingUsers)
-                  //                     .orderBy('time', descending: true)
-                  //                     .snapshots(),
-                  //                 builder: (context, snapshot) {
-                  //                   return AnimatedSwitcher(
-                  //                     duration: Duration(seconds: 1),
-                  //                     child: snapshot.hasData
-                  //                         ? ListView.builder(
-                  //                             itemCount:
-                  //                                 snapshot.data.docs.length,
-                  //                             scrollDirection: Axis.vertical,
-                  //                             shrinkWrap: true,
-                  //                             physics:
-                  //                                 NeverScrollableScrollPhysics(),
-                  //                             itemBuilder: (context, index) {
-                  //                               DocumentSnapshot ds =
-                  //                                   snapshot.data.docs[index];
-                  //                               return BlogCard(
-                  //                                 snap: ds,
-                  //                                 isHome: true,
-                  //                               );
-                  //                             },
-                  //                           )
-                  //                         : Shimmer(
-                  //                             child: DummyBlogCard(),
-                  //                             gradient: LinearGradient(
-                  //                               colors: [
-                  //                                 Colors.grey.shade100,
-                  //                                 Colors.grey.shade400
-                  //                               ],
-                  //                             ),
-                  //                           ),
-                  //                   );
-                  //                 },
-                  //               )
-                  //             : Container(),
-                  //       ),
+                  buildBlogList(),
                 ],
               ),
             ),
           ],
         ),
       ),
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   surfaceTintColor: primaryAccentColor,
-      //   systemOverlayStyle: SystemUiOverlayStyle(
-      //     statusBarIconBrightness:
-      //         isDarkMode ? Brightness.light : Brightness.dark,
-      //     systemNavigationBarColor: Colors.white,
-      //   ),
-      //   title: Header(context),
-      // ),
-      // body: followingUsers.isEmpty
-      //     ? Container()
-      //     : AnimatedSwitcher(
-      //         duration: Duration(seconds: 1),
-      //         child: followingUsers.isNotEmpty
-      //             ? RefreshIndicator(
-      //                 onRefresh: () {
-      //                   return updateFollowingUsersList()
-      //                       .then((value) => setState(() {}));
-      //                 },
-      //                 child: SingleChildScrollView(
-      //                   physics: BouncingScrollPhysics(
-      //                       parent: AlwaysScrollableScrollPhysics()),
-      //                   child: StreamBuilder<dynamic>(
-      //                     stream: FirebaseFirestore.instance
-      //                         .collection('blogs')
-      //                         .where('uid', whereIn: followingUsers)
-      //                         .orderBy('time', descending: true)
-      //                         .snapshots(),
-      //                     builder: (context, snapshot) {
-      //                       return AnimatedSwitcher(
-      //                         duration: Duration(seconds: 1),
-      //                         child: snapshot.hasData
-      //                             ? ListView.builder(
-      //                                 itemCount: snapshot.data.docs.length,
-      //                                 scrollDirection: Axis.vertical,
-      //                                 shrinkWrap: true,
-      //                                 addAutomaticKeepAlives: false,
-      //                                 addRepaintBoundaries: false,
-      //                                 physics: NeverScrollableScrollPhysics(),
-      //                                 itemBuilder: (context, index) {
-      //                                   DocumentSnapshot ds =
-      //                                       snapshot.data.docs[index];
-      //                                   return BlogCard(
-      //                                     snap: ds,
-      //                                     isHome: true,
-      //                                   );
-      //                                 },
-      //                               )
-      //                             : Shimmer(
-      //                                 child: DummyBlogCard(),
-      //                                 gradient: LinearGradient(
-      //                                   colors: [
-      //                                     Colors.grey.shade100,
-      //                                     Colors.grey.shade400
-      //                                   ],
-      //                                 ),
-      //                               ),
-      //                       );
-      //                     },
-      //                   ),
-      //                 ),
-      //               )
-      //             : Container(),
-      //       ),
+    );
+  }
+
+  StreamBuilder<dynamic> buildBlogList() {
+    return StreamBuilder<dynamic>(
+      stream: FirebaseFirestore.instance
+          .collection('blogs')
+          .where('uid', whereIn: followingUsers)
+          .orderBy('time', descending: true)
+          .snapshots(),
+      builder: (context, snapshot) {
+        return AnimatedSwitcher(
+          duration: Duration(seconds: 1),
+          child: snapshot.hasData
+              ? ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: snapshot.data.docs.length,
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot ds = snapshot.data.docs[index];
+                    return BlogCard(
+                      snap: ds,
+                      isHome: true,
+                    );
+                  },
+                )
+              : Shimmer(
+                  child: DummyBlogCard(),
+                  gradient: LinearGradient(
+                    colors: [Colors.grey.shade100, Colors.grey.shade400],
+                  ),
+                ),
+        );
+      },
     );
   }
 }

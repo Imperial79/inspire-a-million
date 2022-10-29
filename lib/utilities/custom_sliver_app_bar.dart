@@ -22,7 +22,7 @@ class CustomSliverAppBar extends StatelessWidget {
       pinned: true,
       snap: false,
       floating: false,
-      expandedHeight: 100.0,
+      expandedHeight: 130.0,
       automaticallyImplyLeading: !isMainView,
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: EdgeInsets.only(

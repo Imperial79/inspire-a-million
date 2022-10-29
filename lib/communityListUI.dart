@@ -4,18 +4,16 @@ import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/utilities/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:unicons/unicons.dart';
 
-class SearchBlogsUI extends StatefulWidget {
-  const SearchBlogsUI({Key? key}) : super(key: key);
+class CommunityListUI extends StatefulWidget {
+  const CommunityListUI({Key? key}) : super(key: key);
 
   @override
-  State<SearchBlogsUI> createState() => _SearchBlogsUIState();
+  State<CommunityListUI> createState() => _CommunityListUIState();
 }
 
-class _SearchBlogsUIState extends State<SearchBlogsUI>
-    with AutomaticKeepAliveClientMixin {
+class _CommunityListUIState extends State<CommunityListUI> {
   bool isSearching = false;
   final _searchController = TextEditingController();
   bool isPrivate = false;
@@ -23,8 +21,8 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
   final _firestore = FirebaseFirestore.instance;
   bool communityNameExist = false;
 
-  @override
-  bool get wantKeepAlive => true;
+  // @override
+  // bool get wantKeepAlive => true;
 
   @override
   void dispose() {
@@ -84,7 +82,7 @@ class _SearchBlogsUIState extends State<SearchBlogsUI>
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
                   color: isDarkMode
-                      ? primaryAccentColor
+                      ? Colors.blueGrey.shade800
                       : primaryAccentColor.withOpacity(0.5),
                 ),
                 child: Row(

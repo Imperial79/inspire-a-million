@@ -27,11 +27,10 @@ class _LoginUiState extends State<LoginUi> {
         statusBarIconBrightness:
             isDarkMode ? Brightness.light : Brightness.dark,
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarColor:
+            isDarkMode ? Colors.grey.shade900 : Colors.white,
       ),
     );
-
-    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
@@ -74,10 +73,11 @@ class _LoginUiState extends State<LoginUi> {
                                 textAlign: TextAlign.center,
                               ),
                               Text(
-                                'Let\'s inspire people based on your intrests',
+                                'Let\'s inspire millions ahead',
                                 style: TextStyle(
                                   fontSize: sdp(context, 12),
                                   fontWeight: FontWeight.w500,
+                                  height: sdp(context, 3),
                                 ),
                                 textAlign: TextAlign.center,
                               ),

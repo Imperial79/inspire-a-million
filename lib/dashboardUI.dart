@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:blog_app/Home%20Screen/exploreUI.dart';
 import 'package:blog_app/createBlogUi.dart';
-import 'package:blog_app/searchBlogsUI.dart';
+import 'package:blog_app/communityListUI.dart';
 import 'package:blog_app/services/globalVariable.dart';
 import 'package:blog_app/utilities/animated_indexed_stack.dart';
 import 'package:blog_app/utilities/colors.dart';
@@ -85,7 +85,8 @@ class _DashboardUIState extends State<DashboardUI>
         statusBarIconBrightness:
             isDarkMode ? Brightness.light : Brightness.dark,
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.white,
+        systemNavigationBarColor:
+            isDarkMode ? Colors.grey.shade900 : Colors.white,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
@@ -102,7 +103,7 @@ class _DashboardUIState extends State<DashboardUI>
   List<Widget> view = [
     ExploreUI(),
     CreateBlogUi(),
-    SearchBlogsUI(),
+    CommunityListUI(),
     MyProfileUi(),
   ];
 
@@ -143,7 +144,7 @@ class _DashboardUIState extends State<DashboardUI>
     return BottomNavigationBar(
       elevation: 0,
       backgroundColor: Theme.of(context).brightness == Brightness.dark
-          ? Colors.grey.shade800
+          ? Colors.grey.shade900
           : Colors.white,
       type: BottomNavigationBarType.shifting,
       currentIndex: activeTab,

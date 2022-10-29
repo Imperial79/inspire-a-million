@@ -97,7 +97,7 @@ class _CommentUiState extends State<CommentUi> {
             ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+              padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade100,
@@ -117,13 +117,14 @@ class _CommentUiState extends State<CommentUi> {
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.zero,
                         hintText: 'Comment as ' +
-                            Userdetails.userDisplayName.split(' ')[0],
+                            Userdetails.userDisplayName.split(' ')[0] +
+                            ' ...',
                         border: InputBorder.none,
                         hintStyle: TextStyle(
                           color: isDarkMode
                               ? Colors.grey.shade600
                               : Colors.grey.shade400,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
