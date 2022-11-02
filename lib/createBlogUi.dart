@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:blog_app/Models/blogModel.dart';
 import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/services/globalVariable.dart';
@@ -46,21 +47,20 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
       var time = DateTime.now();
 
       // Creating a Map to upload in DB
-      Map<String, dynamic> blogMap = {
-        'userDisplayName': Userdetails.userDisplayName,
-        'description': content.replaceAll(':', '/:'),
-        'time': time,
-        'blogId': time.toString(),
-        'uid': Userdetails.uid,
-        'profileImage': Userdetails.userProfilePic,
-        'likes': [],
-        'comments': 0,
-        'tokenId': Userdetails.myTokenId,
-        'tags': _extarctedTags,
-      };
+      Blog newBlog = Blog(
+        userDisplayName: Userdetails.userDisplayName,
+        description: content.replaceAll(":", "/:"),
+        time: time,
+        blogId: time.toString(),
+        uid: Userdetails.uid,
+        profileImage: Userdetails.userProfilePic,
+        likes: [],
+        comments: 0,
+        tokenId: Userdetails.myTokenId,
+        tags: _extarctedTags,
+      );
 
-      DatabaseMethods().uploadBlogs(blogMap, time.toString());
-      // print('Folowers: ' + Global.followersTokenId.toString());
+      DatabaseMethods().uploadBlogs(newBlog.toMap(), time.toString());
 
       FocusScope.of(context)
           .unfocus(); //unfocussing the keyboard after uploading the blog

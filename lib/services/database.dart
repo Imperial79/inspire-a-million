@@ -82,7 +82,7 @@ class DatabaseMethods {
     }
   }
 
-  uploadBlogs(blogMap, String blogId) {
+  uploadBlogs(Map<String, dynamic> blogMap, String blogId) {
     _firestore.collection('blogs').doc(blogId).set(blogMap);
   }
 

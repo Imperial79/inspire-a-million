@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:unicons/unicons.dart';
 
+import 'Models/blogModel.dart';
+
 class CommunityListUI extends StatefulWidget {
   const CommunityListUI({Key? key}) : super(key: key);
 
@@ -252,7 +254,8 @@ class _CommunityListUIState extends State<CommunityListUI> {
                                           .trim()
                                           .toLowerCase())) {
                                     return BlogCard(
-                                      snap: ds,
+                                      blogData: Blog.fromMap(
+                                          ds as Map<String, dynamic>),
                                       isHome: true,
                                     );
                                   } else {

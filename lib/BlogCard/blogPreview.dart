@@ -1,4 +1,5 @@
 import 'package:blog_app/BlogCard/commentCard.dart';
+import 'package:blog_app/Models/blogModel.dart';
 import 'package:blog_app/services/globalVariable.dart';
 import 'package:blog_app/utilities/sdp.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -18,8 +19,8 @@ import 'commentUi.dart';
 import 'likesUI.dart';
 
 class BlogPreviewUI extends StatefulWidget {
-  final DocumentSnapshot snap;
-  const BlogPreviewUI({Key? key, required this.snap}) : super(key: key);
+  final Blog blogData;
+  const BlogPreviewUI({Key? key, required this.blogData});
 
   @override
   State<BlogPreviewUI> createState() => _BlogPreviewUIState();
@@ -30,7 +31,7 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
   Stream<QuerySnapshot<Map<String, dynamic>>> fetchComments() {
     return FirebaseFirestore.instance
         .collection('blogs')
-        .doc(widget.snap['blogId'])
+        .doc(widget.blogData.blogId)
         .collection('comments')
         .orderBy('time', descending: true)
         .snapshots();
@@ -46,11 +47,11 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
           StreamBuilder<dynamic>(
             stream: FirebaseFirestore.instance
                 .collection('blogs')
-                .doc(widget.snap['blogId'])
+                .doc(widget.blogData.blogId)
                 .snapshots(),
-            builder: ((context, snapshot) {
-              if (snapshot.hasData) {
-                return buildBlogCard(snap: snapshot.data);
+            builder: ((context, blogDatashot) {
+              if (blogDatashot.hasData) {
+                return buildBlogCard(blogData: blogDatashot.data);
               }
               return Center(
                 child: CircularProgressIndicator(),
@@ -60,9 +61,9 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
           // buildBlogCard(),
           StreamBuilder<dynamic>(
             stream: fetchComments(),
-            builder: ((context, snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data.docs.length != 0) {
+            builder: ((context, blogDatashot) {
+              if (blogDatashot.hasData) {
+                if (blogDatashot.data.docs.length != 0) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -77,14 +78,14 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                       ),
                       ListView.builder(
                         physics: BouncingScrollPhysics(),
-                        itemCount: snapshot.data.docs.length,
+                        itemCount: blogDatashot.data.docs.length,
                         shrinkWrap: true,
                         reverse: true,
                         itemBuilder: (context, index) {
-                          DocumentSnapshot ds = snapshot.data.docs[index];
+                          DocumentSnapshot ds = blogDatashot.data.docs[index];
 
                           return CommentCard(
-                            blogId: widget.snap['blogId'],
+                            blogId: widget.blogData.blogId,
                             snap: ds,
                             context: context,
                           );
@@ -114,10 +115,10 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
     );
   }
 
-  Widget buildBlogCard({required final DocumentSnapshot snap}) {
+  Widget buildBlogCard({required final DocumentSnapshot blogData}) {
     _timeAgo = timeago
         .format(
-          widget.snap['time'].toDate(),
+          widget.blogData.time!,
           locale: 'en_short',
         )
         .replaceAll('~', '');
@@ -146,11 +147,11 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          if (snap['uid'] != Userdetails.uid) {
+                          if (blogData['uid'] != Userdetails.uid) {
                             NavPush(
                                 context,
                                 OthersProfileUi(
-                                  uid: snap['uid'],
+                                  uid: blogData['uid'],
                                 )).then((value) => setState(() {}));
                           }
                         },
@@ -158,18 +159,18 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                           backgroundColor: primaryAccentColor,
                           radius: 22,
                           backgroundImage: NetworkImage(
-                            snap['profileImage'],
+                            blogData['profileImage'],
                           ),
                         ),
                       ),
                       StreamBuilder<dynamic>(
                         stream: FirebaseFirestore.instance
                             .collection('users')
-                            .where('uid', isEqualTo: snap['uid'])
+                            .where('uid', isEqualTo: blogData['uid'])
                             .snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            DocumentSnapshot ds = snapshot.data.docs[0];
+                        builder: (context, blogDatashot) {
+                          if (blogDatashot.hasData) {
+                            DocumentSnapshot ds = blogDatashot.data.docs[0];
 
                             var activeStatus = ds['active'];
 
@@ -210,18 +211,18 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            if (snap['uid'] != Userdetails.uid) {
-                              NavPush(
-                                  context, OthersProfileUi(uid: snap['uid']));
+                            if (blogData['uid'] != Userdetails.uid) {
+                              NavPush(context,
+                                  OthersProfileUi(uid: blogData['uid']));
                             }
                           },
                           child: Container(
                             color: Colors.transparent,
                             child: Text(
-                              snap['userDisplayName'] ==
+                              blogData['userDisplayName'] ==
                                       Userdetails.userDisplayName
                                   ? 'You'
-                                  : snap['userDisplayName'],
+                                  : blogData['userDisplayName'],
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 0.5,
@@ -239,12 +240,13 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                           height: 3,
                         ),
                         Text(
-                          DateFormat('h:m a').format(snap['time'].toDate()) +
+                          DateFormat('h:m a')
+                                  .format(blogData['time'].toDate()) +
                               ' • ' +
                               _timeAgo +
                               ' • ' +
                               DateFormat('d-MMM, y')
-                                  .format(snap['time'].toDate()),
+                                  .format(blogData['time'].toDate()),
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: isDarkMode
@@ -257,7 +259,7 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                     ),
                   ),
                   Visibility(
-                    visible: snap['uid'] == Userdetails.uid,
+                    visible: blogData['uid'] == Userdetails.uid,
                     child: IconButton(
                       onPressed: () {
                         showModalBottomSheet(
@@ -271,7 +273,7 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                             ),
                           ),
                           builder: (context) {
-                            return ShowModal(snap['blogId']);
+                            return ShowModal(blogData['blogId']);
                           },
                         );
                       },
@@ -290,7 +292,7 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
 
             ///////////////////// DESCRIPTION AREA ///////////////////////
             Visibility(
-              visible: !Uri.parse(snap['description']).isAbsolute,
+              visible: !Uri.parse(blogData['description']).isAbsolute,
               child: Padding(
                 padding: EdgeInsets.only(top: 10),
                 child: SelectableLinkify(
@@ -311,11 +313,12 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                       throw 'Could not launch $link';
                     }
                   },
-                  text: snap['description'].toString().replaceAll('/:', ':'),
+                  text:
+                      blogData['description'].toString().replaceAll('/:', ':'),
                   style: TextStyle(
                     letterSpacing: 0.5,
                     fontWeight: FontWeight.w500,
-                    fontSize: snap['description'].length > 100 ? 14 : 20,
+                    fontSize: blogData['description'].length > 100 ? 14 : 20,
                     color: isDarkMode
                         ? Colors.grey.shade300
                         : Colors.grey.shade800,
@@ -326,15 +329,15 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
 
             ////////////////////////////  TAGS AREA ////////////////////////////
             Visibility(
-              visible: snap['tags'] != '',
+              visible: blogData['tags'] != '',
               child: Padding(
                 padding: EdgeInsets.only(top: 10),
                 child: Wrap(
                   children: List.generate(
-                    snap['tags'].length,
+                    blogData['tags'].length,
                     (index) {
                       return TagsCard(
-                        snap['tags'][index],
+                        blogData['tags'][index],
                         context,
                         false,
                       );
@@ -346,7 +349,7 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
 
             ///////////////////// LIKE STATUS ///////////////////////
 
-            snap['likes'].length == 0
+            blogData['likes'].length == 0
                 ? Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
@@ -362,19 +365,20 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                     padding: EdgeInsets.only(bottom: 10, top: 10),
                     child: Row(
                       children: [
-                        snap['likes'].length == 1
+                        blogData['likes'].length == 1
                             ? StreamBuilder<dynamic>(
                                 stream: FirebaseFirestore.instance
                                     .collection('users')
-                                    .where('uid', isEqualTo: snap['likes'][0])
+                                    .where('uid',
+                                        isEqualTo: blogData['likes'][0])
                                     .snapshots(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    if (snapshot.data.docs.length == 0) {
+                                builder: (context, blogDatashot) {
+                                  if (blogDatashot.hasData) {
+                                    if (blogDatashot.data.docs.length == 0) {
                                       return SingleLikePreview(profileImg: '');
                                     } else {
                                       DocumentSnapshot ds =
-                                          snapshot.data.docs[0];
+                                          blogDatashot.data.docs[0];
                                       return GestureDetector(
                                         onTap: () {
                                           if (ds['uid'] != Userdetails.uid) {
@@ -406,15 +410,15 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                             : StreamBuilder<dynamic>(
                                 stream: FirebaseFirestore.instance
                                     .collection('users')
-                                    .where('uid', whereIn: snap['likes'])
+                                    .where('uid', whereIn: blogData['likes'])
                                     .snapshots(),
-                                builder: (context, snapshot) {
+                                builder: (context, blogDatashot) {
                                   try {
                                     return DoubleLikePreview(
-                                      img1: snapshot.data.docs[0]['imgUrl'],
-                                      press1: snapshot.data.docs[0]['uid'],
-                                      press2: snapshot.data.docs[1]['uid'],
-                                      img2: snapshot.data.docs[1]['imgUrl'],
+                                      img1: blogDatashot.data.docs[0]['imgUrl'],
+                                      press1: blogDatashot.data.docs[0]['uid'],
+                                      press2: blogDatashot.data.docs[1]['uid'],
+                                      img2: blogDatashot.data.docs[1]['imgUrl'],
                                     );
                                   } catch (e) {
                                     return DummyDoubleLikePreview();
@@ -426,23 +430,27 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                             NavPush(
                                 context,
                                 LikesUI(
-                                  snap: snap,
+                                  likesList: widget.blogData.likes!,
                                 ));
                           },
                           child: Container(
                             color: Colors.transparent,
                             child: Text(
-                              snap['likes'].length == 1 &&
-                                      snap['likes'].contains(Userdetails.uid)
+                              blogData['likes'].length == 1 &&
+                                      blogData['likes']
+                                          .contains(Userdetails.uid)
                                   ? 'You liked it '
-                                  : snap['likes'].length == 1
+                                  : blogData['likes'].length == 1
                                       ? ' Liked it'
-                                      : snap['likes'].contains(Userdetails.uid)
+                                      : blogData['likes']
+                                              .contains(Userdetails.uid)
                                           ? 'You and ' +
-                                              (snap['likes'].length - 1)
+                                              (blogData['likes'].length - 1)
                                                   .toString() +
                                               ' more have liked'
-                                          : snap['likes'].length.toString() +
+                                          : blogData['likes']
+                                                  .length
+                                                  .toString() +
                                               ' people liked it',
                               style: TextStyle(
                                 letterSpacing: 0.5,
@@ -465,9 +473,9 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                 InkWell(
                   onTap: () {
                     DatabaseMethods().likeBlog(
-                      snap['blogId'],
-                      snap['likes'],
-                      snap,
+                      blogData['blogId'],
+                      blogData['likes'],
+                      blogData,
                     );
                     setState(() {});
                   },
@@ -476,17 +484,18 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(7),
-                      color: snap['likes'].contains(Userdetails.uid)
+                      color: blogData['likes'].contains(Userdetails.uid)
                           ? primaryAccentColor.withOpacity(0.2)
                           : Colors.transparent,
                     ),
                     child: Row(
                       children: [
                         LikeAnimation(
-                          isAnimating: snap['likes'].contains(Userdetails.uid),
+                          isAnimating:
+                              blogData['likes'].contains(Userdetails.uid),
                           smallLike: true,
                           child: SvgPicture.asset(
-                            snap['likes'].contains(Userdetails.uid)
+                            blogData['likes'].contains(Userdetails.uid)
                                 ? 'lib/assets/icons/heart-fill.svg'
                                 : 'lib/assets/icons/heart.svg',
                             color:
@@ -494,11 +503,11 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                           ),
                         ),
                         Visibility(
-                          visible: snap['likes'].length != 0,
+                          visible: blogData['likes'].length != 0,
                           child: Padding(
                             padding: EdgeInsets.only(left: 5),
                             child: Text(
-                              snap['likes'].length.toString(),
+                              blogData['likes'].length.toString(),
                               style: TextStyle(
                                 color: isDarkMode
                                     ? primaryAccentColor
@@ -520,8 +529,8 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                     NavPush(
                         context,
                         CommentUi(
-                          blogId: snap['blogId'],
-                          tokenId: snap['tokenId'],
+                          blogId: blogData['blogId'],
+                          tokenId: blogData['tokenId'],
                         ));
                   },
                   padding: EdgeInsets.zero,
@@ -544,7 +553,7 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                           width: 7,
                         ),
                         Text(
-                          snap['comments'].toString() + ' ',
+                          blogData['comments'].toString() + ' ',
                           style: TextStyle(
                             color: isDarkMode
                                 ? Colors.grey.shade400

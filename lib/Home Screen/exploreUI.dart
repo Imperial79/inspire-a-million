@@ -1,4 +1,5 @@
 import 'package:blog_app/Home%20Screen/searchui.dart';
+import 'package:blog_app/Models/blogModel.dart';
 import 'package:blog_app/utilities/custom_sliver_app_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -131,20 +132,47 @@ class _ExploreUIState extends State<ExploreUI> {
         return AnimatedSwitcher(
           duration: Duration(seconds: 1),
           child: snapshot.hasData
-              ? ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: snapshot.data.docs.length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    DocumentSnapshot ds = snapshot.data.docs[index];
-                    return BlogCard(
-                      snap: ds,
-                      isHome: true,
-                    );
-                  },
-                )
+              ? snapshot.data.docs.length != 0
+                  ? ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: snapshot.data.docs.length,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot ds = snapshot.data.docs[index];
+
+                        return BlogCard(
+                          blogData: Blog.fromMap(ds as Map<String, dynamic>),
+                          isHome: true,
+                        );
+                      },
+                    )
+                  : Padding(
+                      padding: EdgeInsets.only(top: sdp(context, 100)),
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Follow/Write',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white.withOpacity(0.5),
+                                fontSize: sdp(context, 20),
+                              ),
+                            ),
+                            TextSpan(
+                              text: '\nblogs to get started',
+                              style: TextStyle(
+                                fontSize: sdp(context, 10),
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white.withOpacity(0.7),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
               : Shimmer(
                   child: DummyBlogCard(),
                   gradient: LinearGradient(
