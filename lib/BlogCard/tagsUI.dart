@@ -1,5 +1,4 @@
 import 'package:blog_app/BlogCard/blogCard.dart';
-import 'package:blog_app/Models/blogModel.dart';
 import 'package:blog_app/services/globalVariable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -88,8 +87,7 @@ class _TagsUIState extends State<TagsUI> {
                                         DocumentSnapshot ds =
                                             snapshot.data.docs[index];
                                         return BlogCard(
-                                          blogData: Blog.fromMap(
-                                              ds as Map<String, dynamic>),
+                                          snap: ds,
                                           isHome: false,
                                         );
                                       },

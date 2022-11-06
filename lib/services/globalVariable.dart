@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../BlogCard/blogCard.dart';
-import '../Models/blogModel.dart';
 import '../utilities/colors.dart';
 
 class Userdetails {
@@ -189,10 +188,7 @@ StreamBuilder<dynamic> BlogList({final isMe, name, uid}) {
               reverse: true,
               itemBuilder: (context, index) {
                 DocumentSnapshot ds = snapshot.data.docs[index];
-                return BlogCard(
-                  blogData: Blog.fromMap(ds as Map<String, dynamic>),
-                  isHome: true,
-                );
+                return BlogCard(snap: ds, isHome: true);
               },
             ),
           ],

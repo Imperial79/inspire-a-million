@@ -6,8 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class LikesUI extends StatefulWidget {
-  final List likesList;
-  LikesUI({required this.likesList});
+  final snap;
+  LikesUI({this.snap});
 
   @override
   State<LikesUI> createState() => _LikesUIState();
@@ -44,7 +44,7 @@ class _LikesUIState extends State<LikesUI> {
               child: StreamBuilder<dynamic>(
                 stream: FirebaseFirestore.instance
                     .collection('users')
-                    .where('uid', whereIn: widget.likesList)
+                    .where('uid', whereIn: widget.snap['likes'])
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
