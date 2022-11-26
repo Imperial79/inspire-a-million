@@ -44,63 +44,36 @@ class _MyProfileUiState extends State<MyProfileUi> {
     return Scaffold(
       backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(
-        child: Column(
+        child: ListView(
           children: [
-            AnimatedSize(
-              duration: Duration(milliseconds: 350),
-              child: ValueListenableBuilder<bool>(
-                  valueListenable: _showFullProfile,
-                  builder: (BuildContext context, bool showFullProfile,
-                      Widget? child) {
-                    return showFullProfile
-                        ? StreamBuilder<dynamic>(
-                            stream: FirebaseFirestore.instance
-                                .collection('users')
-                                .where('uid', isEqualTo: auth.currentUser!.uid)
-                                .snapshots(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                DocumentSnapshot ds = snapshot.data.docs[0];
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    MyProfileElements(ds, context),
-                                    inpirationHeading(),
-                                  ],
-                                );
-                              }
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  color: isDarkMode
-                                      ? primaryAccentColor
-                                      : primaryColor,
-                                  strokeWidth: 1.6,
-                                ),
-                              );
-                            },
-                          )
-                        : Container();
-                  }),
+            StreamBuilder<dynamic>(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .where('uid', isEqualTo: auth.currentUser!.uid)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  DocumentSnapshot ds = snapshot.data.docs[0];
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      MyProfileElements(ds, context),
+                      inpirationHeading(),
+                    ],
+                  );
+                }
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: isDarkMode ? primaryAccentColor : primaryColor,
+                    strokeWidth: 1.6,
+                  ),
+                );
+              },
             ),
-            AnimatedSize(
-              duration: Duration(milliseconds: 350),
-              child: ValueListenableBuilder<bool>(
-                valueListenable: _showFullProfile,
-                builder: ((context, showHeading, child) {
-                  return !showHeading ? inpirationHeading() : Container();
-                }),
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                controller: _scrollController,
-                children: [
-                  BlogList(
-                      isMe: true,
-                      name: Userdetails.userDisplayName,
-                      uid: Userdetails.uid),
-                ],
-              ),
+            BlogList(
+              isMe: true,
+              name: Userdetails.userDisplayName,
+              uid: Userdetails.uid,
             ),
           ],
         ),
