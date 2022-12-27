@@ -23,14 +23,9 @@ class DashboardUI extends StatefulWidget {
   State<DashboardUI> createState() => _DashboardUIState();
 }
 
-class _DashboardUIState extends State<DashboardUI>
-    with AutomaticKeepAliveClientMixin {
+class _DashboardUIState extends State<DashboardUI> {
   int activeTab = 0;
   String tokenId = '';
-
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -77,7 +72,6 @@ class _DashboardUIState extends State<DashboardUI>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
 
     SystemChrome.setSystemUIOverlayStyle(
@@ -128,7 +122,6 @@ class _DashboardUIState extends State<DashboardUI>
     //   },
     //   child: view[activeTab],
     // );
-
     // return IndexedStack(
     //   index: activeTab,
     //   children: [

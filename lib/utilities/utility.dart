@@ -345,11 +345,11 @@ Widget DummyBlogCard() {
 ShowSnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      backgroundColor: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade300,
+      backgroundColor: isDarkMode ? primaryAccentColor : primaryColor,
       content: Text(
         text,
         style: TextStyle(
-          color: isDarkMode ? Colors.white : Colors.black,
+          color: isDarkMode ? blackColor : whiteColor,
           fontFamily: 'Product',
         ),
       ),
