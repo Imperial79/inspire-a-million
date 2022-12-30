@@ -272,7 +272,7 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                             ),
                           ),
                           builder: (context) {
-                            return ShowModal(snap['blogId']);
+                            return MenuModal(snap['blogId']);
                           },
                         );
                       },

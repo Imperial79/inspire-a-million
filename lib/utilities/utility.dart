@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:unicons/unicons.dart';
 import '../services/database.dart';
 
-Widget ShowModal(String blogId) {
+Widget MenuModal(String blogId) {
   return SafeArea(
     child: StatefulBuilder(builder: (context, StateSetter setModalState) {
       return Padding(
@@ -24,7 +24,6 @@ Widget ShowModal(String blogId) {
                 style: TextStyle(
                   color: isDarkMode ? Colors.white : Colors.grey.shade700,
                   fontSize: 50,
-                  // fontWeight: FontWeight.w100,
                 ),
               ),
               SizedBox(
@@ -32,7 +31,7 @@ Widget ShowModal(String blogId) {
               ),
               MaterialButton(
                 onPressed: () {
-                  deletePost(blogId);
+                  deletePost(context, blogId);
                   Navigator.pop(context);
                 },
                 color: isDarkMode
@@ -76,8 +75,10 @@ Widget ShowModal(String blogId) {
   );
 }
 
-deletePost(final blogId) async {
+deletePost(BuildContext context, final blogId) async {
+  ShowLoding(context);
   await DatabaseMethods().deletePostDetails(blogId);
+  Navigator.pop(context);
 }
 
 Future NavPush(context, screen) async {

@@ -1,4 +1,3 @@
-import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/utilities/sdp.dart';
 import 'package:blog_app/utilities/utility.dart';
@@ -56,7 +55,7 @@ class _SettingsUIState extends State<SettingsUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
+      backgroundColor: isDarkMode ? scaffoldDarkColor : scaffoldLightColor,
       body: CustomScrollView(
         slivers: <Widget>[
           CustomSliverAppBar(
@@ -81,6 +80,7 @@ class _SettingsUIState extends State<SettingsUI> {
                         'Appearance',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       SizedBox(
@@ -89,7 +89,7 @@ class _SettingsUIState extends State<SettingsUI> {
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: darkGreyColor,
+                          color: isDarkMode ? darkGreyColor : greyColorAccent,
                         ),
                         child: TextField(
                           controller: name,
@@ -99,7 +99,7 @@ class _SettingsUIState extends State<SettingsUI> {
                           decoration: InputDecoration(
                             labelText: 'Display Name',
                             floatingLabelStyle: TextStyle(
-                              color: primaryAccentColor,
+                              color: Theme.of(context).colorScheme.primary,
                               fontSize: sdp(context, 13),
                             ),
                             labelStyle: TextStyle(),

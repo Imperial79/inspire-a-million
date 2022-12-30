@@ -4,7 +4,6 @@ import 'package:blog_app/utilities/components.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../utilities/constants.dart';
 
@@ -18,8 +17,58 @@ class SearchUi extends StatefulWidget {
 class _SearchUiState extends State<SearchUi> {
   final searchController = TextEditingController();
   bool isShowUsers = false;
+  QuerySnapshot<Map<String, dynamic>>? users;
+  List usersList = [];
+  List usersFiltered = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAllUsers();
+    searchController.addListener(() {
+      filterUsers();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchController.dispose();
+  }
+
+  fetchAllUsers() async {
+    users = await FirebaseFirestore.instance.collection('users').get();
+
+    usersList = users!.docs.map((e) {
+      return e.data();
+    }).toList();
+    setState(() {});
+  }
+
+  filterUsers() {
+    List _users = [];
+    _users.addAll(usersList);
+    if (searchController.text.isNotEmpty) {
+      _users.retainWhere((prod) {
+        // print(prod['title']);
+        String searchTerm = searchController.text.toLowerCase().trim();
+        String name = prod['name'].toString().toLowerCase();
+        String username = prod['username'].toString().toLowerCase();
+        String email = prod['username'].toString().toLowerCase();
+        return username.contains(searchTerm) ||
+            name.contains(searchTerm) ||
+            email.contains(searchTerm);
+      });
+
+      setState(() {
+        usersFiltered = _users;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool isSearching = searchController.text.isNotEmpty;
     isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
       backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
@@ -95,8 +144,6 @@ class _SearchUiState extends State<SearchUi> {
                         cursorColor:
                             isDarkMode ? primaryAccentColor : primaryColor,
                         decoration: InputDecoration(
-                          // contentPadding:
-                          //     EdgeInsets.symmetric(horizontal: 15),
                           border: InputBorder.none,
                           hintText: '  Search other Motivators ...',
                           hintStyle: TextStyle(
@@ -146,64 +193,100 @@ class _SearchUiState extends State<SearchUi> {
                   ],
                 ),
               ),
-              Column(
-                children: [
-                  isShowUsers
-                      ? FutureBuilder<dynamic>(
-                          future: FirebaseFirestore.instance
-                              .collection('users')
-                              .where('uid', isNotEqualTo: Userdetails.uid)
-                              .get(),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) {
-                              return Center(child: CustomLoading());
-                            }
-                            return ListView.builder(
-                              padding: EdgeInsets.symmetric(vertical: 20),
-                              itemCount: snapshot.data.docs.length,
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                DocumentSnapshot ds = snapshot.data.docs[index];
-                                if (ds['name']
-                                    .toString()
-                                    .toLowerCase()
-                                    .contains(searchController.text
-                                        .trim()
-                                        .toLowerCase())) {
-                                  return BuildListTile(ds);
-                                } else if (ds['username']
-                                    .toString()
-                                    .contains(searchController.text.trim())) {
-                                  return BuildListTile(ds);
-                                } else if (ds['email']
-                                    .toString()
-                                    .contains(searchController.text.trim())) {
-                                  return BuildListTile(ds);
-                                } else {
-                                  return Container();
-                                }
-                              },
-                            );
-                          },
-                        )
-                      : Padding(
-                          padding: EdgeInsets.only(top: 100),
-                          child: Center(
-                            child: Text(
-                              '!nspire',
-                              style: TextStyle(
-                                fontSize: 40,
-                                color: isDarkMode
-                                    ? Colors.white.withOpacity(0.5)
-                                    : Colors.grey.withOpacity(0.5),
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ),
-                ],
+              SizedBox(
+                height: 20,
               ),
+              Visibility(
+                visible: isShowUsers,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  // physics: NeverScrollableScrollPhysics(),
+                  itemCount:
+                      isSearching ? usersFiltered.length : usersList.length,
+                  itemBuilder: (context, index) {
+                    var usersData =
+                        isSearching ? usersFiltered[index] : usersList[index];
+                    if (usersData.isEmpty) {
+                      return Text('No Data');
+                    }
+                    return UsersSearchTile(usersData);
+                  },
+                ),
+                replacement: Padding(
+                  padding: EdgeInsets.only(top: 100),
+                  child: Center(
+                    child: Text(
+                      '!nspire',
+                      style: TextStyle(
+                        fontSize: 40,
+                        color: isDarkMode
+                            ? Colors.white.withOpacity(0.5)
+                            : Colors.grey.withOpacity(0.5),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              // Column(
+              //   children: [
+
+              //     // isShowUsers
+              //     //     ? FutureBuilder<dynamic>(
+              //     //         future: FirebaseFirestore.instance
+              //     //             .collection('users')
+              //     //             .where('uid', isNotEqualTo: Userdetails.uid)
+              //     //             .get(),
+              //     //         builder: (context, snapshot) {
+              //     //           if (!snapshot.hasData) {
+              //     //             return Center(child: CustomLoading());
+              //     //           }
+              //     //           return ListView.builder(
+              //     //             padding: EdgeInsets.symmetric(vertical: 20),
+              //     //             itemCount: snapshot.data.docs.length,
+              //     //             physics: NeverScrollableScrollPhysics(),
+              //     //             shrinkWrap: true,
+              //     //             itemBuilder: (context, index) {
+              //     //               DocumentSnapshot ds = snapshot.data.docs[index];
+              //     //               if (ds['name']
+              //     //                   .toString()
+              //     //                   .toLowerCase()
+              //     //                   .contains(searchController.text
+              //     //                       .trim()
+              //     //                       .toLowerCase())) {
+              //     //                 return BuildListTile(ds);
+              //     //               } else if (ds['username']
+              //     //                   .toString()
+              //     //                   .contains(searchController.text.trim())) {
+              //     //                 return BuildListTile(ds);
+              //     //               } else if (ds['email']
+              //     //                   .toString()
+              //     //                   .contains(searchController.text.trim())) {
+              //     //                 return BuildListTile(ds);
+              //     //               } else {
+              //     //                 return Container();
+              //     //               }
+              //     //             },
+              //     //           );
+              //     //         },
+              //     //       )
+              //     //     : Padding(
+              //     //         padding: EdgeInsets.only(top: 100),
+              //     //         child: Center(
+              //     //           child: Text(
+              //     //             '!nspire',
+              //     //             style: TextStyle(
+              //     //               fontSize: 40,
+              //     //               color: isDarkMode
+              //     //                   ? Colors.white.withOpacity(0.5)
+              //     //                   : Colors.grey.withOpacity(0.5),
+              //     //               fontWeight: FontWeight.w500,
+              //     //             ),
+              //     //           ),
+              //     //         ),
+              //     //       ),
+              //   ],
+              // ),
             ],
           ),
         ),
@@ -211,7 +294,7 @@ class _SearchUiState extends State<SearchUi> {
     );
   }
 
-  Widget BuildListTile(DocumentSnapshot<Object?> ds) {
+  Widget UsersSearchTile(var ds) {
     return Padding(
       padding: EdgeInsets.only(bottom: 10, left: 10, right: 10),
       child: ListTile(

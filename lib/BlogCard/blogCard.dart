@@ -4,7 +4,6 @@ import 'package:blog_app/BlogCard/commentUi.dart';
 import 'package:blog_app/BlogCard/likesUI.dart';
 import 'package:blog_app/Profile_Screen/othersProfileUi.dart';
 import 'package:blog_app/services/database.dart';
-import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/like_animation.dart';
 import 'package:blog_app/utilities/utility.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -202,7 +201,7 @@ class _BlogCardState extends State<BlogCard> {
                               ),
                             ),
                             builder: (context) {
-                              return ShowModal(widget.snap['blogId']);
+                              return MenuModal(widget.snap['blogId']);
                             },
                           );
                         },

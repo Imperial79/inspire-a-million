@@ -233,3 +233,25 @@ class CustomLoading extends StatelessWidget {
     );
   }
 }
+
+ShowLoding(BuildContext context) {
+  Dialog alert = Dialog(
+    backgroundColor: Colors.transparent,
+    // elevation: 0,
+    child: Container(
+      child: Center(
+        child: CircularProgressIndicator(
+          color: whiteColor,
+        ),
+      ),
+    ),
+  );
+
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
