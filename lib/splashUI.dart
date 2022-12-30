@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:blog_app/dashboardUI.dart';
 import 'package:blog_app/services/database.dart';
+import 'package:blog_app/utilities/constants.dart';
 import 'package:blog_app/utilities/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,6 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Home Screen/exploreUI.dart';
-import 'services/globalVariable.dart';
 import 'utilities/colors.dart';
 
 class SplashUI extends StatefulWidget {
@@ -21,7 +21,6 @@ class SplashUI extends StatefulWidget {
 }
 
 class _SplashUIState extends State<SplashUI> with WidgetsBindingObserver {
-  final _firestore = FirebaseFirestore.instance;
   String tokenId = '';
 
   @override

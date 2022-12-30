@@ -630,6 +630,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.12"
+  text_style_editor:
+    dependency: "direct main"
+    description:
+      name: text_style_editor
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
   timeago:
     dependency: "direct main"
     description:

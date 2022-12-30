@@ -1,4 +1,4 @@
-import 'package:blog_app/services/globalVariable.dart';
+import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/utilities/sdp.dart';
 import 'package:blog_app/utilities/utility.dart';
@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../utilities/constants.dart';
 import '../utilities/custom_sliver_app_bar.dart';
 
 class SettingsUI extends StatefulWidget {

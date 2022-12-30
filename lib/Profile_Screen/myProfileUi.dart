@@ -1,5 +1,5 @@
 import 'package:blog_app/utilities/colors.dart';
-import 'package:blog_app/services/globalVariable.dart';
+import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/Profile_Screen/settingsUI.dart';
 import 'package:blog_app/utilities/utility.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../utilities/constants.dart';
 import 'inspiredUi.dart';
 import 'motivatorUi.dart';
 

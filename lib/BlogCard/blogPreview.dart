@@ -1,5 +1,5 @@
 import 'package:blog_app/BlogCard/commentCard.dart';
-import 'package:blog_app/services/globalVariable.dart';
+import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/sdp.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../Profile_Screen/othersProfileUi.dart';
 import '../services/database.dart';
 import '../utilities/colors.dart';
+import '../utilities/constants.dart';
 import '../utilities/like_animation.dart';
 import '../utilities/utility.dart';
 import 'commentUi.dart';

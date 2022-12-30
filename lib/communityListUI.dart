@@ -1,10 +1,12 @@
 import 'package:blog_app/BlogCard/blogCard.dart';
-import 'package:blog_app/services/globalVariable.dart';
+import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/utilities/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:unicons/unicons.dart';
+
+import 'utilities/constants.dart';
 
 class CommunityListUI extends StatefulWidget {
   const CommunityListUI({Key? key}) : super(key: key);

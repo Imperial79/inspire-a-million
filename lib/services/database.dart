@@ -2,7 +2,8 @@ import 'package:blog_app/utilities/notification_function.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'globalVariable.dart';
+import '../utilities/components.dart';
+import '../utilities/constants.dart';
 
 class DatabaseMethods {
   final _firestore = FirebaseFirestore.instance;

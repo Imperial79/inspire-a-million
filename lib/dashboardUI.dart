@@ -2,7 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:blog_app/Home%20Screen/exploreUI.dart';
 import 'package:blog_app/createBlogUi.dart';
 import 'package:blog_app/communityListUI.dart';
-import 'package:blog_app/services/globalVariable.dart';
+import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/animated_indexed_stack.dart';
 import 'package:blog_app/utilities/colors.dart';
 
@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import 'Profile_Screen/myProfileUi.dart';
+import 'utilities/constants.dart';
 
 DocumentSnapshot<Map<String, dynamic>>? users;
 

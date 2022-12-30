@@ -1,7 +1,7 @@
 import 'dart:convert';
-
-import 'package:blog_app/services/globalVariable.dart';
 import 'package:http/http.dart';
+
+import 'constants.dart';
 
 Future<Response> sendNotification(
     {final tokenIdList, contents, heading, largeIconUrl}) async {

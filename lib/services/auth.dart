@@ -5,8 +5,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../dashboardUI.dart';
+import '../utilities/constants.dart';
 import 'database.dart';
-import 'globalVariable.dart';
+import '../utilities/components.dart';
 
 //creating an instance of Firebase Authentication
 class AuthMethods {

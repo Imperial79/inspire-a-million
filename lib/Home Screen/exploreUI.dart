@@ -10,7 +10,8 @@ import '../BlogCard/blogCard.dart';
 import '../utilities/colors.dart';
 import '../dashboardUI.dart';
 import '../services/database.dart';
-import '../services/globalVariable.dart';
+import '../utilities/components.dart';
+import '../utilities/constants.dart';
 import '../utilities/sdp.dart';
 import '../utilities/utility.dart';
 

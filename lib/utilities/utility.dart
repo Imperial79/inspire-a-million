@@ -1,7 +1,8 @@
 import 'package:blog_app/BlogCard/commentCard.dart';
 import 'package:blog_app/BlogCard/tagsUI.dart';
 import 'package:blog_app/utilities/colors.dart';
-import 'package:blog_app/services/globalVariable.dart';
+import 'package:blog_app/utilities/components.dart';
+import 'package:blog_app/utilities/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
