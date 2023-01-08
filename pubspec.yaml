@@ -3,7 +3,7 @@ description: Inspire a Million.
 
 publish_to: "none"
 
-version: 2.0.0+28
+version: 2.0.1+29
 
 environment:
   sdk: ">=2.16.1 <3.0.0"
@@ -33,15 +33,8 @@ dependencies:
   url_launcher: ^6.0.20
   html: ^0.15.0
   shimmer: ^2.0.0
-  carousel_slider: ^4.1.1
   unicons: ^2.1.0
   animations: ^2.0.4
-  dynamic_color: ^1.5.4
-  dynamic_themes: ^1.1.0
-  google_fonts: ^3.0.1
-  text_style_editor: ^1.1.1
-  flutter_summernote: ^1.0.0
-  text_selection_controls: ^0.0.2
   formatted_text_hooks: ^3.0.0
   formatted_text: ^3.0.0
 

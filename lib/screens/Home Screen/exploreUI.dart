@@ -3,7 +3,6 @@ import 'package:blog_app/utilities/custom_sliver_app_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:unicons/unicons.dart';
 import '../BlogCard/blogCard.dart';

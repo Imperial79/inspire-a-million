@@ -4,8 +4,6 @@ import 'package:blog_app/services/auth.dart';
 import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/sdp.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'utilities/constants.dart';
 
@@ -74,10 +72,10 @@ class _LoginUiState extends State<LoginUi> {
                               children: [
                                 Text(
                                   'Inspire A\nMillion',
-                                  style: GoogleFonts.playfairDisplay(
-                                    fontSize: sdp(context, 30),
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                  style: TextStyle(
+                                      fontSize: sdp(context, 30),
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: 'Monospace'),
                                   textAlign: TextAlign.center,
                                 ),
                                 Text(

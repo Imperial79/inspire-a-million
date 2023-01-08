@@ -4,7 +4,6 @@ import 'package:blog_app/utilities/sdp.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../screens/BlogCard/blogCard.dart';
 import 'colors.dart';
 
@@ -192,8 +191,8 @@ Widget Header(BuildContext context) {
     children: [
       Text(
         '!nspire',
-        style: GoogleFonts.playfairDisplay(
-          // color: isDarkMode ? primaryAccentColor : primaryColor,
+        style: TextStyle(
+          fontFamily: 'Monospace',
           color: Theme.of(context).colorScheme.primary,
           fontWeight: FontWeight.w700,
           letterSpacing: 1,
