@@ -38,15 +38,6 @@ class _SettingsUIState extends State<SettingsUI> {
     ShowSnackBar(context, 'Name updated successfully !!');
   }
 
-  void setUseDarkTheme(BuildContext context, bool value) async {
-    // SystemChrome.setSystemUIOverlayStyle(
-    //   SystemUiOverlayStyle(
-    //     systemNavigationBarIconBrightness:
-    //         value ? Brightness.light : Brightness.dark,
-    //   ),
-    // );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

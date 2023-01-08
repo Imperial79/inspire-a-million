@@ -47,13 +47,6 @@ class _MyAppState extends State<MyApp> {
       SystemUiMode.edgeToEdge,
       overlays: [SystemUiOverlay.top],
     );
-    // SystemChrome.setSystemUIOverlayStyle(
-    //   SystemUiOverlayStyle.light.copyWith(
-    //     statusBarColor: Colors.transparent,
-    //     systemNavigationBarColor: Colors.transparent,
-    //     systemNavigationBarIconBrightness: Brightness.dark,
-    //   ),
-    // );
 
     return MaterialApp(
       themeMode: ThemeMode.system,
