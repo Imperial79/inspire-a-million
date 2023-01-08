@@ -40,6 +40,10 @@ dependencies:
   dynamic_themes: ^1.1.0
   google_fonts: ^3.0.1
   text_style_editor: ^1.1.1
+  flutter_summernote: ^1.0.0
+  text_selection_controls: ^0.0.2
+  formatted_text_hooks: ^3.0.0
+  formatted_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:

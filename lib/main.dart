@@ -2,7 +2,6 @@ import 'package:blog_app/splashUI.dart';
 import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/loginUi.dart';
 import 'package:blog_app/services/auth.dart';
-import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/constants.dart';
 import 'package:blog_app/utilities/utility.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -80,6 +79,7 @@ class _MyAppState extends State<MyApp> {
           }
         },
       ),
+      // home: ReadingApp(),
     );
   }
 }

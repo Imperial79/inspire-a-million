@@ -4,9 +4,11 @@ import 'package:blog_app/screens/Community%20Page/ccommunity-homePageUI.dart';
 import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/constants.dart';
+import 'package:blog_app/utilities/sdp.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:formatted_text/formatted_text.dart';
 import 'package:intl/intl.dart';
 
 import 'package:unicons/unicons.dart';
@@ -267,23 +269,24 @@ Widget DummyBlogCard() {
 ShowSnackBar(
   BuildContext context,
   String text, {
-  bool? showAction,
-  String? actionLabel,
+  final bool showAction = false,
+  final String actionLabel = '',
   void Function()? onPressed,
 }) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      backgroundColor: isDarkMode ? primaryAccentColor : primaryColor,
+      backgroundColor: isDarkMode ? primaryAccentColor : blueGreyColorDark,
       content: Text(
         text,
         style: TextStyle(
           color: isDarkMode ? blackColor : whiteColor,
           fontFamily: 'Product',
+          fontWeight: FontWeight.w600,
         ),
       ),
-      action: showAction!
+      action: showAction
           ? SnackBarAction(
-              label: actionLabel!,
+              label: actionLabel,
               onPressed: onPressed!,
               textColor: isDarkMode ? blackColor : whiteColor,
             )
@@ -330,11 +333,84 @@ SystemColors({
       systemNavigationBarColor: navColor,
       systemNavigationBarIconBrightness: navBrightness,
     ),
-    // SystemUiOverlayStyle.light.copyWith(
-    //   statusBarIconBrightness: statusBrightness,
-    //   statusBarColor: statusColor,
-    //   systemNavigationBarColor: navColor,
-    //   systemNavigationBarIconBrightness: navBrightness,
-    // ),
+  );
+}
+
+Widget FormatedBlog(BuildContext context, String description) {
+  return FormattedText(
+    description,
+    style: TextStyle(
+      letterSpacing: 0.5,
+      color: isDarkMode ? whiteColor : darkGreyColor,
+      fontWeight: FontWeight.w400,
+      fontSize: description.length > 100 ? sdp(context, 11) : sdp(context, 17),
+    ),
+    formatters: [
+      // ...FormattedTextDefaults.formattedTextDefaultFormatters,
+      description.toString().endsWith('#')
+          ? FormattedTextFormatter(
+              patternChars: '#',
+              style: TextStyle(
+                color: isDarkMode ? whiteColor : blackColor,
+                letterSpacing: 0.5,
+                fontWeight: FontWeight.w600,
+                fontSize: description.length > 100
+                    ? sdp(context, 13)
+                    : sdp(context, 17),
+                decoration: TextDecoration.underline,
+              ),
+            )
+          : FormattedTextFormatter(
+              patternChars: '#',
+              style: TextStyle(
+                color: isDarkMode ? primaryAccentColor : primaryColor,
+                letterSpacing: 0.5,
+                fontWeight: isDarkMode ? FontWeight.w500 : FontWeight.w600,
+                fontSize: description.length > 100
+                    ? sdp(context, 13)
+                    : sdp(context, 17),
+              ),
+            ),
+      FormattedTextFormatter(
+        patternChars: '==',
+        style: TextStyle(
+          color: isDarkMode ? primaryAccentColor : primaryColor,
+          letterSpacing: 0.5,
+          fontWeight: isDarkMode ? FontWeight.w500 : FontWeight.w600,
+          fontSize: description.length > 100 ? 14 : 20,
+        ),
+      ),
+      FormattedTextFormatter(
+        patternChars: '*',
+        style: TextStyle(
+          color: isDarkMode ? whiteColor : blackColor,
+          letterSpacing: 0.5,
+          fontWeight: FontWeight.w700,
+          fontSize:
+              description.length > 100 ? sdp(context, 13) : sdp(context, 17),
+        ),
+      ),
+      FormattedTextFormatter(
+        patternChars: '*/',
+        style: TextStyle(
+          color: isDarkMode ? whiteColor : blackColor,
+          letterSpacing: 0.5,
+          fontWeight: isDarkMode ? FontWeight.w500 : FontWeight.w600,
+          fontFamily: 'Monospace',
+          fontSize: description.length > 100 ? 14 : 20,
+        ),
+      ),
+      FormattedTextFormatter(
+        patternChars: '-h-',
+        style: TextStyle(
+          color: blackColor,
+          letterSpacing: 0.5,
+          fontWeight: isDarkMode ? FontWeight.w500 : FontWeight.w600,
+          fontSize: description.length > 100 ? 14 : 20,
+          backgroundColor:
+              isDarkMode ? Colors.amber.withOpacity(0.7) : Colors.amber,
+        ),
+      ),
+    ],
   );
 }

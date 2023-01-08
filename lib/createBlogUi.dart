@@ -1,11 +1,13 @@
 import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/utilities/notification_function.dart';
+import 'package:blog_app/utilities/utility.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:formatted_text_hooks/formatted_text_hooks.dart';
 
 import 'utilities/constants.dart';
 
@@ -17,7 +19,7 @@ class CreateBlogUi extends StatefulWidget {
 }
 
 class _CreateBlogUiState extends State<CreateBlogUi> {
-  final description = TextEditingController();
+  final description = FormattedTextEditingController();
   int textCount = 0;
 
   List extractTags(String content) {
@@ -114,11 +116,30 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
                   ),
                   child: TextField(
                     controller: description,
-                    toolbarOptions: ToolbarOptions(
-                      copy: true,
-                      cut: true,
-                      paste: true,
-                      selectAll: true,
+                    // toolbarOptions: ToolbarOptions(
+                    //   copy: false,
+                    //   cut: false,
+                    //   paste: false,
+                    //   selectAll: false,
+                    // ),
+
+                    selectionControls: FormattedTextSelectionControls(
+                      actions: [
+                        ...FormattedTextDefaults
+                            .formattedTextToolbarDefaultActions,
+                        // FormattedTextToolbarAction(
+                        //   label: 'Highlight',
+                        //   patternChars: '-h-',
+                        // ),
+                        // FormattedTextToolbarAction(
+                        //   label: 'Classic',
+                        //   patternChars: '*/',
+                        // ),
+                        // FormattedTextToolbarAction(
+                        //   label: 'Primary Color',
+                        //   patternChars: '==',
+                        // ),
+                      ],
                     ),
                     dragStartBehavior: DragStartBehavior.down,
                     autocorrect: false,
@@ -181,9 +202,16 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
                       ),
                       ElevatedButton.icon(
                         onPressed: () {
+                          FocusScope.of(context).unfocus();
                           if (description.text.isNotEmpty) {
                             uploadBlog(
                                 context: context, content: description.text);
+                          } else {
+                            ShowSnackBar(
+                              context,
+                              'Write Something !!',
+                              onPressed: () {},
+                            );
                           }
                         },
                         style: ElevatedButton.styleFrom(
