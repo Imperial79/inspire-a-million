@@ -122,7 +122,7 @@ class DatabaseMethods {
   getlabel() async {
     return await _firestore
         .collection('users')
-        .doc(Userdetails.userName)
+        .doc(Userdetails.uniqueName)
         .collection('labelList')
         .get();
   }
@@ -130,7 +130,7 @@ class DatabaseMethods {
   updatelabel(List labelList) async {
     return await _firestore
         .collection('users')
-        .doc(Userdetails.userName)
+        .doc(Userdetails.uniqueName)
         .collection('labelList')
         .doc('list')
         .set({'labelList': labelList});
@@ -139,7 +139,7 @@ class DatabaseMethods {
   fetchLabel() async {
     return await _firestore
         .collection('users')
-        .doc(Userdetails.userName)
+        .doc(Userdetails.uniqueName)
         .collection('labelList')
         .snapshots();
   }
@@ -147,7 +147,7 @@ class DatabaseMethods {
   updateNote(String time, Map<String, dynamic> updatedNoteMap) async {
     return await _firestore
         .collection('users')
-        .doc(Userdetails.userName)
+        .doc(Userdetails.uniqueName)
         .collection('notes')
         .doc(time)
         .update(updatedNoteMap);

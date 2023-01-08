@@ -1,4 +1,4 @@
-import 'package:blog_app/Home%20Screen/exploreUI.dart';
+import 'package:blog_app/screens/Home%20Screen/exploreUI.dart';
 import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/utilities/components.dart';
@@ -10,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../utilities/constants.dart';
+import '../../utilities/constants.dart';
 import 'inspiredUi.dart';
 import 'motivatorUi.dart';
 

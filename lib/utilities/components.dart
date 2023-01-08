@@ -1,35 +1,43 @@
-import 'package:blog_app/Home%20Screen/searchui.dart';
+import 'package:blog_app/screens/Home%20Screen/searchui.dart';
 import 'package:blog_app/utilities/constants.dart';
 import 'package:blog_app/utilities/sdp.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../BlogCard/blogCard.dart';
+import '../screens/BlogCard/blogCard.dart';
 import 'colors.dart';
 
-class StatsCard extends StatefulWidget {
+Widget SubLabel(BuildContext context, {required String text}) {
+  return Padding(
+    padding: EdgeInsets.only(bottom: 10, top: 15),
+    child: Text(
+      text,
+      style: TextStyle(
+        color: Theme.of(context).colorScheme.primary,
+        fontSize: sdp(context, 12),
+        fontWeight: FontWeight.w500,
+      ),
+    ),
+  );
+}
+
+class StatsCard extends StatelessWidget {
   final press, label, count;
   const StatsCard({Key? key, this.press, this.label, this.count})
       : super(key: key);
 
   @override
-  State<StatsCard> createState() => _StatsCardState();
-}
-
-class _StatsCardState extends State<StatsCard> {
-  @override
   Widget build(BuildContext context) {
     return Expanded(
       child: InkWell(
-        onTap: widget.press,
+        onTap: press,
         borderRadius: BorderRadius.circular(10),
         child: Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: isDarkMode
-                ? primaryAccentColor.withOpacity(0.2)
-                : primaryColor.withOpacity(0.1),
+            color:
+                isDarkMode ? blueGreyColorDark : primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -37,7 +45,7 @@ class _StatsCardState extends State<StatsCard> {
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Text(
-                  widget.count,
+                  count,
                   style: TextStyle(
                     color: isDarkMode
                         ? Colors.grey.shade300
@@ -56,17 +64,15 @@ class _StatsCardState extends State<StatsCard> {
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10),
                   ),
-                  color: isDarkMode
-                      ? primaryAccentColor.withOpacity(0.7)
-                      : primaryColor,
+                  color: isDarkMode ? primaryAccentColor : primaryColor,
                 ),
                 child: FittedBox(
                   child: Text(
-                    widget.label.toString().toUpperCase(),
+                    label.toString().toUpperCase(),
                     style: TextStyle(
                       color: isDarkMode ? Colors.black : Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      fontSize: sdp(context, 10),
                       letterSpacing: 1,
                     ),
                   ),
@@ -225,11 +231,14 @@ class CustomLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircularProgressIndicator(
-      backgroundColor:
-          isDarkMode ? primaryAccentColor.withOpacity(0.3) : primaryAccentColor,
-      color: isDarkMode ? primaryAccentColor : primaryColor,
-      strokeWidth: 3,
+    return Container(
+      height: sdp(context, 15),
+      width: sdp(context, 15),
+      child: CircularProgressIndicator(
+        backgroundColor: isDarkMode ? blueGreyColorDark : primaryAccentColor,
+        color: isDarkMode ? primaryAccentColor : primaryColor,
+        strokeWidth: 3,
+      ),
     );
   }
 }
@@ -237,11 +246,10 @@ class CustomLoading extends StatelessWidget {
 ShowLoding(BuildContext context) {
   Dialog alert = Dialog(
     backgroundColor: Colors.transparent,
-    // elevation: 0,
     child: Container(
       child: Center(
         child: CircularProgressIndicator(
-          color: whiteColor,
+          color: isDarkMode ? primaryAccentColor : primaryColor,
         ),
       ),
     ),
@@ -253,5 +261,33 @@ ShowLoding(BuildContext context) {
     builder: (BuildContext context) {
       return alert;
     },
+  );
+}
+
+Widget NoBlogs(BuildContext context) {
+  return Center(
+    child: FittedBox(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'No',
+            style: TextStyle(
+              fontSize: sdp(context, 30),
+              fontWeight: FontWeight.w900,
+              color: isDarkMode ? blueGreyColorDark : greyColorAccent,
+            ),
+          ),
+          Text(
+            'Blogs !',
+            style: TextStyle(
+              fontSize: sdp(context, 50),
+              fontWeight: FontWeight.w900,
+              color: isDarkMode ? blueGreyColorDark : greyColorAccent,
+            ),
+          ),
+        ],
+      ),
+    ),
   );
 }

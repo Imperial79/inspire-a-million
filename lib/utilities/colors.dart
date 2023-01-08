@@ -14,6 +14,7 @@ Color greyColorAccent = Colors.grey.shade300;
 Color blueGreyColor = Colors.blueGrey;
 Color blueGreyColorAccent = Colors.blueGrey.shade200;
 Color blueGreyColorDark = Colors.blueGrey.shade800;
+Color transparentColor = Colors.transparent;
 
 // class MyColors {
 //   static Color primaryColor = Color(0xFF1976D2);

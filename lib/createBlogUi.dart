@@ -84,7 +84,6 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -92,7 +91,9 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
           statusBarIconBrightness:
               isDarkMode ? Brightness.light : Brightness.dark,
         ),
+        automaticallyImplyLeading: false,
         title: ThisHeader(),
+        centerTitle: true,
       ),
       body: SafeArea(
         child: Padding(
@@ -178,56 +179,34 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
                           ),
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
+                      ElevatedButton.icon(
+                        onPressed: () {
                           if (description.text.isNotEmpty) {
                             uploadBlog(
                                 context: context, content: description.text);
                           }
                         },
-                        borderRadius: BorderRadius.circular(50),
-                        child: Container(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
                           padding: EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 10),
-                          decoration: BoxDecoration(
-                            color:
-                                isDarkMode ? primaryAccentColor : primaryColor,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Text(
-                            '!nspire',
-                            style: TextStyle(
-                              letterSpacing: 1,
-                              fontSize: 16,
-                              color: isDarkMode ? Colors.black : Colors.white,
-                              fontWeight: FontWeight.w500,
-                            ),
+                              vertical: 10, horizontal: 15),
+                          backgroundColor:
+                              isDarkMode ? primaryAccentColor : primaryColor,
+                        ),
+                        icon: Icon(
+                          Icons.file_upload_outlined,
+                          color: isDarkMode ? blackColor : whiteColor,
+                        ),
+                        label: Text(
+                          '!nspire',
+                          style: TextStyle(
+                            letterSpacing: 1,
+                            fontSize: 16,
+                            color: isDarkMode ? blackColor : whiteColor,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
-                      // MaterialButton(
-                      //   onPressed: () {
-                      //     if (description.text.isNotEmpty) {
-                      //       uploadBlog(
-                      //           context: context, content: description.text);
-                      //     }
-                      //   },
-                      //   shape: RoundedRectangleBorder(
-                      //     borderRadius: BorderRadius.circular(50),
-                      //   ),
-                      //   color: isDarkMode ? primaryAccentColor : primaryColor,
-                      //   padding: EdgeInsets.symmetric(vertical: 12),
-                      //   elevation: 0,
-                      //   child: Text(
-                      //     '!nspire',
-                      //     style: TextStyle(
-                      //       letterSpacing: 0.5,
-                      //       fontSize: 20,
-                      //       color: isDarkMode ? primaryColor : Colors.white,
-                      //       fontWeight: FontWeight.w500,
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),

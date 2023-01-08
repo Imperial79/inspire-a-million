@@ -1,4 +1,4 @@
-import 'package:blog_app/Home%20Screen/searchui.dart';
+import 'package:blog_app/screens/Home%20Screen/searchui.dart';
 import 'package:blog_app/utilities/custom_sliver_app_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,12 +7,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:unicons/unicons.dart';
 import '../BlogCard/blogCard.dart';
-import '../utilities/colors.dart';
-import '../dashboardUI.dart';
-import '../services/database.dart';
-import '../utilities/constants.dart';
-import '../utilities/sdp.dart';
-import '../utilities/utility.dart';
+import '../../utilities/colors.dart';
+import '../../dashboardUI.dart';
+import '../../services/database.dart';
+import '../../utilities/constants.dart';
+import '../../utilities/sdp.dart';
+import '../../utilities/utility.dart';
 
 Stream? blogStream;
 Future<void> updateFollowingUsersList() async {
@@ -89,12 +89,12 @@ class _ExploreUIState extends State<ExploreUI> {
               isMainView: true,
               title: Text(
                 '!nspire',
-                style: GoogleFonts.playfairDisplay(
-                  color: isDarkMode ? primaryAccentColor : primaryColor,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 1,
-                  fontSize: sdp(context, 20),
-                ),
+                style: TextStyle(
+                    color: isDarkMode ? primaryAccentColor : primaryColor,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1,
+                    fontSize: sdp(context, 20),
+                    fontFamily: 'Monospace'),
               ),
               actions: [
                 IconButton(

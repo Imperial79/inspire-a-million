@@ -22,16 +22,6 @@ class _LoginUiState extends State<LoginUi> {
   Widget build(BuildContext context) {
     isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
 
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle.light.copyWith(
-        statusBarIconBrightness:
-            isDarkMode ? Brightness.light : Brightness.dark,
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor:
-            isDarkMode ? Colors.grey.shade900 : Colors.white,
-      ),
-    );
-
     return Scaffold(
       backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(
@@ -138,51 +128,6 @@ class _LoginUiState extends State<LoginUi> {
                             ),
                           ),
                         ),
-                        // MaterialButton(
-                        // onPressed: () {
-                        //   setState(() {
-                        //     isLoading = true;
-                        //   });
-                        //   AuthMethods().signInWithgoogle(context);
-                        // },
-                        //   color: isDarkMode ? Colors.white : primaryColor,
-                        //   shape: RoundedRectangleBorder(
-                        //     borderRadius: BorderRadius.circular(100),
-                        //   ),
-                        //   elevation: 0,
-                        //   padding: EdgeInsets.symmetric(
-                        //     horizontal: 20,
-                        //     vertical: 10,
-                        //   ),
-                        //   child: Row(
-                        //     crossAxisAlignment: CrossAxisAlignment.center,
-                        //     mainAxisAlignment: MainAxisAlignment.center,
-                        //     children: [
-                        //       CircleAvatar(
-                        //         radius: 15,
-                        //         backgroundColor:
-                        //             isDarkMode ? Colors.black : Colors.white,
-                        //         child: Image.asset(
-                        //           'lib/assets/image/googleLogo.png',
-                        //           height: 15,
-                        //         ),
-                        //       ),
-                        //       Spacer(),
-                        //       Text(
-                        //         'Continue with Google',
-                        //         style: TextStyle(
-                        //           color: isDarkMode ? Colors.black : Colors.white,
-                        //           fontSize: 16,
-                        //           fontWeight: FontWeight.w500,
-                        //         ),
-                        //       ),
-                        //       Spacer(),
-                        //       SizedBox(
-                        //         width: 10,
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
                       ),
                     ),
                   ],
@@ -198,6 +143,8 @@ class _LoginUiState extends State<LoginUi> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           AnimatedTextKit(
+            isRepeatingAnimation: true,
+            repeatForever: true,
             animatedTexts: [
               TypewriterAnimatedText(
                 'Loading Your Inspirations',
@@ -209,10 +156,10 @@ class _LoginUiState extends State<LoginUi> {
                 ),
               ),
             ],
-            totalRepeatCount: 100,
             displayFullTextOnTap: true,
             stopPauseOnTap: true,
           ),
+          SizedBox(height: 20),
           CustomLoading(),
         ],
       ),

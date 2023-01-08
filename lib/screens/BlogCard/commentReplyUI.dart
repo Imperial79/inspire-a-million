@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
-import '../utilities/constants.dart';
+import '../../utilities/constants.dart';
 
 class ReplyUI extends StatefulWidget {
   final blogId, commentId, comment;

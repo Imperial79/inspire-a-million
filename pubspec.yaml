@@ -58,6 +58,10 @@ flutter:
     #     - asset: lib/assets/fonts/AlbertSans-Medium.ttf
     # - asset: fonts/Schyler-Italic.ttf
     #   style: italic
+    - family: Monospace
+      fonts:
+        - asset: lib/assets/fonts/monospace-500.ttf
+          weight: 500
 
     - family: Product
       fonts:

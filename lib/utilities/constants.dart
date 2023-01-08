@@ -1,6 +1,6 @@
 class Userdetails {
   static String uid = '';
-  static String userName = '';
+  static String uniqueName = '';
   static String userEmail = '';
   static String userDisplayName = '';
   static String userProfilePic = '';

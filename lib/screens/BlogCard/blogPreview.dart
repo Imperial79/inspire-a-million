@@ -1,4 +1,4 @@
-import 'package:blog_app/BlogCard/commentCard.dart';
+import 'package:blog_app/screens/BlogCard/commentCard.dart';
 import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/sdp.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,11 +10,11 @@ import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 import '../Profile_Screen/othersProfileUi.dart';
-import '../services/database.dart';
-import '../utilities/colors.dart';
-import '../utilities/constants.dart';
-import '../utilities/like_animation.dart';
-import '../utilities/utility.dart';
+import '../../services/database.dart';
+import '../../utilities/colors.dart';
+import '../../utilities/constants.dart';
+import '../../utilities/like_animation.dart';
+import '../../utilities/utility.dart';
 import 'commentUi.dart';
 import 'likesUI.dart';
 

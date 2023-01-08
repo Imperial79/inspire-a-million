@@ -51,7 +51,7 @@ class AuthMethods {
     Userdetails.uid = userDetails.uid;
     Userdetails.userEmail = userDetails.email!;
     Userdetails.userDisplayName = userDetails.displayName!;
-    Userdetails.userName = userDetails.email!.split('@')[0];
+    Userdetails.uniqueName = userDetails.email!.split('@')[0];
     Userdetails.userProfilePic = userDetails.photoURL!;
     // Userdetails.myTokenId = tokenId;
 
@@ -138,7 +138,7 @@ class AuthMethods {
     Userdetails.uid = userDetails.uid;
     Userdetails.userEmail = userDetails.email!;
     Userdetails.userDisplayName = userDetails.displayName!;
-    Userdetails.userName = userDetails.email!.split('@')[0];
+    Userdetails.uniqueName = userDetails.email!.split('@')[0];
     Userdetails.userProfilePic = userDetails.photoURL!;
     // Userdetails.myTokenId = tokenId;
 

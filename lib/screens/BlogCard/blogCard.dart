@@ -1,8 +1,8 @@
-import 'package:blog_app/BlogCard/blogPreview.dart';
+import 'package:blog_app/screens/BlogCard/blogPreview.dart';
 import 'package:blog_app/utilities/colors.dart';
-import 'package:blog_app/BlogCard/commentUi.dart';
-import 'package:blog_app/BlogCard/likesUI.dart';
-import 'package:blog_app/Profile_Screen/othersProfileUi.dart';
+import 'package:blog_app/screens/BlogCard/commentUi.dart';
+import 'package:blog_app/screens/BlogCard/likesUI.dart';
+import 'package:blog_app/screens/Profile_Screen/othersProfileUi.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/utilities/like_animation.dart';
 import 'package:blog_app/utilities/utility.dart';
@@ -15,7 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
-import '../utilities/constants.dart';
+import '../../utilities/constants.dart';
 
 class BlogCard extends StatefulWidget {
   final snap;

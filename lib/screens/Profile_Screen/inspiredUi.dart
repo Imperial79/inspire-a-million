@@ -1,5 +1,5 @@
 import 'package:blog_app/utilities/colors.dart';
-import 'package:blog_app/Profile_Screen/othersProfileUi.dart';
+import 'package:blog_app/screens/Profile_Screen/othersProfileUi.dart';
 import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/notification_function.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../Home Screen/exploreUI.dart';
-import '../utilities/constants.dart';
+import '../../utilities/constants.dart';
 
 class InspiredUi extends StatefulWidget {
   final snap;

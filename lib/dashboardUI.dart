@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
-import 'package:blog_app/Home%20Screen/exploreUI.dart';
+import 'package:blog_app/screens/Home%20Screen/exploreUI.dart';
 import 'package:blog_app/createBlogUi.dart';
-import 'package:blog_app/communityListUI.dart';
+import 'package:blog_app/screens/Community%20Page/communityListUI.dart';
 import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/animated_indexed_stack.dart';
 import 'package:blog_app/utilities/colors.dart';
@@ -12,7 +12,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-import 'Profile_Screen/myProfileUi.dart';
+import 'screens/Profile_Screen/myProfileUi.dart';
 import 'utilities/constants.dart';
 
 DocumentSnapshot<Map<String, dynamic>>? users;
@@ -74,17 +74,6 @@ class _DashboardUIState extends State<DashboardUI> {
   @override
   Widget build(BuildContext context) {
     isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
-
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle.light.copyWith(
-        statusBarIconBrightness:
-            isDarkMode ? Brightness.light : Brightness.dark,
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor:
-            isDarkMode ? Colors.grey.shade900 : Colors.white,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
 
     return Scaffold(
       body: SafeArea(

@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:blog_app/dashboardUI.dart';
+import 'package:blog_app/screens/Home%20Screen/exploreUI.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/utilities/constants.dart';
 import 'package:blog_app/utilities/utility.dart';
@@ -9,8 +10,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'Home Screen/exploreUI.dart';
 import 'utilities/colors.dart';
 
 class SplashUI extends StatefulWidget {
@@ -52,9 +51,9 @@ class _SplashUIState extends State<SplashUI> with WidgetsBindingObserver {
   onPageLoad() async {
     var brightness = SchedulerBinding.instance.window.platformBrightness;
     isDarkMode = brightness == Brightness.dark;
-    if (Userdetails.userName == '') {
+    if (Userdetails.uniqueName == '') {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      Userdetails.userName = prefs.getString('USERNAMEKEY')!;
+      Userdetails.uniqueName = prefs.getString('USERNAMEKEY')!;
       Userdetails.userEmail = prefs.getString('USEREMAILKEY')!;
       Userdetails.uid = prefs.getString('USERKEY')!;
       Userdetails.userDisplayName = prefs.getString('USERDISPLAYNAMEKEY')!;
@@ -107,15 +106,9 @@ class _SplashUIState extends State<SplashUI> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle.light.copyWith(
-        statusBarIconBrightness:
-            isDarkMode ? Brightness.light : Brightness.dark,
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor:
-            isDarkMode ? Colors.grey.shade900 : Colors.white,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
+    SystemColors(
+      statusColor: transparentColor,
+      navColor: transparentColor,
     );
     isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(

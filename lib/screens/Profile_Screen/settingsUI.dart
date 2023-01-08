@@ -1,3 +1,4 @@
+import 'package:blog_app/services/auth.dart';
 import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/utilities/sdp.dart';
 import 'package:blog_app/utilities/utility.dart';
@@ -5,8 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../utilities/constants.dart';
-import '../utilities/custom_sliver_app_bar.dart';
+import '../../utilities/components.dart';
+import '../../utilities/constants.dart';
+import '../../utilities/custom_sliver_app_bar.dart';
 
 class SettingsUI extends StatefulWidget {
   SettingsUI({Key? key}) : super(key: key);
@@ -37,19 +39,12 @@ class _SettingsUIState extends State<SettingsUI> {
   }
 
   void setUseDarkTheme(BuildContext context, bool value) async {
-    // await _managerAPI.setUseDarkTheme(value);
-    int currentTheme = DynamicTheme.of(context)!.themeId;
-    if (currentTheme < 2) {
-      await DynamicTheme.of(context)!.setTheme(value ? 1 : 0);
-    } else {
-      await DynamicTheme.of(context)!.setTheme(value ? 3 : 2);
-    }
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        systemNavigationBarIconBrightness:
-            value ? Brightness.light : Brightness.dark,
-      ),
-    );
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   SystemUiOverlayStyle(
+    //     systemNavigationBarIconBrightness:
+    //         value ? Brightness.light : Brightness.dark,
+    //   ),
+    // );
   }
 
   @override
@@ -76,16 +71,7 @@ class _SettingsUIState extends State<SettingsUI> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        'Appearance',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      SubLabel(context, text: 'Appearance'),
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -153,6 +139,26 @@ class _SettingsUIState extends State<SettingsUI> {
                           'Save',
                           style: TextStyle(
                             color: isDarkMode ? blackColor : whiteColor,
+                          ),
+                        ),
+                      ),
+                      SubLabel(context, text: 'System'),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          AuthMethods().signOut();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              isDarkMode ? Colors.redAccent : Colors.red,
+                        ),
+                        icon: Icon(
+                          Icons.exit_to_app,
+                          color: whiteColor,
+                        ),
+                        label: Text(
+                          'Sign Out',
+                          style: TextStyle(
+                            color: whiteColor,
                           ),
                         ),
                       ),
