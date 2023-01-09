@@ -47,6 +47,11 @@ class _MyAppState extends State<MyApp> {
       overlays: [SystemUiOverlay.top],
     );
 
+    SystemColors(
+      statusColor: transparentColor,
+      navColor: transparentColor,
+    );
+
     return MaterialApp(
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,

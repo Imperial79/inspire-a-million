@@ -5,6 +5,8 @@ import 'package:blog_app/screens/Community%20Page/communityListUI.dart';
 import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/animated_indexed_stack.dart';
 import 'package:blog_app/utilities/colors.dart';
+import 'package:blog_app/utilities/sdp.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -160,7 +162,10 @@ class _DashboardUIState extends State<DashboardUI> {
         ),
         BottomNavigationBarItem(
           label: 'Profile',
-          icon: Icon(Icons.person),
+          icon: CircleAvatar(
+            radius: sdp(context, 12),
+            backgroundImage: NetworkImage(Userdetails.userProfilePic),
+          ),
         ),
       ],
     );

@@ -139,6 +139,7 @@ class _ExploreUIState extends State<ExploreUI> {
                     return BlogCard(
                       snap: ds,
                       isHome: true,
+                      isCommunity: false,
                     );
                   },
                 )

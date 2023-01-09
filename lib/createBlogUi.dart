@@ -1,18 +1,19 @@
 import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/services/database.dart';
 import 'package:blog_app/utilities/notification_function.dart';
+import 'package:blog_app/utilities/sdp.dart';
 import 'package:blog_app/utilities/utility.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:formatted_text_hooks/formatted_text_hooks.dart';
 
 import 'utilities/constants.dart';
 
 class CreateBlogUi extends StatefulWidget {
-  const CreateBlogUi({Key? key}) : super(key: key);
+  final Map? communityDetails;
+  const CreateBlogUi({Key? key, this.communityDetails}) : super(key: key);
 
   @override
   State<CreateBlogUi> createState() => _CreateBlogUiState();
@@ -21,6 +22,15 @@ class CreateBlogUi extends StatefulWidget {
 class _CreateBlogUiState extends State<CreateBlogUi> {
   final description = FormattedTextEditingController();
   int textCount = 0;
+  bool isCommunity = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.communityDetails != null) {
+      isCommunity = true;
+    }
+  }
 
   List extractTags(String content) {
     var contentArr = content.split(' ');
@@ -42,7 +52,6 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
     if (content.isNotEmpty) {
       List _extarctedTags = [];
       _extarctedTags = extractTags(content);
-      // print('Extarcted tags = ' + _extarctedTags.toString());
 
       var time = DateTime.now();
 
@@ -59,21 +68,33 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
         'tokenId': Userdetails.myTokenId,
         'tags': _extarctedTags,
       };
+      if (isCommunity) {
+        blogMap['communityId'] = widget.communityDetails!['communityId'];
+        DatabaseMethods().uploadCommunityBlog(
+          widget.communityDetails!['communityId'],
+          time.toString(),
+          blogMap,
+        );
+      } else {
+        DatabaseMethods().uploadBlogs(blogMap, time.toString());
+      }
 
-      DatabaseMethods().uploadBlogs(blogMap, time.toString());
       // print('Folowers: ' + Global.followersTokenId.toString());
 
       FocusScope.of(context)
           .unfocus(); //unfocussing the keyboard after uploading the blog
 
       description.clear(); // clearing the text field
-
-      sendNotification(
-        tokenIdList: Global.followersTokenId,
-        contents: '"' + content + '"',
-        heading: 'A new post from ${Userdetails.userDisplayName}',
-        largeIconUrl: Userdetails.userProfilePic,
-      );
+      if (!isCommunity) {
+        sendNotification(
+          tokenIdList: Global.followersTokenId,
+          contents: '"' + content + '"',
+          heading: 'A new post from ${Userdetails.userDisplayName}',
+          largeIconUrl: Userdetails.userProfilePic,
+        );
+      } else {
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -86,23 +107,13 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarIconBrightness:
-              isDarkMode ? Brightness.light : Brightness.dark,
-        ),
-        automaticallyImplyLeading: false,
-        title: ThisHeader(),
-        centerTitle: true,
-      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(bottom: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              ThisHeader(),
               SizedBox(
                 height: 20,
               ),
@@ -116,29 +127,10 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
                   ),
                   child: TextField(
                     controller: description,
-                    // toolbarOptions: ToolbarOptions(
-                    //   copy: false,
-                    //   cut: false,
-                    //   paste: false,
-                    //   selectAll: false,
-                    // ),
-
                     selectionControls: FormattedTextSelectionControls(
                       actions: [
                         ...FormattedTextDefaults
                             .formattedTextToolbarDefaultActions,
-                        // FormattedTextToolbarAction(
-                        //   label: 'Highlight',
-                        //   patternChars: '-h-',
-                        // ),
-                        // FormattedTextToolbarAction(
-                        //   label: 'Classic',
-                        //   patternChars: '*/',
-                        // ),
-                        // FormattedTextToolbarAction(
-                        //   label: 'Primary Color',
-                        //   patternChars: '==',
-                        // ),
                       ],
                     ),
                     dragStartBehavior: DragStartBehavior.down,
@@ -247,53 +239,85 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
   }
 
   Widget ThisHeader() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          '!NSPIRE A MILLION!',
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 16,
-            color: isDarkMode ? Colors.white : Colors.grey.shade800,
-            letterSpacing: 4,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      child: Column(
+        crossAxisAlignment:
+            isCommunity ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+        children: [
+          Text(
+            '!NSPIRE A MILLION!',
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+              color: isDarkMode ? Colors.white : Colors.grey.shade800,
+              letterSpacing: 4,
+            ),
           ),
-        ),
-        SizedBox(
-          height: 6,
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              backgroundColor: Colors.grey.shade100,
-              radius: 10,
-              child: CachedNetworkImage(
-                imageUrl: Userdetails.userProfilePic,
-                imageBuilder: (context, image) => CircleAvatar(
-                  radius: 10,
-                  backgroundImage: image,
+          SizedBox(
+            height: 6,
+          ),
+          Row(
+            mainAxisSize: isCommunity ? MainAxisSize.min : MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                backgroundColor: Colors.grey.shade100,
+                radius: sdp(context, 10),
+                child: CachedNetworkImage(
+                  imageUrl: Userdetails.userProfilePic,
+                  imageBuilder: (context, image) => CircleAvatar(
+                    radius: sdp(context, 10),
+                    backgroundImage: image,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              Userdetails.userDisplayName,
-              style: TextStyle(
-                color: isDarkMode ? Colors.grey.shade300 : Colors.grey.shade700,
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                Userdetails.userDisplayName,
+                style: TextStyle(
+                  color:
+                      isDarkMode ? Colors.grey.shade300 : Colors.grey.shade700,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+          if (isCommunity)
+            Padding(
+              padding: EdgeInsets.only(top: 10.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircleAvatar(
+                    radius: sdp(context, 10),
+                    backgroundColor:
+                        isDarkMode ? primaryAccentColor : primaryColor,
+                    child: Icon(
+                      Icons.group,
+                      size: sdp(context, 11),
+                      color: isDarkMode ? blackColor : whiteColor,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    widget.communityDetails!['communityTitle'],
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: isDarkMode ? Colors.white : Colors.grey.shade800,
+                    ),
+                  )
+                ],
               ),
             ),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

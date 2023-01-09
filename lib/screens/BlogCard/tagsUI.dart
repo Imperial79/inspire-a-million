@@ -91,6 +91,7 @@ class _TagsUIState extends State<TagsUI> {
                                         return BlogCard(
                                           snap: ds,
                                           isHome: false,
+                                          isCommunity: false,
                                         );
                                       },
                                     )

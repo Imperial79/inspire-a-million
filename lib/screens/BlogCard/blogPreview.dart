@@ -1,15 +1,11 @@
 import 'package:blog_app/screens/BlogCard/commentCard.dart';
-import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/sdp.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:formatted_text/formatted_text.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:url_launcher/url_launcher.dart';
 import '../Profile_Screen/othersProfileUi.dart';
 import '../../services/database.dart';
 import '../../utilities/colors.dart';
@@ -21,7 +17,9 @@ import 'likesUI.dart';
 
 class BlogPreviewUI extends StatefulWidget {
   final DocumentSnapshot snap;
-  const BlogPreviewUI({Key? key, required this.snap}) : super(key: key);
+  final bool isCommunity;
+  const BlogPreviewUI({Key? key, required this.snap, required this.isCommunity})
+      : super(key: key);
 
   @override
   State<BlogPreviewUI> createState() => _BlogPreviewUIState();
@@ -46,10 +44,17 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
       body: ListView(
         children: [
           StreamBuilder<dynamic>(
-            stream: FirebaseFirestore.instance
-                .collection('blogs')
-                .doc(widget.snap['blogId'])
-                .snapshots(),
+            stream: widget.isCommunity
+                ? FirebaseFirestore.instance
+                    .collection('community')
+                    .doc(widget.snap['communityId'])
+                    .collection('blogs')
+                    .doc(widget.snap['blogId'])
+                    .snapshots()
+                : FirebaseFirestore.instance
+                    .collection('blogs')
+                    .doc(widget.snap['blogId'])
+                    .snapshots(),
             builder: ((context, snapshot) {
               if (snapshot.hasData) {
                 return buildBlogCard(snap: snapshot.data);
@@ -220,8 +225,7 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
                           child: Container(
                             color: Colors.transparent,
                             child: Text(
-                              snap['userDisplayName'] ==
-                                      Userdetails.userDisplayName
+                              snap['uid'] == Userdetails.uid
                                   ? 'You'
                                   : snap['userDisplayName'],
                               style: TextStyle(

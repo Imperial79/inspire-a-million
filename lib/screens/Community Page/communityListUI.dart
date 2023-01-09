@@ -28,20 +28,20 @@ class _CommunityListUIState extends State<CommunityListUI> {
   final _firestore = FirebaseFirestore.instance;
   bool communityNameExist = false;
   List communityList = [];
-  Random r = new Random();
+  // Random r = new Random();
 
-  List<Color> iconColors = [
-    Colors.redAccent,
-    Colors.purple.shade200,
-    Colors.blueAccent,
-    Colors.greenAccent,
-    Colors.amber,
-    Colors.blue.shade100,
-    Colors.red.shade300,
-    Colors.green.shade300,
-    Colors.deepPurple.shade100,
-    Colors.orange.shade100,
-  ];
+  // List<Color> iconColors = [
+  //   Colors.redAccent,
+  //   Colors.purple.shade200,
+  //   Colors.blueAccent,
+  //   Colors.greenAccent,
+  //   Colors.amber,
+  //   Colors.blue.shade100,
+  //   Colors.red.shade300,
+  //   Colors.green.shade300,
+  //   Colors.deepPurple.shade100,
+  //   Colors.orange.shade100,
+  // ];
 
   @override
   void initState() {
@@ -83,18 +83,20 @@ class _CommunityListUIState extends State<CommunityListUI> {
           FocusScope.of(context).unfocus();
           communityNameExist = false;
           setState(() {});
+          String uniqueCommunityId =
+              "COM" + DateTime.now().millisecondsSinceEpoch.toString();
           Map<String, dynamic> communityMap = {
             'communityTitle': _communityNameController.text,
             'createdOn': DateTime.now().millisecondsSinceEpoch,
             'isPrivate': isPrivate,
             'createdBy': Userdetails.uniqueName,
-            'members': [
-              Userdetails.uid,
-            ],
+            'communityId': uniqueCommunityId,
+            'members': [Userdetails.uid],
           };
           await FirebaseFirestore.instance
               .collection('community')
-              .add(communityMap);
+              .doc(uniqueCommunityId)
+              .set(communityMap);
           Navigator.pop(context); //  for loading
           Navigator.pop(context); //  for modal
           ShowSnackBar(
@@ -264,6 +266,7 @@ class _CommunityListUIState extends State<CommunityListUI> {
                                       return BlogCard(
                                         snap: ds,
                                         isHome: true,
+                                        isCommunity: false,
                                       );
                                     } else {
                                       return Container();

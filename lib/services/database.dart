@@ -154,20 +154,6 @@ class DatabaseMethods {
   }
 
   //Delete all transacts
-  // deleteAllTransacts(String username) async {
-  //   return await _firestore
-  //       .collection('users')
-  //       .doc(username)
-  //       .collection('transacts')
-  //       .get()
-  //       .then((snapshot) {
-  //     for (DocumentSnapshot ds in snapshot.docs) {
-  //       ds.reference.delete();
-  //     }
-  //   });
-  // }
-
-  //Delete all transacts
   deleteNote(String username, String time, String labelName) async {
     return await _firestore
         .collection('users')
@@ -183,5 +169,19 @@ class DatabaseMethods {
         }
       },
     );
+  }
+
+  //=================COMMUNITY=================//
+  Future<void> uploadCommunityBlog(
+    String communityId,
+    String blogId,
+    Map<String, dynamic> communityBlog,
+  ) async {
+    await _firestore
+        .collection('community')
+        .doc(communityId)
+        .collection('blogs')
+        .doc(blogId)
+        .set(communityBlog);
   }
 }

@@ -338,7 +338,7 @@ SystemColors({
 
 Widget FormatedBlog(BuildContext context, String description) {
   return FormattedText(
-    description,
+    description.replaceAll('/:', ':'),
     style: TextStyle(
       letterSpacing: 0.5,
       color: isDarkMode ? whiteColor : darkGreyColor,
@@ -347,7 +347,7 @@ Widget FormatedBlog(BuildContext context, String description) {
     ),
     formatters: [
       // ...FormattedTextDefaults.formattedTextDefaultFormatters,
-      description.toString().endsWith('#')
+      description.endsWith('#')
           ? FormattedTextFormatter(
               patternChars: '#',
               style: TextStyle(
@@ -411,6 +411,16 @@ Widget FormatedBlog(BuildContext context, String description) {
               isDarkMode ? Colors.amber.withOpacity(0.7) : Colors.amber,
         ),
       ),
+      FormattedTextFormatter(
+        patternChars: '-i-',
+        style: TextStyle(
+          color: isDarkMode ? whiteColor : blackColor,
+          letterSpacing: 0.5,
+          fontWeight: isDarkMode ? FontWeight.w500 : FontWeight.w600,
+          fontSize: description.length > 100 ? 14 : 20,
+          fontStyle: FontStyle.italic,
+        ),
+      )
     ],
   );
 }

@@ -171,7 +171,11 @@ StreamBuilder<dynamic> BlogList({final isMe, name, uid}) {
               reverse: true,
               itemBuilder: (context, index) {
                 DocumentSnapshot ds = snapshot.data.docs[index];
-                return BlogCard(snap: ds, isHome: true);
+                return BlogCard(
+                  snap: ds,
+                  isHome: true,
+                  isCommunity: false,
+                );
               },
             ),
           ],
@@ -230,13 +234,12 @@ class CustomLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: sdp(context, 15),
-      width: sdp(context, 15),
+    return Transform.scale(
+      scale: 0.5,
       child: CircularProgressIndicator(
         backgroundColor: isDarkMode ? blueGreyColorDark : primaryAccentColor,
         color: isDarkMode ? primaryAccentColor : primaryColor,
-        strokeWidth: 3,
+        strokeWidth: 5,
       ),
     );
   }
@@ -264,28 +267,18 @@ ShowLoding(BuildContext context) {
 }
 
 Widget NoBlogs(BuildContext context) {
-  return Center(
-    child: FittedBox(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'No',
-            style: TextStyle(
-              fontSize: sdp(context, 30),
-              fontWeight: FontWeight.w900,
-              color: isDarkMode ? blueGreyColorDark : greyColorAccent,
-            ),
+  return Padding(
+    padding: EdgeInsets.all(8.0),
+    child: Center(
+      child: FittedBox(
+        child: Text(
+          '! No Blogs !',
+          style: TextStyle(
+            fontSize: sdp(context, 50),
+            fontWeight: FontWeight.w900,
+            color: isDarkMode ? blueGreyColorDark : greyColorAccent,
           ),
-          Text(
-            'Blogs !',
-            style: TextStyle(
-              fontSize: sdp(context, 50),
-              fontWeight: FontWeight.w900,
-              color: isDarkMode ? blueGreyColorDark : greyColorAccent,
-            ),
-          ),
-        ],
+        ),
       ),
     ),
   );

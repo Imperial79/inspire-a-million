@@ -22,7 +22,9 @@ import '../../utilities/constants.dart';
 class BlogCard extends StatefulWidget {
   final snap;
   final bool isHome;
-  BlogCard({required this.snap, required this.isHome});
+  final bool isCommunity;
+  BlogCard(
+      {required this.snap, required this.isHome, required this.isCommunity});
 
   @override
   State<BlogCard> createState() => _BlogCardState();
@@ -50,7 +52,10 @@ class _BlogCardState extends State<BlogCard> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => BlogPreviewUI(snap: widget.snap)));
+                builder: (context) => BlogPreviewUI(
+                      snap: widget.snap,
+                      isCommunity: widget.isCommunity,
+                    )));
       },
       child: AnimatedSize(
         duration: Duration(milliseconds: 200),
@@ -148,8 +153,7 @@ class _BlogCardState extends State<BlogCard> {
                             child: Container(
                               color: Colors.transparent,
                               child: Text(
-                                widget.snap['userDisplayName'] ==
-                                        Userdetails.userDisplayName
+                                widget.snap['uid'] == Userdetails.uid
                                     ? 'You'
                                     : widget.snap['userDisplayName'],
                                 style: TextStyle(
@@ -221,44 +225,59 @@ class _BlogCardState extends State<BlogCard> {
               ),
 
               ///////////////////// DESCRIPTION AREA ///////////////////////
+
               // Visibility(
               //   visible: !Uri.parse(widget.snap['description']).isAbsolute,
               //   child: Padding(
               //     padding: EdgeInsets.only(top: 10),
-              //     child: Linkify(
-              //       // toolbarOptions: ToolbarOptions(copy: true, selectAll: true),
-              //       linkStyle: TextStyle(
-              //         color: isDarkMode ? primaryAccentColor : primaryColor,
-              //         fontWeight: FontWeight.w500,
-              //         fontSize: 14,
-              //         letterSpacing: 0.4,
-              //       ),
-              //       onOpen: (link) async {
-              //         if (await canLaunchUrl(Uri.parse(link.url))) {
-              //           await launchUrl(
-              //             Uri.parse(link.url),
-              //             mode: LaunchMode.externalApplication,
-              //           );
-              //         } else {
-              //           throw 'Could not launch $link';
-              //         }
-              //       },
-              //       text: widget.snap['description']
-              //           .toString()
-              //           .replaceAll('/:', ':'),
-              //       style: TextStyle(
-              //         letterSpacing: 0.5,
-              //         fontWeight: FontWeight.w500,
-              //         fontSize:
-              //             widget.snap['description'].length > 100 ? 14 : 20,
-              //         color: isDarkMode
-              //             ? Colors.grey.shade300
-              //             : Colors.grey.shade800,
-              //       ),
+              //     child: Column(
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //         Icon(
+              //           Icons.link,
+              //           color: isDarkMode ? blueGreyColorDark : greyColor,
+              //         ),
+              //         Linkify(
+              //           linkStyle: TextStyle(
+              //             color:
+              //                 isDarkMode ? primaryAccentColor : primaryColor,
+              //             fontWeight: FontWeight.w500,
+              //             fontSize: widget.snap['description'].length > 100
+              //                 ? sdp(context, 13)
+              //                 : sdp(context, 17),
+              //             letterSpacing: 0.4,
+              //             decoration: TextDecoration.none,
+              //           ),
+              //           onOpen: (link) async {
+              //             if (await canLaunchUrl(Uri.parse(link.url))) {
+              //               await launchUrl(
+              //                 Uri.parse(link.url),
+              //                 mode: LaunchMode.externalApplication,
+              //               );
+              //             } else {
+              //               throw 'Could not launch $link';
+              //             }
+              //           },
+              //           text: widget.snap['description']
+              //               .toString()
+              //               .replaceAll('/:', ':'),
+              //           style: TextStyle(
+              //             letterSpacing: 0.5,
+              //             fontWeight: FontWeight.w500,
+              //             fontSize: widget.snap['description'].length > 100
+              //                 ? sdp(context, 13)
+              //                 : sdp(context, 17),
+              //             color: isDarkMode
+              //                 ? Colors.grey.shade300
+              //                 : Colors.grey.shade800,
+              //           ),
+              //         ),
+              //       ],
               //     ),
               //   ),
-              // ),
+              //   replacement:
               FormatedBlog(context, widget.snap['description']),
+              // ),
 
               ////////////////////////////  TAGS AREA ////////////////////////////
               Visibility(
