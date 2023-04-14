@@ -1,6 +1,3 @@
-import 'dart:ffi';
-import 'dart:math';
-
 import 'package:blog_app/screens/BlogCard/blogCard.dart';
 import 'package:blog_app/screens/Community%20Page/ccommunity-homePageUI.dart';
 import 'package:blog_app/utilities/components.dart';
@@ -69,7 +66,7 @@ class _CommunityListUIState extends State<CommunityListUI> {
 
   createCommunity() async {
     if (_communityNameController.text.isNotEmpty) {
-      ShowLoding(context); //  for loading
+      ShowLoading(context); //  for loading
       await _firestore
           .collection('community')
           .where('communityTitle', isEqualTo: _communityNameController.text)
@@ -119,6 +116,7 @@ class _CommunityListUIState extends State<CommunityListUI> {
   Widget build(BuildContext context) {
     isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
+      backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(
         child: RefreshIndicator(
           backgroundColor: isDarkMode ? blueGreyColor : whiteColor,
@@ -132,9 +130,7 @@ class _CommunityListUIState extends State<CommunityListUI> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 10,
-                ),
+                height20,
 
                 SearchBar(),
 
@@ -381,13 +377,19 @@ class _CommunityListUIState extends State<CommunityListUI> {
           },
         );
       },
-      icon: CircleAvatar(
-        radius: 27,
-        backgroundColor: isDarkMode ? Colors.black : Colors.white,
-        child: Icon(
-          Icons.add,
-          color: isDarkMode ? Colors.white : Colors.black,
-        ),
+      icon: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CircleAvatar(
+            radius: 27,
+            backgroundColor: isDarkMode ? Colors.black : primaryAccentColor,
+            child: Icon(
+              Icons.add,
+              color: isDarkMode ? Colors.white : primaryColor,
+            ),
+          ),
+          Text('Create'),
+        ],
       ),
     );
   }

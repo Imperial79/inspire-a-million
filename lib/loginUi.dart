@@ -29,45 +29,56 @@ class _LoginUiState extends State<LoginUi> {
               ? Loading()
               : Column(
                   children: [
-                    SizedBox(
-                      height: sdp(context, 10),
-                    ),
                     Text(
-                      'Welcome to Inpsire',
+                      'Welcome to !npsire',
                       style: TextStyle(
                         fontSize: sdp(context, 15),
                         fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    height10,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        'Being able to inspire others is an important personality trait for any leader.',
+                        style: TextStyle(
+                          color: isDarkMode
+                              ? greyColor.withOpacity(0.7)
+                              : greyColor,
+                          fontSize: sdp(context, 20),
+                          fontStyle: FontStyle.italic,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                     Expanded(
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Being able to inspire others is an important personality trait for any leader. Inspired leaders revive energy in the workplace. They encourage everyone around them to dream bigger, push harder, and lead a more fulfilling life. Inspiration can also make your organization a more fun place to be.',
-                                  style: TextStyle(
-                                    color: greyColor,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                height: sdp(context, 300),
+                                width: sdp(context, 300),
+                                child: FittedBox(
+                                  child: Text(
+                                    '!',
+                                    style: TextStyle(
+                                      // fontSize: sdp(context, 300),
+                                      color: isDarkMode
+                                          ? blueGreyColorDark
+                                          : primaryAccentColor,
+                                    ),
                                   ),
                                 ),
-                                Text(
-                                  '!',
-                                  style: TextStyle(
-                                    fontSize: sdp(context, 300),
-                                    // color: primaryAccentColor.withOpacity(0.4),
-                                    color: isDarkMode
-                                        ? blueGreyColorDark
-                                        : primaryAccentColor,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                           Center(
                             child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
@@ -93,6 +104,43 @@ class _LoginUiState extends State<LoginUi> {
                         ],
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 1,
+                              width: 100,
+                              color: isDarkMode
+                                  ? greyColor.withOpacity(0.5)
+                                  : greyColor,
+                            ),
+                          ),
+                          width10,
+                          Text(
+                            'continue with',
+                            style: TextStyle(
+                              color: isDarkMode
+                                  ? greyColor.withOpacity(0.7)
+                                  : greyColor,
+                            ),
+                          ),
+                          width10,
+                          Expanded(
+                            child: Container(
+                              height: 1,
+                              width: 100,
+                              color: isDarkMode
+                                  ? greyColor.withOpacity(0.5)
+                                  : greyColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    height20,
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
@@ -109,10 +157,11 @@ class _LoginUiState extends State<LoginUi> {
                             AuthMethods().signInWithgoogle(context);
                           },
                           style: ElevatedButton.styleFrom(
+                            elevation: 50,
                             backgroundColor:
                                 isDarkMode ? blueGreyColorDark : whiteColor,
                             padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
+                                horizontal: 30, vertical: 15),
                           ),
                           icon: Image.asset(
                             'lib/assets/image/googleLogo.png',

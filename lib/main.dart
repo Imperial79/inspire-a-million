@@ -47,9 +47,20 @@ class _MyAppState extends State<MyApp> {
       overlays: [SystemUiOverlay.top],
     );
 
-    SystemColors(
-      statusColor: transparentColor,
-      navColor: transparentColor,
+    // SystemColors(
+    //   statusColor: transparentColor,
+    //   navColor: transparentColor,
+    // );
+
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarBrightness: isDarkMode ? Brightness.dark : Brightness.light,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Colors.transparent,
+        // systemNavigationBarIconBrightness:
+        //     !isDarkMode ? Brightness.dark : Brightness.light,
+      ),
     );
 
     return MaterialApp(

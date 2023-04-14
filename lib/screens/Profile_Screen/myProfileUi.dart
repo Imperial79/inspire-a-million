@@ -42,6 +42,7 @@ class _MyProfileUiState extends State<MyProfileUi> {
 
   @override
   Widget build(BuildContext context) {
+    isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
       backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(

@@ -80,7 +80,7 @@ class _CommunityHomeUIState extends State<CommunityHomeUI> {
             leading: IconButton(
               icon: Icon(
                 Icons.arrow_back,
-                color: Theme.of(context).textTheme.headline6!.color,
+                color: Theme.of(context).textTheme.titleLarge!.color,
               ),
               onPressed: () => Navigator.of(context).pop(),
             ),

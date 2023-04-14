@@ -276,8 +276,121 @@ class _BlogCardState extends State<BlogCard> {
               //     ),
               //   ),
               //   replacement:
-              FormatedBlog(context, widget.snap['description']),
+              // FormatedBlog(context, widget.snap['description']),
               // ),
+
+              FormattedText(
+                widget.snap['description'].replaceAll('/:', ':'),
+                style: TextStyle(
+                  letterSpacing: 0.5,
+                  color: isDarkMode ? whiteColor : darkGreyColor,
+                  fontWeight: FontWeight.w400,
+                  fontSize: widget.snap['description'].length > 100
+                      ? sdp(context, 11)
+                      : sdp(context, 17),
+                ),
+                formatters: [
+                  // ...FormattedTextDefaults.formattedTextDefaultFormatters,
+                  widget.snap['description'].endsWith('#')
+                      ? FormattedTextFormatter(
+                          patternChars: '#',
+                          style: TextStyle(
+                            color: isDarkMode ? whiteColor : blackColor,
+                            letterSpacing: 0.5,
+                            fontWeight: FontWeight.w600,
+                            fontSize: widget.snap['description'].length > 100
+                                ? sdp(context, 13)
+                                : sdp(context, 17),
+                            decoration: TextDecoration.underline,
+                          ),
+                        )
+                      : FormattedTextFormatter(
+                          patternChars: '#',
+                          style: TextStyle(
+                            color:
+                                isDarkMode ? primaryAccentColor : primaryColor,
+                            letterSpacing: 0.5,
+                            fontWeight:
+                                isDarkMode ? FontWeight.w500 : FontWeight.w600,
+                            fontSize: widget.snap['description'].length > 100
+                                ? sdp(context, 13)
+                                : sdp(context, 17),
+                          ),
+                        ),
+                  FormattedTextFormatter(
+                    patternChars: '==',
+                    style: TextStyle(
+                      color: isDarkMode ? primaryAccentColor : primaryColor,
+                      letterSpacing: 0.5,
+                      fontWeight:
+                          isDarkMode ? FontWeight.w500 : FontWeight.w600,
+                      fontSize:
+                          widget.snap['description'].length > 100 ? 14 : 20,
+                    ),
+                  ),
+                  FormattedTextFormatter(
+                    patternChars: '*',
+                    style: TextStyle(
+                      color: isDarkMode ? whiteColor : blackColor,
+                      letterSpacing: 0.5,
+                      fontWeight: FontWeight.w700,
+                      fontSize: widget.snap['description'].length > 100
+                          ? sdp(context, 13)
+                          : sdp(context, 17),
+                    ),
+                  ),
+                  FormattedTextFormatter(
+                    patternChars: '*/',
+                    style: TextStyle(
+                      color: isDarkMode ? whiteColor : blackColor,
+                      letterSpacing: 0.5,
+                      fontWeight:
+                          isDarkMode ? FontWeight.w500 : FontWeight.w600,
+                      fontFamily: 'Monospace',
+                      fontSize:
+                          widget.snap['description'].length > 100 ? 14 : 20,
+                    ),
+                  ),
+                  FormattedTextFormatter(
+                    patternChars: '-',
+                    style: TextStyle(
+                      color: blackColor,
+                      letterSpacing: 0.5,
+                      fontWeight:
+                          isDarkMode ? FontWeight.w500 : FontWeight.w600,
+                      fontSize:
+                          widget.snap['description'].length > 100 ? 14 : 20,
+                      backgroundColor: isDarkMode
+                          ? Colors.amber.withOpacity(0.7)
+                          : Colors.amber,
+                    ),
+                  ),
+                  FormattedTextFormatter(
+                    patternChars: '_',
+                    style: TextStyle(
+                      color: isDarkMode ? whiteColor : blackColor,
+                      letterSpacing: 0.5,
+                      fontWeight:
+                          isDarkMode ? FontWeight.w500 : FontWeight.w600,
+                      fontSize:
+                          widget.snap['description'].length > 100 ? 14 : 20,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                  FormattedTextFormatter(
+                    patternChars: '~',
+                    style: TextStyle(
+                      color: isDarkMode ? whiteColor : blackColor,
+                      letterSpacing: 0.5,
+                      fontWeight:
+                          isDarkMode ? FontWeight.w500 : FontWeight.w600,
+                      fontSize:
+                          widget.snap['description'].length > 100 ? 14 : 20,
+                      decoration: TextDecoration.lineThrough,
+                    ),
+                  ),
+                ],
+              ),
 
               ////////////////////////////  TAGS AREA ////////////////////////////
               Visibility(

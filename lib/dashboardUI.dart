@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animations/animations.dart';
 import 'package:blog_app/screens/Home%20Screen/exploreUI.dart';
 import 'package:blog_app/createBlogUi.dart';
@@ -26,15 +28,34 @@ class DashboardUI extends StatefulWidget {
   State<DashboardUI> createState() => _DashboardUIState();
 }
 
-class _DashboardUIState extends State<DashboardUI> {
+class _DashboardUIState extends State<DashboardUI> with WidgetsBindingObserver {
   int activeTab = 0;
   String tokenId = '';
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (Userdetails.userEmail.isNotEmpty) {
+      if (state == AppLifecycleState.resumed) {
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(Userdetails.uid)
+            .update({"active": "1"});
+      } else {
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(Userdetails.uid)
+            .update({"active": "0"});
+      }
+      super.didChangeAppLifecycleState(state);
+    }
+  }
 
   @override
   void initState() {
     var brightness = SchedulerBinding.instance.window.platformBrightness;
     isDarkMode = brightness == Brightness.dark;
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   getFollowersToken() async {

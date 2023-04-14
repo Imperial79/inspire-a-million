@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:blog_app/dashboardUI.dart';
 import 'package:blog_app/screens/Home%20Screen/exploreUI.dart';
@@ -7,7 +9,6 @@ import 'package:blog_app/utilities/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'utilities/colors.dart';
@@ -19,7 +20,7 @@ class SplashUI extends StatefulWidget {
   State<SplashUI> createState() => _SplashUIState();
 }
 
-class _SplashUIState extends State<SplashUI> with WidgetsBindingObserver {
+class _SplashUIState extends State<SplashUI> {
   String tokenId = '';
 
   @override
@@ -27,25 +28,6 @@ class _SplashUIState extends State<SplashUI> with WidgetsBindingObserver {
     super.initState();
     onPageLoad();
     getMyTokenID();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (Userdetails.userEmail.isNotEmpty) {
-      if (state == AppLifecycleState.resumed) {
-        await FirebaseFirestore.instance
-            .collection("users")
-            .doc(Userdetails.uid)
-            .update({"active": "1"});
-      } else {
-        await FirebaseFirestore.instance
-            .collection("users")
-            .doc(Userdetails.uid)
-            .update({"active": "0"});
-      }
-      super.didChangeAppLifecycleState(state);
-    }
   }
 
   onPageLoad() async {

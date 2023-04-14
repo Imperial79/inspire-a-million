@@ -7,6 +7,13 @@ import 'package:flutter_svg/svg.dart';
 import '../screens/BlogCard/blogCard.dart';
 import 'colors.dart';
 
+get height10 => SizedBox(height: 10);
+get height20 => SizedBox(height: 20);
+get height5 => SizedBox(height: 5);
+get width10 => SizedBox(width: 10);
+get width20 => SizedBox(width: 20);
+get width5 => SizedBox(width: 5);
+
 Widget SubLabel(BuildContext context, {required String text}) {
   return Padding(
     padding: EdgeInsets.only(bottom: 10, top: 15),
@@ -245,8 +252,9 @@ class CustomLoading extends StatelessWidget {
   }
 }
 
-ShowLoding(BuildContext context) {
+ShowLoading(BuildContext context) {
   Dialog alert = Dialog(
+    elevation: 0,
     backgroundColor: Colors.transparent,
     child: Container(
       child: Center(
@@ -270,15 +278,25 @@ Widget NoBlogs(BuildContext context) {
   return Padding(
     padding: EdgeInsets.all(8.0),
     child: Center(
-      child: FittedBox(
-        child: Text(
-          '! No Blogs !',
-          style: TextStyle(
-            fontSize: sdp(context, 50),
-            fontWeight: FontWeight.w900,
-            color: isDarkMode ? blueGreyColorDark : greyColorAccent,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'There are no blogs yet',
+            style: TextStyle(
+              fontSize: sdp(context, 20),
+              fontWeight: FontWeight.w500,
+              color: isDarkMode ? blueGreyColor : greyColorAccent,
+            ),
           ),
-        ),
+          Text(
+            ':(',
+            style: TextStyle(
+              fontSize: sdp(context, 40),
+              color: isDarkMode ? blueGreyColor : greyColorAccent,
+            ),
+          )
+        ],
       ),
     ),
   );

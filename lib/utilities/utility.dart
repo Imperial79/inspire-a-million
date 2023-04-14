@@ -81,7 +81,7 @@ Widget MenuModal(String blogId) {
 }
 
 deletePost(BuildContext context, final blogId) async {
-  ShowLoding(context);
+  ShowLoading(context);
   await DatabaseMethods().deletePostDetails(blogId);
   Navigator.pop(context);
 }
