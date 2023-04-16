@@ -3,7 +3,7 @@ description: Inspire a Million.
 
 publish_to: "none"
 
-version: 2.0.2+30
+version: 2.0.3+31
 
 environment:
   sdk: ">=2.16.1 <3.0.0"

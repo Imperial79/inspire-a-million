@@ -169,7 +169,7 @@ class _LoginUiState extends State<LoginUi> {
                             height: sdp(context, 15),
                           ),
                           label: Text(
-                            'Continue with Google',
+                            'Google',
                             style: TextStyle(
                               color: isDarkMode ? whiteColor : blackColor,
                               fontSize: sdp(context, 12),
