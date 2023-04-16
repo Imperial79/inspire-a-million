@@ -160,11 +160,7 @@ class _CommunityHomeUIState extends State<CommunityHomeUI> {
       floatingActionButton: widget.data['members'].contains(Userdetails.uid)
           ? FloatingActionButton(
               onPressed: () {
-                NavPush(
-                    context,
-                    CreateBlogUi(
-                      communityDetails: widget.data,
-                    ));
+                NavPush(context, CreateBlogUi(communityDetails: widget.data));
               },
               backgroundColor: isDarkMode ? primaryAccentColor : primaryColor,
               elevation: 2,

@@ -134,7 +134,7 @@ class _SettingsUIState extends State<SettingsUI> {
                       SubLabel(context, text: 'System'),
                       ElevatedButton.icon(
                         onPressed: () {
-                          AuthMethods().signOut();
+                          AuthMethods().signOut(context);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:

@@ -317,21 +317,13 @@ String TimeFromMilliseconds(int millisecondsSinceEpoch) {
       .format(DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch));
 }
 
-SystemColors({
-  Brightness? statusBrightness,
-  Brightness? statusIconBrightness,
-  Brightness? navBrightness,
-  Color? navColor,
-  Color? statusColor,
-}) {
-  statusIconBrightness = isDarkMode ? Brightness.light : Brightness.dark;
+SystemColors() {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      statusBarColor: statusColor,
-      statusBarBrightness: statusBrightness,
-      statusBarIconBrightness: statusIconBrightness,
-      systemNavigationBarColor: navColor,
-      systemNavigationBarIconBrightness: navBrightness,
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
+      statusBarBrightness: isDarkMode ? Brightness.dark : Brightness.light,
+      statusBarIconBrightness: !isDarkMode ? Brightness.dark : Brightness.light,
     ),
   );
 }

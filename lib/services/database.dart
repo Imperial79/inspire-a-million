@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:blog_app/utilities/notification_function.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -43,10 +45,19 @@ class DatabaseMethods {
   }
 
   Future<void> setUserOnline() async {
+    log(Userdetails.uid + " is online");
     return await _firestore
         .collection("users")
         .doc(Userdetails.uid)
         .update({"active": "1"});
+  }
+
+  Future<void> setUserOffline() async {
+    log(Userdetails.uid + " is offline");
+    return await _firestore
+        .collection("users")
+        .doc(Userdetails.uid)
+        .update({"active": "0"});
   }
 
   deletePostDetails(String blogId) async {

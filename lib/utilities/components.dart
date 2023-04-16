@@ -1,6 +1,7 @@
 import 'package:blog_app/screens/Home%20Screen/searchui.dart';
 import 'package:blog_app/utilities/constants.dart';
 import 'package:blog_app/utilities/sdp.dart';
+import 'package:blog_app/utilities/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,6 +14,11 @@ get height5 => SizedBox(height: 5);
 get width10 => SizedBox(width: 10);
 get width20 => SizedBox(width: 20);
 get width5 => SizedBox(width: 5);
+
+Future<void> NavPopUntilPush(BuildContext context, screen) {
+  Navigator.popUntil(context, (route) => false);
+  return NavPush(context, screen);
+}
 
 Widget SubLabel(BuildContext context, {required String text}) {
   return Padding(

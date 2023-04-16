@@ -4,6 +4,7 @@ import 'package:animations/animations.dart';
 import 'package:blog_app/screens/Home%20Screen/exploreUI.dart';
 import 'package:blog_app/createBlogUi.dart';
 import 'package:blog_app/screens/Community%20Page/communityListUI.dart';
+import 'package:blog_app/services/database.dart';
 import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/animated_indexed_stack.dart';
 import 'package:blog_app/utilities/colors.dart';
@@ -36,15 +37,9 @@ class _DashboardUIState extends State<DashboardUI> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (Userdetails.userEmail.isNotEmpty) {
       if (state == AppLifecycleState.resumed) {
-        await FirebaseFirestore.instance
-            .collection("users")
-            .doc(Userdetails.uid)
-            .update({"active": "1"});
+        await DatabaseMethods().setUserOnline();
       } else {
-        await FirebaseFirestore.instance
-            .collection("users")
-            .doc(Userdetails.uid)
-            .update({"active": "0"});
+        await DatabaseMethods().setUserOffline();
       }
       super.didChangeAppLifecycleState(state);
     }

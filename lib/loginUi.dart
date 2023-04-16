@@ -3,6 +3,7 @@ import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/services/auth.dart';
 import 'package:blog_app/utilities/components.dart';
 import 'package:blog_app/utilities/sdp.dart';
+import 'package:blog_app/utilities/utility.dart';
 import 'package:flutter/material.dart';
 
 import 'utilities/constants.dart';
@@ -19,7 +20,7 @@ class _LoginUiState extends State<LoginUi> {
   @override
   Widget build(BuildContext context) {
     isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
-
+    SystemColors();
     return Scaffold(
       backgroundColor: isDarkMode ? Colors.grey.shade900 : Colors.white,
       body: SafeArea(

@@ -88,10 +88,7 @@ class _SplashUIState extends State<SplashUI> {
 
   @override
   Widget build(BuildContext context) {
-    SystemColors(
-      statusColor: transparentColor,
-      navColor: transparentColor,
-    );
+    SystemColors();
     isDarkMode = Theme.of(context).brightness == Brightness.dark ? true : false;
     return Scaffold(
       body: Center(
