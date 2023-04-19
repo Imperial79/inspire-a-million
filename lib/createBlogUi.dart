@@ -79,12 +79,9 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
         DatabaseMethods().uploadBlogs(blogMap, time.toString());
       }
 
-      // print('Folowers: ' + Global.followersTokenId.toString());
+      FocusScope.of(context).unfocus();
 
-      FocusScope.of(context)
-          .unfocus(); //unfocussing the keyboard after uploading the blog
-
-      description.clear(); // clearing the text field
+      description.clear();
       if (!isCommunity) {
         sendNotification(
           tokenIdList: Global.followersTokenId,

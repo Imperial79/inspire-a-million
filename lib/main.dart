@@ -9,6 +9,7 @@ import 'package:blog_app/splashUI.dart';
 import 'package:blog_app/utilities/colors.dart';
 import 'package:blog_app/utilities/constants.dart';
 import 'package:blog_app/utilities/utility.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,11 @@ void main() async {
     ),
   );
   await Hive.initFlutter();
+  await Permission.notification.isDenied.then((value) {
+    if (value) {
+      Permission.notification.request();
+    }
+  });
   runApp(MyApp());
 }
 

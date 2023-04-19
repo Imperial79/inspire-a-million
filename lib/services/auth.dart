@@ -54,9 +54,7 @@ class AuthMethods {
       "imgUrl": userDetails.photoURL,
     };
 
-    await _UserBox.put('userMap', userMap).whenComplete(() {
-      log('User Data Saved locally!');
-    });
+    await _UserBox.put('userMap', userMap);
 
     //  Saving in local session ------->
 
@@ -75,8 +73,9 @@ class AuthMethods {
         Userdetails.userDisplayName = value.data()!['name'];
         userMap.update('name', (value) => Userdetails.userDisplayName);
         _UserBox.put('userMap', userMap);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => DashboardUI()));
+
+        await DatabaseMethods().setUserOnline();
+        NavPushReplacement(context, DashboardUI());
       } else {
         Map<String, dynamic> userInfoMap = {
           'uid': userDetails.uid,
@@ -90,7 +89,8 @@ class AuthMethods {
         };
         await databaseMethods
             .addUserInfoToDB(userDetails.uid, userInfoMap)
-            .then((value) {
+            .then((value) async {
+          await DatabaseMethods().setUserOnline();
           NavPushReplacement(context, DashboardUI());
         });
       }
@@ -108,7 +108,6 @@ class AuthMethods {
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-    // final GoogleSignInAccount? googleSignInAccount =
     await _googleSignIn.disconnect();
 
     final GoogleSignInAccount? googleSignInAccount =
@@ -134,14 +133,12 @@ class AuthMethods {
     prefs.setString('USERDISPLAYNAMEKEY', userDetails.displayName!);
     prefs.setString('USEREMAILKEY', userDetails.email!);
     prefs.setString('USERPROFILEKEY', userDetails.photoURL!);
-    // prefs.setString('TOKENID', tokenId);
 
     Userdetails.uid = userDetails.uid;
     Userdetails.userEmail = userDetails.email!;
     Userdetails.userDisplayName = userDetails.displayName!;
     Userdetails.uniqueName = userDetails.email!.split('@')[0];
     Userdetails.userProfilePic = userDetails.photoURL!;
-    // Userdetails.myTokenId = tokenId;
 
     await FirebaseFirestore.instance
         .collection('users')
@@ -186,9 +183,10 @@ class AuthMethods {
 
   signOut(BuildContext context) async {
     NavPopUntilPush(context, LoginUi());
-    Userdetails.userEmail = '';
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
+
+    await Hive.openBox('userData');
+    Hive.box('userData').delete('userMap');
+
     await auth.signOut().then((value) async {
       await FirebaseFirestore.instance
           .collection('users')

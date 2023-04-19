@@ -32,6 +32,8 @@ class _SplashUIState extends State<SplashUI> {
   onPageLoad() async {
     var brightness = SchedulerBinding.instance.window.platformBrightness;
     isDarkMode = brightness == Brightness.dark;
+
+    //  getting user details from storage to local session
     if (Userdetails.uniqueName == '') {
       await Hive.openBox('User');
 

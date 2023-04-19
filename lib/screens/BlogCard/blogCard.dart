@@ -58,7 +58,10 @@ class _BlogCardState extends State<BlogCard> {
                     )));
       },
       child: AnimatedSize(
-        duration: Duration(milliseconds: 200),
+        duration: Duration(milliseconds: 300),
+        reverseDuration: Duration(milliseconds: 300),
+        curve: Curves.ease,
+        alignment: Alignment.topCenter,
         child: Container(
           padding: EdgeInsets.all(20),
           margin: EdgeInsets.only(bottom: 10),
@@ -226,59 +229,6 @@ class _BlogCardState extends State<BlogCard> {
 
               ///////////////////// DESCRIPTION AREA ///////////////////////
 
-              // Visibility(
-              //   visible: !Uri.parse(widget.snap['description']).isAbsolute,
-              //   child: Padding(
-              //     padding: EdgeInsets.only(top: 10),
-              //     child: Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         Icon(
-              //           Icons.link,
-              //           color: isDarkMode ? blueGreyColorDark : greyColor,
-              //         ),
-              //         Linkify(
-              //           linkStyle: TextStyle(
-              //             color:
-              //                 isDarkMode ? primaryAccentColor : primaryColor,
-              //             fontWeight: FontWeight.w500,
-              //             fontSize: widget.snap['description'].length > 100
-              //                 ? sdp(context, 13)
-              //                 : sdp(context, 17),
-              //             letterSpacing: 0.4,
-              //             decoration: TextDecoration.none,
-              //           ),
-              //           onOpen: (link) async {
-              //             if (await canLaunchUrl(Uri.parse(link.url))) {
-              //               await launchUrl(
-              //                 Uri.parse(link.url),
-              //                 mode: LaunchMode.externalApplication,
-              //               );
-              //             } else {
-              //               throw 'Could not launch $link';
-              //             }
-              //           },
-              //           text: widget.snap['description']
-              //               .toString()
-              //               .replaceAll('/:', ':'),
-              //           style: TextStyle(
-              //             letterSpacing: 0.5,
-              //             fontWeight: FontWeight.w500,
-              //             fontSize: widget.snap['description'].length > 100
-              //                 ? sdp(context, 13)
-              //                 : sdp(context, 17),
-              //             color: isDarkMode
-              //                 ? Colors.grey.shade300
-              //                 : Colors.grey.shade800,
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              //   replacement:
-              // FormatedBlog(context, widget.snap['description']),
-              // ),
-
               FormattedText(
                 widget.snap['description'].replaceAll('/:', ':'),
                 style: TextStyle(
@@ -413,126 +363,133 @@ class _BlogCardState extends State<BlogCard> {
               ),
 
               ///////////////////// LIKE STATUS ///////////////////////
-
-              widget.snap['likes'].length == 0
-                  ? Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 20),
-                        child: Text(
-                          'Be the first one to like the blog',
-                          style: TextStyle(
-                              color: Colors.grey, fontStyle: FontStyle.italic),
+              AnimatedSwitcher(
+                duration: Duration(milliseconds: 300),
+                reverseDuration: Duration(milliseconds: 300),
+                switchInCurve: Curves.easeIn,
+                switchOutCurve: Curves.easeInBack,
+                child: widget.snap['likes'].length == 0
+                    ? Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: Text(
+                            'Be the first one to like the blog',
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontStyle: FontStyle.italic),
+                          ),
                         ),
-                      ),
-                    )
-                  : Padding(
-                      padding: EdgeInsets.only(bottom: 10, top: 10),
-                      child: Row(
-                        children: [
-                          widget.snap['likes'].length == 1
-                              ? StreamBuilder<dynamic>(
-                                  stream: FirebaseFirestore.instance
-                                      .collection('users')
-                                      .where('uid',
-                                          isEqualTo: widget.snap['likes'][0])
-                                      .snapshots(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      if (snapshot.data.docs.length == 0) {
-                                        return SingleLikePreview(
-                                            profileImg: '');
-                                      } else {
-                                        DocumentSnapshot ds =
-                                            snapshot.data.docs[0];
-                                        return GestureDetector(
-                                          onTap: () {
-                                            if (ds['uid'] != Userdetails.uid) {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          OthersProfileUi(
-                                                            uid: ds['uid'],
-                                                          ))).then(
-                                                  (value) => setState(() {}));
-                                            }
-                                          },
-                                          child: SingleLikePreview(
-                                            profileImg: ds['imgUrl'],
-                                          ),
-                                        );
+                      )
+                    : Padding(
+                        padding: EdgeInsets.only(bottom: 10, top: 10),
+                        child: Row(
+                          children: [
+                            widget.snap['likes'].length == 1
+                                ? StreamBuilder<dynamic>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection('users')
+                                        .where('uid',
+                                            isEqualTo: widget.snap['likes'][0])
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        if (snapshot.data.docs.length == 0) {
+                                          return SingleLikePreview(
+                                              profileImg: '');
+                                        } else {
+                                          DocumentSnapshot ds =
+                                              snapshot.data.docs[0];
+                                          return GestureDetector(
+                                            onTap: () {
+                                              if (ds['uid'] !=
+                                                  Userdetails.uid) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            OthersProfileUi(
+                                                              uid: ds['uid'],
+                                                            ))).then(
+                                                    (value) => setState(() {}));
+                                              }
+                                            },
+                                            child: SingleLikePreview(
+                                              profileImg: ds['imgUrl'],
+                                            ),
+                                          );
+                                        }
                                       }
-                                    }
 
-                                    return CircleAvatar(
-                                      radius: 15,
-                                      backgroundColor: isDarkMode
-                                          ? Colors.black
-                                          : Colors.white,
-                                    );
-                                  },
-                                )
-                              : StreamBuilder<dynamic>(
-                                  stream: FirebaseFirestore.instance
-                                      .collection('users')
-                                      .where('uid',
-                                          whereIn: widget.snap['likes'])
-                                      .snapshots(),
-                                  builder: (context, snapshot) {
-                                    try {
-                                      return DoubleLikePreview(
-                                        img1: snapshot.data.docs[0]['imgUrl'],
-                                        press1: snapshot.data.docs[0]['uid'],
-                                        press2: snapshot.data.docs[1]['uid'],
-                                        img2: snapshot.data.docs[1]['imgUrl'],
+                                      return CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: isDarkMode
+                                            ? Colors.black
+                                            : Colors.white,
                                       );
-                                    } catch (e) {
-                                      return DummyDoubleLikePreview();
-                                    }
-                                  },
-                                ),
-                          GestureDetector(
-                            onTap: () {
-                              NavPush(
-                                  context,
-                                  LikesUI(
-                                    snap: widget.snap,
-                                  ));
-                            },
-                            child: Container(
-                              color: Colors.transparent,
-                              child: Text(
-                                widget.snap['likes'].length == 1 &&
-                                        widget.snap['likes']
-                                            .contains(Userdetails.uid)
-                                    ? 'You liked it '
-                                    : widget.snap['likes'].length == 1
-                                        ? ' Liked it'
-                                        : widget.snap['likes']
-                                                .contains(Userdetails.uid)
-                                            ? 'You and ' +
-                                                (widget.snap['likes'].length -
-                                                        1)
-                                                    .toString() +
-                                                ' more have liked'
-                                            : widget.snap['likes'].length
-                                                    .toString() +
-                                                ' people liked it',
-                                style: TextStyle(
-                                  letterSpacing: 0.5,
-                                  fontWeight: FontWeight.w500,
-                                  color: isDarkMode
-                                      ? Colors.grey.shade400
-                                      : Colors.grey.shade600,
-                                  fontSize: 13,
+                                    },
+                                  )
+                                : StreamBuilder<dynamic>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection('users')
+                                        .where('uid',
+                                            whereIn: widget.snap['likes'])
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      try {
+                                        return DoubleLikePreview(
+                                          img1: snapshot.data.docs[0]['imgUrl'],
+                                          press1: snapshot.data.docs[0]['uid'],
+                                          press2: snapshot.data.docs[1]['uid'],
+                                          img2: snapshot.data.docs[1]['imgUrl'],
+                                        );
+                                      } catch (e) {
+                                        return DummyDoubleLikePreview();
+                                      }
+                                    },
+                                  ),
+                            GestureDetector(
+                              onTap: () {
+                                NavPush(
+                                    context,
+                                    LikesUI(
+                                      snap: widget.snap,
+                                    ));
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                child: Text(
+                                  widget.snap['likes'].length == 1 &&
+                                          widget.snap['likes']
+                                              .contains(Userdetails.uid)
+                                      ? 'You liked it '
+                                      : widget.snap['likes'].length == 1
+                                          ? ' Liked it'
+                                          : widget.snap['likes']
+                                                  .contains(Userdetails.uid)
+                                              ? 'You and ' +
+                                                  (widget.snap['likes'].length -
+                                                          1)
+                                                      .toString() +
+                                                  ' more have liked'
+                                              : widget.snap['likes'].length
+                                                      .toString() +
+                                                  ' people liked it',
+                                  style: TextStyle(
+                                    letterSpacing: 0.5,
+                                    fontWeight: FontWeight.w500,
+                                    color: isDarkMode
+                                        ? Colors.grey.shade400
+                                        : Colors.grey.shade600,
+                                    fontSize: 13,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
+              ),
 
               Row(
                 children: [

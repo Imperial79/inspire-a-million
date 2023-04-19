@@ -46,7 +46,6 @@ class DatabaseMethods {
   }
 
   Future<void> setUserOnline() async {
-    log(Userdetails.uid + " is online");
     return await _firestore
         .collection("users")
         .doc(Userdetails.uid)
@@ -54,7 +53,6 @@ class DatabaseMethods {
   }
 
   Future<void> setUserOffline() async {
-    log(Userdetails.uid + " is offline");
     return await _firestore
         .collection("users")
         .doc(Userdetails.uid)
