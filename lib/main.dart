@@ -1,13 +1,14 @@
-import 'package:blog_app/splashUI.dart';
-import 'package:blog_app/utilities/colors.dart';
-import 'package:blog_app/loginUi.dart';
-import 'package:blog_app/services/auth.dart';
-import 'package:blog_app/utilities/constants.dart';
-import 'package:blog_app/utilities/utility.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:blog_app/loginUi.dart';
+import 'package:blog_app/services/auth.dart';
+import 'package:blog_app/splashUI.dart';
+import 'package:blog_app/utilities/colors.dart';
+import 'package:blog_app/utilities/constants.dart';
+import 'package:blog_app/utilities/utility.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +20,7 @@ void main() async {
       projectId: "blogged---blog-app",
     ),
   );
+  await Hive.initFlutter();
   runApp(MyApp());
 }
 

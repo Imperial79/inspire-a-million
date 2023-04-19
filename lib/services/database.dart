@@ -11,7 +11,8 @@ class DatabaseMethods {
   final _firestore = FirebaseFirestore.instance;
 
   //Adding user to database QUERY
-  addUserInfoToDB(String uid, Map<String, dynamic> userInfoMap) async {
+  Future<void> addUserInfoToDB(
+      String uid, Map<String, dynamic> userInfoMap) async {
     return await _firestore.collection("users").doc(uid).set(userInfoMap);
   }
 

@@ -92,7 +92,16 @@ class _CommunityHomeUIState extends State<CommunityHomeUI> {
             actions: [
               widget.data['members'].contains(Userdetails.uid)
                   ? TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        await FirebaseFirestore.instance
+                            .collection('community')
+                            .doc(widget.data['communityId'])
+                            .update({
+                          'members': FieldValue.arrayRemove([Userdetails.uid])
+                        }).then((value) {
+                          Navigator.pop(context);
+                        });
+                      },
                       style: ElevatedButton.styleFrom(),
                       child: Text(
                         'Leave',

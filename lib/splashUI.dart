@@ -9,8 +9,8 @@ import 'package:blog_app/utilities/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:hive/hive.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'utilities/colors.dart';
 
 class SplashUI extends StatefulWidget {
@@ -27,26 +27,30 @@ class _SplashUIState extends State<SplashUI> {
   void initState() {
     super.initState();
     onPageLoad();
-    getMyTokenID();
   }
 
   onPageLoad() async {
     var brightness = SchedulerBinding.instance.window.platformBrightness;
     isDarkMode = brightness == Brightness.dark;
     if (Userdetails.uniqueName == '') {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      Userdetails.uniqueName = prefs.getString('USERNAMEKEY')!;
-      Userdetails.userEmail = prefs.getString('USEREMAILKEY')!;
-      Userdetails.uid = prefs.getString('USERKEY')!;
-      Userdetails.userDisplayName = prefs.getString('USERDISPLAYNAMEKEY')!;
-      Userdetails.userProfilePic = prefs.getString('USERPROFILEKEY')!;
+      await Hive.openBox('User');
 
+      Map<dynamic, dynamic> userMap = await Hive.box('User').get('userMap');
+      print(userMap);
+
+      Userdetails.uid = userMap['uid'];
+      Userdetails.userDisplayName = userMap['name'];
+      Userdetails.userEmail = userMap['email'];
+      Userdetails.userProfilePic = userMap['imgUrl'];
+      Userdetails.uid = userMap['uid'];
+      Userdetails.uniqueName = userMap['username'];
       setState(() {});
     }
 
     await DatabaseMethods().setUserOnline();
     await updateFollowingUsersList();
     getFollowersToken();
+    getMyTokenID();
     NavPushReplacement(context, DashboardUI());
   }
 
@@ -74,9 +78,9 @@ class _SplashUIState extends State<SplashUI> {
   }
 
   getMyTokenID() async {
+    print("UID - " + Userdetails.uid);
     var status = await OneSignal.shared.getDeviceState();
     tokenId = status!.userId!;
-
     await FirebaseFirestore.instance
         .collection('users')
         .doc(Userdetails.uid)

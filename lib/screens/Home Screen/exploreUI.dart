@@ -86,14 +86,24 @@ class _ExploreUIState extends State<ExploreUI> {
           slivers: [
             CustomSliverAppBar(
               isMainView: true,
-              title: Text(
-                '!nspire',
-                style: TextStyle(
-                    color: isDarkMode ? primaryAccentColor : primaryColor,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1,
-                    fontSize: sdp(context, 20),
-                    fontFamily: 'Monospace'),
+              title: Container(
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                    color: isDarkMode ? primaryColor : primaryAccentColor,
+                    blurRadius: 80,
+                    spreadRadius: 5,
+                    offset: Offset(0, 40),
+                  )
+                ]),
+                child: Text(
+                  '!nspire',
+                  style: TextStyle(
+                      color: isDarkMode ? primaryAccentColor : primaryColor,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1,
+                      fontSize: sdp(context, 20),
+                      fontFamily: 'Monospace'),
+                ),
               ),
               actions: [
                 IconButton(

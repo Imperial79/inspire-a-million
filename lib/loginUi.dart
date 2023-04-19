@@ -150,6 +150,18 @@ class _LoginUiState extends State<LoginUi> {
                           left: 20,
                           bottom: 10,
                         ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          boxShadow: [
+                            BoxShadow(
+                                color: isDarkMode
+                                    ? primaryColor
+                                    : primaryAccentColor,
+                                blurRadius: 80,
+                                spreadRadius: 5,
+                                offset: Offset(0, 40))
+                          ],
+                        ),
                         child: ElevatedButton.icon(
                           onPressed: () {
                             setState(() {
@@ -158,7 +170,7 @@ class _LoginUiState extends State<LoginUi> {
                             AuthMethods().signInWithgoogle(context);
                           },
                           style: ElevatedButton.styleFrom(
-                            elevation: 50,
+                            elevation: 0,
                             backgroundColor:
                                 isDarkMode ? blueGreyColorDark : whiteColor,
                             padding: EdgeInsets.symmetric(

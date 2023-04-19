@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:blog_app/loginUi.dart';
 import 'package:blog_app/utilities/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:hive/hive.dart';
 import '../dashboardUI.dart';
 import '../utilities/constants.dart';
 import 'database.dart';
@@ -22,6 +24,9 @@ class AuthMethods {
   }
 
   signInWithgoogle(context) async {
+    await Hive.openBox('User');
+    final _UserBox = Hive.box('User');
+
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -41,43 +46,37 @@ class AuthMethods {
 
     User? userDetails = result.user;
 
-    final SharedPreferences prefs = await _prefs;
+    Map<String, dynamic> userMap = {
+      'uid': userDetails!.uid,
+      "email": userDetails.email,
+      "username": userDetails.email!.split('@').first,
+      "name": userDetails.displayName,
+      "imgUrl": userDetails.photoURL,
+    };
 
-    prefs.setString('USERKEY', userDetails!.uid);
-    prefs.setString('USERNAMEKEY', userDetails.email!.split('@')[0]);
-    prefs.setString('USERDISPLAYNAMEKEY', userDetails.displayName!);
-    prefs.setString('USEREMAILKEY', userDetails.email!);
-    prefs.setString('USERPROFILEKEY', userDetails.photoURL!);
-    // prefs.setString('TOKENID', tokenId);
+    await _UserBox.put('userMap', userMap).whenComplete(() {
+      log('User Data Saved locally!');
+    });
+
+    //  Saving in local session ------->
 
     Userdetails.uid = userDetails.uid;
     Userdetails.userEmail = userDetails.email!;
     Userdetails.userDisplayName = userDetails.displayName!;
     Userdetails.uniqueName = userDetails.email!.split('@')[0];
     Userdetails.userProfilePic = userDetails.photoURL!;
-    // Userdetails.myTokenId = tokenId;
 
     await FirebaseFirestore.instance
         .collection('users')
         .doc(userDetails.uid)
         .get()
-        .then((value) {
+        .then((value) async {
       if (value.exists) {
-        Map<String, dynamic> userInfoMap = {
-          'uid': userDetails.uid,
-          "email": userDetails.email,
-          "username": userDetails.email!.split('@')[0],
-          "name": userDetails.displayName,
-          "imgUrl": userDetails.photoURL,
-        };
-
-        FirebaseFirestore.instance
-            .collection("users")
-            .doc(userDetails.uid)
-            .update(userInfoMap)
-            .then((value) {
-          NavPushReplacement(context, DashboardUI());
-        });
+        Userdetails.userDisplayName = value.data()!['name'];
+        userMap.update('name', (value) => Userdetails.userDisplayName);
+        _UserBox.put('userMap', userMap);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => DashboardUI()));
       } else {
         Map<String, dynamic> userInfoMap = {
           'uid': userDetails.uid,
@@ -89,7 +88,7 @@ class AuthMethods {
           'followers': [],
           'following': [],
         };
-        databaseMethods
+        await databaseMethods
             .addUserInfoToDB(userDetails.uid, userInfoMap)
             .then((value) {
           NavPushReplacement(context, DashboardUI());
