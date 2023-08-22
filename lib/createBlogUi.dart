@@ -7,7 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:formatted_text_hooks/formatted_text_hooks.dart';
+// import 'package:formatted_text_hooks/formatted_text_hooks.dart';
 
 import 'utilities/constants.dart';
 
@@ -20,7 +20,7 @@ class CreateBlogUi extends StatefulWidget {
 }
 
 class _CreateBlogUiState extends State<CreateBlogUi> {
-  final description = FormattedTextEditingController();
+  final description = TextEditingController();
   int textCount = 0;
   bool isCommunity = false;
 
@@ -124,12 +124,12 @@ class _CreateBlogUiState extends State<CreateBlogUi> {
                   ),
                   child: TextField(
                     controller: description,
-                    selectionControls: FormattedTextSelectionControls(
-                      actions: [
-                        ...FormattedTextDefaults
-                            .formattedTextToolbarDefaultActions,
-                      ],
-                    ),
+                    // selectionControls: FormattedTextSelectionControls(
+                    //   actions: [
+                    //     ...FormattedTextDefaults
+                    //         .formattedTextToolbarDefaultActions,
+                    //   ],
+                    // ),
                     dragStartBehavior: DragStartBehavior.down,
                     autocorrect: false,
                     textInputAction: TextInputAction.newline,

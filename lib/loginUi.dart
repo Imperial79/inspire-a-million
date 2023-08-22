@@ -46,8 +46,8 @@ class _LoginUiState extends State<LoginUi> {
                           color: isDarkMode
                               ? greyColor.withOpacity(0.7)
                               : greyColor,
-                          fontSize: sdp(context, 20),
-                          fontStyle: FontStyle.italic,
+                          fontSize: sdp(context, 13),
+                          fontFamily: 'Monospace',
                         ),
                         textAlign: TextAlign.center,
                       ),

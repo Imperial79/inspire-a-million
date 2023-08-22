@@ -87,14 +87,16 @@ class _ExploreUIState extends State<ExploreUI> {
             CustomSliverAppBar(
               isMainView: true,
               title: Container(
-                decoration: BoxDecoration(boxShadow: [
-                  BoxShadow(
-                    color: isDarkMode ? primaryColor : primaryAccentColor,
-                    blurRadius: 80,
-                    spreadRadius: 5,
-                    offset: Offset(0, 40),
-                  )
-                ]),
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: isDarkMode ? primaryColor : primaryAccentColor,
+                      blurRadius: 80,
+                      spreadRadius: 5,
+                      offset: Offset(0, 40),
+                    ),
+                  ],
+                ),
                 child: Text(
                   '!nspire',
                   style: TextStyle(
@@ -127,12 +129,14 @@ class _ExploreUIState extends State<ExploreUI> {
     );
   }
 
+  int blogCounter = 5;
   StreamBuilder<dynamic> buildBlogList() {
     return StreamBuilder<dynamic>(
       stream: FirebaseFirestore.instance
           .collection('blogs')
           .where('uid', whereIn: followingUsers)
           .orderBy('time', descending: true)
+          .limit(blogCounter)
           .snapshots(),
       builder: (context, snapshot) {
         return AnimatedSwitcher(

@@ -3,9 +3,11 @@ import 'package:blog_app/utilities/sdp.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:url_launcher/url_launcher.dart';
 import '../Profile_Screen/othersProfileUi.dart';
 import '../../services/database.dart';
 import '../../utilities/colors.dart';
@@ -295,41 +297,42 @@ class _BlogPreviewUIState extends State<BlogPreviewUI> {
             ),
 
             ///////////////////// DESCRIPTION AREA ///////////////////////
-            // Visibility(
-            //   visible: !Uri.parse(snap['description']).isAbsolute,
-            //   child: Padding(
-            //     padding: EdgeInsets.only(top: 10),
-            //     child: SelectableLinkify(
-            //       // toolbarOptions: ToolbarOptions(copy: true, selectAll: true),
-            //       linkStyle: TextStyle(
-            //         color: isDarkMode ? primaryAccentColor : primaryColor,
-            //         fontWeight: FontWeight.w500,
-            //         fontSize: 14,
-            //         letterSpacing: 0.4,
-            //       ),
-            //       onOpen: (link) async {
-            //         if (await canLaunchUrl(Uri.parse(link.url))) {
-            //           await launchUrl(
-            //             Uri.parse(link.url),
-            //             mode: LaunchMode.externalApplication,
-            //           );
-            //         } else {
-            //           throw 'Could not launch $link';
-            //         }
-            //       },
-            //       text: snap['description'].toString().replaceAll('/:', ':'),
-            //       style: TextStyle(
-            //         letterSpacing: 0.5,
-            //         fontWeight: FontWeight.w500,
-            //         fontSize: snap['description'].length > 100 ? 14 : 20,
-            //         color: isDarkMode
-            //             ? Colors.grey.shade300
-            //             : Colors.grey.shade800,
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            FormatedBlog(context, widget.snap['description']),
+            Visibility(
+              visible: !Uri.parse(snap['description']).isAbsolute,
+              child: Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: SelectableLinkify(
+                  // toolbarOptions: ToolbarOptions(copy: true, selectAll: true),
+                  linkStyle: TextStyle(
+                    color: isDarkMode ? primaryAccentColor : primaryColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    letterSpacing: 0.4,
+                  ),
+                  onOpen: (link) async {
+                    if (await canLaunchUrl(Uri.parse(link.url))) {
+                      await launchUrl(
+                        Uri.parse(link.url),
+                        mode: LaunchMode.externalApplication,
+                      );
+                    } else {
+                      throw 'Could not launch $link';
+                    }
+                  },
+                  text: snap['description'].toString().replaceAll('/:', ':'),
+                  style: TextStyle(
+                    letterSpacing: 0.5,
+                    fontWeight: FontWeight.w500,
+                    fontSize: snap['description'].length > 100 ? 14 : 20,
+                    color: isDarkMode
+                        ? Colors.grey.shade300
+                        : Colors.grey.shade800,
+                  ),
+                ),
+              ),
+            ),
+
+            // FormatedBlog(context, widget.snap['description']),
 
             ////////////////////////////  TAGS AREA ////////////////////////////
             Visibility(

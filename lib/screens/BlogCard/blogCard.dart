@@ -12,7 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:formatted_text_hooks/formatted_text_hooks.dart';
+// import 'package:formatted_text_hooks/formatted_text_hooks.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
@@ -23,8 +23,11 @@ class BlogCard extends StatefulWidget {
   final snap;
   final bool isHome;
   final bool isCommunity;
-  BlogCard(
-      {required this.snap, required this.isHome, required this.isCommunity});
+  BlogCard({
+    required this.snap,
+    required this.isHome,
+    required this.isCommunity,
+  });
 
   @override
   State<BlogCard> createState() => _BlogCardState();
@@ -228,119 +231,156 @@ class _BlogCardState extends State<BlogCard> {
               ),
 
               ///////////////////// DESCRIPTION AREA ///////////////////////
-
-              FormattedText(
-                widget.snap['description'].replaceAll('/:', ':'),
-                style: TextStyle(
-                  letterSpacing: 0.5,
-                  color: isDarkMode ? whiteColor : darkGreyColor,
-                  fontWeight: FontWeight.w400,
-                  fontSize: widget.snap['description'].length > 100
-                      ? sdp(context, 11)
-                      : sdp(context, 17),
-                ),
-                formatters: [
-                  // ...FormattedTextDefaults.formattedTextDefaultFormatters,
-                  widget.snap['description'].endsWith('#')
-                      ? FormattedTextFormatter(
-                          patternChars: '#',
-                          style: TextStyle(
-                            color: isDarkMode ? whiteColor : blackColor,
-                            letterSpacing: 0.5,
-                            fontWeight: FontWeight.w600,
-                            fontSize: widget.snap['description'].length > 100
-                                ? sdp(context, 13)
-                                : sdp(context, 17),
-                            decoration: TextDecoration.underline,
-                          ),
-                        )
-                      : FormattedTextFormatter(
-                          patternChars: '#',
-                          style: TextStyle(
-                            color:
-                                isDarkMode ? primaryAccentColor : primaryColor,
-                            letterSpacing: 0.5,
-                            fontWeight:
-                                isDarkMode ? FontWeight.w500 : FontWeight.w600,
-                            fontSize: widget.snap['description'].length > 100
-                                ? sdp(context, 13)
-                                : sdp(context, 17),
-                          ),
-                        ),
-                  FormattedTextFormatter(
-                    patternChars: '==',
-                    style: TextStyle(
+              Visibility(
+                visible: !Uri.parse(widget.snap['description']).isAbsolute,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: SelectableLinkify(
+                    // toolbarOptions: ToolbarOptions(copy: true, selectAll: true),
+                    linkStyle: TextStyle(
                       color: isDarkMode ? primaryAccentColor : primaryColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      letterSpacing: 0.4,
+                    ),
+                    onOpen: (link) async {
+                      if (await canLaunchUrl(Uri.parse(link.url))) {
+                        await launchUrl(
+                          Uri.parse(link.url),
+                          mode: LaunchMode.externalApplication,
+                        );
+                      } else {
+                        throw 'Could not launch $link';
+                      }
+                    },
+                    text: widget.snap['description']
+                        .toString()
+                        .replaceAll('/:', ':'),
+                    style: TextStyle(
                       letterSpacing: 0.5,
-                      fontWeight:
-                          isDarkMode ? FontWeight.w500 : FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       fontSize:
                           widget.snap['description'].length > 100 ? 14 : 20,
+                      color: isDarkMode
+                          ? Colors.grey.shade300
+                          : Colors.grey.shade800,
                     ),
                   ),
-                  FormattedTextFormatter(
-                    patternChars: '*',
-                    style: TextStyle(
-                      color: isDarkMode ? whiteColor : blackColor,
-                      letterSpacing: 0.5,
-                      fontWeight: FontWeight.w700,
-                      fontSize: widget.snap['description'].length > 100
-                          ? sdp(context, 13)
-                          : sdp(context, 17),
-                    ),
-                  ),
-                  FormattedTextFormatter(
-                    patternChars: '*/',
-                    style: TextStyle(
-                      color: isDarkMode ? whiteColor : blackColor,
-                      letterSpacing: 0.5,
-                      fontWeight:
-                          isDarkMode ? FontWeight.w500 : FontWeight.w600,
-                      fontFamily: 'Monospace',
-                      fontSize:
-                          widget.snap['description'].length > 100 ? 14 : 20,
-                    ),
-                  ),
-                  FormattedTextFormatter(
-                    patternChars: '-',
-                    style: TextStyle(
-                      color: blackColor,
-                      letterSpacing: 0.5,
-                      fontWeight:
-                          isDarkMode ? FontWeight.w500 : FontWeight.w600,
-                      fontSize:
-                          widget.snap['description'].length > 100 ? 14 : 20,
-                      backgroundColor: isDarkMode
-                          ? Colors.amber.withOpacity(0.7)
-                          : Colors.amber,
-                    ),
-                  ),
-                  FormattedTextFormatter(
-                    patternChars: '_',
-                    style: TextStyle(
-                      color: isDarkMode ? whiteColor : blackColor,
-                      letterSpacing: 0.5,
-                      fontWeight:
-                          isDarkMode ? FontWeight.w500 : FontWeight.w600,
-                      fontSize:
-                          widget.snap['description'].length > 100 ? 14 : 20,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                  FormattedTextFormatter(
-                    patternChars: '~',
-                    style: TextStyle(
-                      color: isDarkMode ? whiteColor : blackColor,
-                      letterSpacing: 0.5,
-                      fontWeight:
-                          isDarkMode ? FontWeight.w500 : FontWeight.w600,
-                      fontSize:
-                          widget.snap['description'].length > 100 ? 14 : 20,
-                      decoration: TextDecoration.lineThrough,
-                    ),
-                  ),
-                ],
+                ),
               ),
+
+              // FormattedText(
+              //   widget.snap['description'].replaceAll('/:', ':'),
+              //   style: TextStyle(
+              //     letterSpacing: 0.5,
+              //     color: isDarkMode ? whiteColor : darkGreyColor,
+              //     fontWeight: FontWeight.w400,
+              //     fontSize: widget.snap['description'].length > 100
+              //         ? sdp(context, 11)
+              //         : sdp(context, 17),
+              //   ),
+              //   formatters: [
+              //     // ...FormattedTextDefaults.formattedTextDefaultFormatters,
+              //     widget.snap['description'].endsWith('#')
+              //         ? FormattedTextFormatter(
+              //             patternChars: '#',
+              //             style: TextStyle(
+              //               color: isDarkMode ? whiteColor : blackColor,
+              //               letterSpacing: 0.5,
+              //               fontWeight: FontWeight.w600,
+              //               fontSize: widget.snap['description'].length > 100
+              //                   ? sdp(context, 13)
+              //                   : sdp(context, 17),
+              //               decoration: TextDecoration.underline,
+              //             ),
+              //           )
+              //         : FormattedTextFormatter(
+              //             patternChars: '#',
+              //             style: TextStyle(
+              //               color:
+              //                   isDarkMode ? primaryAccentColor : primaryColor,
+              //               letterSpacing: 0.5,
+              //               fontWeight:
+              //                   isDarkMode ? FontWeight.w500 : FontWeight.w600,
+              //               fontSize: widget.snap['description'].length > 100
+              //                   ? sdp(context, 13)
+              //                   : sdp(context, 17),
+              //             ),
+              //           ),
+              //     FormattedTextFormatter(
+              //       patternChars: '==',
+              //       style: TextStyle(
+              //         color: isDarkMode ? primaryAccentColor : primaryColor,
+              //         letterSpacing: 0.5,
+              //         fontWeight:
+              //             isDarkMode ? FontWeight.w500 : FontWeight.w600,
+              //         fontSize:
+              //             widget.snap['description'].length > 100 ? 14 : 20,
+              //       ),
+              //     ),
+              //     FormattedTextFormatter(
+              //       patternChars: '*',
+              //       style: TextStyle(
+              //         color: isDarkMode ? whiteColor : blackColor,
+              //         letterSpacing: 0.5,
+              //         fontWeight: FontWeight.w700,
+              //         fontSize: widget.snap['description'].length > 100
+              //             ? sdp(context, 13)
+              //             : sdp(context, 17),
+              //       ),
+              //     ),
+              //     FormattedTextFormatter(
+              //       patternChars: '*/',
+              //       style: TextStyle(
+              //         color: isDarkMode ? whiteColor : blackColor,
+              //         letterSpacing: 0.5,
+              //         fontWeight:
+              //             isDarkMode ? FontWeight.w500 : FontWeight.w600,
+              //         fontFamily: 'Monospace',
+              //         fontSize:
+              //             widget.snap['description'].length > 100 ? 14 : 20,
+              //       ),
+              //     ),
+              //     FormattedTextFormatter(
+              //       patternChars: '-',
+              //       style: TextStyle(
+              //         color: blackColor,
+              //         letterSpacing: 0.5,
+              //         fontWeight:
+              //             isDarkMode ? FontWeight.w500 : FontWeight.w600,
+              //         fontSize:
+              //             widget.snap['description'].length > 100 ? 14 : 20,
+              //         backgroundColor: isDarkMode
+              //             ? Colors.amber.withOpacity(0.7)
+              //             : Colors.amber,
+              //       ),
+              //     ),
+              //     FormattedTextFormatter(
+              //       patternChars: '_',
+              //       style: TextStyle(
+              //         color: isDarkMode ? whiteColor : blackColor,
+              //         letterSpacing: 0.5,
+              //         fontWeight:
+              //             isDarkMode ? FontWeight.w500 : FontWeight.w600,
+              //         fontSize:
+              //             widget.snap['description'].length > 100 ? 14 : 20,
+              //         fontStyle: FontStyle.italic,
+              //       ),
+              //     ),
+              //     FormattedTextFormatter(
+              //       patternChars: '~',
+              //       style: TextStyle(
+              //         color: isDarkMode ? whiteColor : blackColor,
+              //         letterSpacing: 0.5,
+              //         fontWeight:
+              //             isDarkMode ? FontWeight.w500 : FontWeight.w600,
+              //         fontSize:
+              //             widget.snap['description'].length > 100 ? 14 : 20,
+              //         decoration: TextDecoration.lineThrough,
+              //       ),
+              //     ),
+              //   ],
+              // ),
 
               ////////////////////////////  TAGS AREA ////////////////////////////
               Visibility(
